@@ -18,6 +18,9 @@
         }
       }
     },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
     "prune-lockfile": {
       "dependsOn": ["build"],
       "cache": true,
@@ -50,7 +53,9 @@
       "dependsOn": ["build"],
       "options": {
         "buildTarget": "api:build",
-        "runBuildTargetDependencies": false
+        "runBuildTargetDependencies": false,
+        "inspect": true,
+        "watch": true
       },
       "configurations": {
         "development": {

@@ -1,0 +1,109 @@
+import {
+  AfterLoad,
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  Index,
+} from 'typeorm';
+import { BaseEntity } from './base.entity';
+import * as bcrypt from 'bcrypt';
+
+export const SALT_ROUNDS = 10;
+
+export interface Address {
+  street?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+}
+
+export interface PasswordReset {
+  resetOTP: number;
+  expires: Date;
+}
+
+@Entity('users')
+@Index(['email'], { unique: true })
+@Index(['username'], { unique: true })
+export class UserEntity extends BaseEntity {
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column({ nullable: true })
+  middleName?: string;
+
+  @Column({ nullable: true })
+  displayName?: string;
+
+  @Column({ type: 'date', nullable: true })
+  dateOfBirth?: Date;
+
+  @Column({ unique: true })
+  username: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column({ nullable: true })
+  phone?: string;
+
+  @Column({ type: 'jsonb', nullable: true })
+  address?: Address;
+
+  @Column({ select: false })
+  password: string;
+
+  @Column({ default: 'user' })
+  role: string;
+
+  @Column({ type: 'bytea', nullable: true })
+  avatar?: Buffer;
+
+  @Column({ nullable: true })
+  avatarMimeType?: string;
+
+  @Column({ default: true })
+  isDefaultAvatar?: boolean;
+
+  @Column({ default: 0 })
+  failedLogins: number;
+
+  @Column({ type: 'timestamp with time zone', nullable: true })
+  lockedUntil?: Date | null;
+
+  @Column({ nullable: true })
+  verificationCode?: string;
+
+  @Column({ default: false })
+  accountActivated: boolean;
+
+  @Column({ type: 'jsonb', nullable: true })
+  passwordReset?: PasswordReset;
+
+  // To track password changes
+  private previousPassword: string;
+
+  @BeforeInsert()
+  async hashPasswordBeforeInsert() {
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+  }
+
+  @BeforeUpdate()
+  async hashPasswordBeforeUpdate() {
+    // If password didn't change → skip
+    if (this.password === this.previousPassword) return;
+
+    this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
+  }
+
+  // Capture current password after entity loads
+  @AfterLoad()
+  loadPreviousPassword() {
+    this.previousPassword = this.password;
+  }
+}
