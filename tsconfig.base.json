@@ -1,23 +1,23 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
+    "baseUrl": ".",
     "declaration": false,
-    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "moduleResolution": "node",
     "module": "esnext",
+    "paths": {
+      "@recitt/types": ["libs/types/src/index.ts"]
+    },
+    "typeRoots": ["./node_modules/@types"],
+    "sourceMap": true,
+    "target": "es2015",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
-    "skipDefaultLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@recitt/database": ["libs/database/src/index.ts"],
-      "@recitt/types": ["libs/types/src/index.ts"]
-    }
+    "skipDefaultLibCheck": true
   },
   "exclude": ["node_modules", "tmp"]
 }

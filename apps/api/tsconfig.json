@@ -11,6 +11,17 @@
     }
   ],
   "compilerOptions": {
-    "esModuleInterop": true
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@auth/*": ["src/app/features/auth/*"],
+      "@common/*": ["src/app/common/*"],
+      "@recitt/types": ["../../libs/types/src/index.ts"],
+      "@database/*": ["src/app/database/*"],
+      "@features/*": ["src/app/features/*"],
+      "@shared/*": ["src/app/shared/*"]
+    }
   }
 }
