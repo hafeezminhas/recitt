@@ -7,7 +7,7 @@ import {
   Request as NestRequest,
   Post,
   Put,
-  UploadedFiles,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,6 +32,15 @@ import {
   SignupSwagger,
 } from './auth.swagger';
 
+const userAvatarMulterOptions: multer.Options = {
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max size
+  fileFilter: (req, file, cb: multer.FileFilterCallback) => {
+    if (!file.mimetype.match(/^image\/(jpeg|png)$/)) {
+      return cb(new Error('Only image files are allowed!'));
+    }
+    cb(null, true);
+  },
+};
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -74,24 +83,8 @@ export class AuthController {
 
   @Post('profile/avatar')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(
-    FileInterceptor('avatar', {
-      limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max size
-      fileFilter: (req, file, cb: multer.FileFilterCallback) => {
-        console.log(
-          `File received: ${file.originalname}, Type: ${file.mimetype}`
-        );
-
-        if (!file.mimetype.match(/^image\/(jpeg|png)$/)) {
-          return cb(new Error('Only image files are allowed!'));
-        }
-        cb(null, true);
-      },
-    })
-  )
-  uploadAvatar(@NestRequest() req, @UploadedFiles() file: Express.Multer.File) {
-    console.log('file: ', file);
-
+  @UseInterceptors(FileInterceptor('avatar', userAvatarMulterOptions))
+  uploadAvatar(@NestRequest() req, @UploadedFile() file: Express.Multer.File) {
     return this.authService.uploadAvatar(req.user.email, file);
   }
 
