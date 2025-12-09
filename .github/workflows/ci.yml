@@ -1,0 +1,38 @@
+# Content to paste into .github/workflows/ci.yml
+
+name: CI Quality Gate
+
+on:
+  pull_request:
+    branches:
+      - main # Your primary branch
+
+jobs:
+  build_and_test:
+    name: Build, Lint, and Test Affected Projects
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Crucial for Nx affected commands
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.21.1'
+
+      - name: Install Dependencies
+        run: npm install
+
+      # --- LINTING AND FORMAT CHECK ---
+      - name: Check Code Formatting
+        run: npm run format:check # Make sure this script is defined in package.json
+
+      - name: Lint Affected Projects
+        run: npx nx affected --target=lint --base=origin/main --head=HEAD
+
+      # --- UNIT TESTING ---
+      - name: Test Affected Projects
+        run: npx nx affected --target=test --base=origin/main --head=HEAD
