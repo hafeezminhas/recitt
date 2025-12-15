@@ -1,5 +1,10 @@
 import { Logger, NotFoundException } from '@nestjs/common';
-import { DeepPartial, FindOneOptions, Repository } from 'typeorm';
+import {
+  DeepPartial,
+  FindOneOptions,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseEntity } from '../entities/base.entity';
 
@@ -17,6 +22,23 @@ export abstract class AbstractRepository<T extends BaseEntity> {
     return this.repository.find();
   }
 
+  async findById(id: string, relations?: string[]): Promise<T | null> {
+    try {
+      const entity = await this.repository.findOneByOrFail({
+        where: { id },
+        relations: relations ?? null,
+      } as unknown as FindOptionsWhere<T>);
+      if (!entity) {
+        return null;
+      }
+    } catch (err) {
+      this.logger.error(
+        `[Repository:${this.logger}] FindById failed: ${err.message}`
+      );
+      throw new NotFoundException(`Resource with ID ${id} not found.`);
+    }
+  }
+
   async findOne(query: FindOneOptions<T>): Promise<T> {
     try {
       const entity = await this.repository.findOne(query);
@@ -32,7 +54,7 @@ export abstract class AbstractRepository<T extends BaseEntity> {
     }
   }
 
-  async update(id: number, data: DeepPartial<T>): Promise<T> {
+  async update(id: string, data: DeepPartial<T>): Promise<T> {
     await this.repository.update(id, data as QueryDeepPartialEntity<T>);
     return this.findOne({ where: { id } } as unknown as FindOneOptions<T>);
   }

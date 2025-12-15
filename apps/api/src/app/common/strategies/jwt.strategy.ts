@@ -18,7 +18,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     firstName,
     middleName,
     lastName,
-    username,
     email,
     role,
   }: JwtPayload) {
@@ -28,7 +27,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       firstName,
       middleName,
       lastName,
-      username,
       email,
       role,
     };

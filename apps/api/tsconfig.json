@@ -16,12 +16,17 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@auth/*": ["src/app/features/auth/*"],
-      "@common/*": ["src/app/common/*"],
+      // --------------- Library paths ---------------
       "@recitt/types": ["../../libs/types/src/index.ts"],
+      // --------------- App paths ---------------
+      "@common/*": ["src/app/common/*"],
       "@database/*": ["src/app/database/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@types/*": ["src/app/types/*"],
+      // --------------- Feature-based paths ---------------
       "@features/*": ["src/app/features/*"],
-      "@shared/*": ["src/app/shared/*"]
+      "@auth/*": ["src/app/features/auth/*"],
+      "@account/*": ["src/app/features/account/*"]
     }
   }
 }
