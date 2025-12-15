@@ -36,6 +36,13 @@ export const envSchema = Joi.object({
   SWAGGER_VERSION: Joi.string()
     .pattern(/^\d+(?:\.\d+)*$/)
     .default('1.0'),
+
+  // Sendgrid Config
+  ACCOUNT_ONBOARDING_SECRET: Joi.string().min(8).required(),
+  ACCOUNT_ONBOARDING_EXPIRY: Joi.string(),
+  SENDGRID_SENDER: Joi.string().email().required(),
+  SENDGRID_API_ID: Joi.string().required(),
+  SENDGRID_API_KEY: Joi.string().min(8).required(),
 }).unknown(true); // allow extra vars if needed
 
 export function validateEnvSchema(config: Record<string, string | undefined>) {

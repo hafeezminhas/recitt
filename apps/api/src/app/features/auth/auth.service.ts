@@ -12,7 +12,7 @@ import fs from 'fs';
 import moment from 'moment';
 import path from 'path';
 
-import { UserEntity } from '@database/entities/user.entity';
+import { User } from '@database/entities/user.entity';
 import { UserRepository } from '@database/repositories/user.repository';
 import {
   AccountActivationDto,
@@ -21,9 +21,9 @@ import {
   UpdateUserRequestDto,
   UserSignupRequestDto,
 } from '@recitt/types';
+import { JwtService } from '@shared/services/jwt.service';
 import { FindOneOptions } from 'typeorm';
 import { generateOTP } from './auth.utils';
-import { JwtService } from './jwt.service';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +40,7 @@ export class AuthService {
     const { email, username } = payload;
     const existing = await this.userRepo.findOne({
       where: [{ email: email }, { username: username }],
-    } as FindOneOptions<UserEntity>);
+    } as FindOneOptions<User>);
     if (existing) {
       throw new ConflictException(
         'User with this email or username already exists.'
@@ -90,7 +90,7 @@ export class AuthService {
     }
   }
 
-  async signin(reqUser: UserEntity) {
+  async signin(reqUser: User) {
     if (!reqUser.accountActivated) {
       throw new Error('Account is not activated');
     }
@@ -109,7 +109,6 @@ export class AuthService {
       middleName,
       lastName,
       displayName,
-      username,
       email,
       phone,
       dateOfBirth,
@@ -127,7 +126,6 @@ export class AuthService {
       middleName,
       lastName,
       displayName,
-      username,
       email,
       phone,
       dateOfBirth,
@@ -141,15 +139,14 @@ export class AuthService {
     };
   }
 
-  async validateUser(username: string, password: string) {
+  async validateUser(email: string, password: string) {
     const user = await this.userRepo.findOne({
-      where: [{ username }, { email: username }],
+      where: { email },
       select: [
         'id',
         'firstName',
         'lastName',
         'email',
-        'username',
         'password',
         'accountActivated',
         'role',
@@ -197,7 +194,7 @@ export class AuthService {
     }
   }
 
-  async updateProfile(userId: number, payLoad: UpdateUserRequestDto) {
+  async updateProfile(userId: string, payLoad: UpdateUserRequestDto) {
     try {
       // console.log('update profile : ', payLoad);
       if (
@@ -258,7 +255,7 @@ export class AuthService {
       } else {
         try {
           await this.userRepo.update(user.id, {
-            password: payLoad.newPassword,
+            password: payLoad.password,
             passwordReset: null,
           });
           return { success: true, message: 'Password reset successful' };
@@ -311,7 +308,7 @@ export class AuthService {
       );
       const user = await this.userRepo.findUser({
         where: { email: payload.sub },
-      } as FindOneOptions<UserEntity>);
+      } as FindOneOptions<User>);
       console.log('user -> ', user);
 
       await this.userRepo.update(user.id, { accountActivated: true });
@@ -341,10 +338,10 @@ export class AuthService {
     }
   }
 
-  private async isValidUser(username: string): Promise<UserEntity> {
+  private async isValidUser(username: string): Promise<User> {
     const user = await this.userRepo.findOne({
       where: [{ username }, { email: username }],
-    } as FindOneOptions<UserEntity>);
+    } as FindOneOptions<User>);
 
     if (!user) {
       throw new UnauthorizedException('Email not registered');

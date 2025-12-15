@@ -35,6 +35,8 @@ import {
 const userAvatarMulterOptions: multer.Options = {
   limits: { fileSize: 2 * 1024 * 1024 }, // 2MB max size
   fileFilter: (req, file, cb: multer.FileFilterCallback) => {
+    console.log(`File received: ${file.originalname}, Type: ${file.mimetype}`);
+
     if (!file.mimetype.match(/^image\/(jpeg|png)$/)) {
       return cb(new Error('Only image files are allowed!'));
     }

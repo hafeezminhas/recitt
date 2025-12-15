@@ -6,11 +6,11 @@ import {
 
 export abstract class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id!: number;
+  id: string;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
-  createdAt!: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp with time zone' })
-  updatedAt!: Date;
+  updatedAt: Date;
 }

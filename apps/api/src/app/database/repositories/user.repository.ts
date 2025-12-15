@@ -1,22 +1,20 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
-import { UserEntity } from '../entities/user.entity';
+import { User } from '../entities/user.entity';
 import { AbstractRepository } from './abstract.repository';
 
 @Injectable()
-export class UserRepository extends AbstractRepository<UserEntity> {
+export class UserRepository extends AbstractRepository<User> {
   logger = new Logger(UserRepository.name);
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly usersRepo: Repository<UserEntity>
+    @InjectRepository(User)
+    private readonly usersRepo: Repository<User>
   ) {
     super(usersRepo);
   }
 
-  async findUser(
-    filterQuery: FindOneOptions<UserEntity>
-  ): Promise<UserEntity | null> {
+  async findUser(filterQuery: FindOneOptions<User>): Promise<User | null> {
     const user = this.findOne(filterQuery);
 
     if (!user) {
