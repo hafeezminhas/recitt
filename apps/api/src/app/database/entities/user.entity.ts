@@ -1,3 +1,5 @@
+import { Address } from '@recitt/types';
+import * as bcrypt from 'bcrypt';
 import {
   AfterLoad,
   BeforeInsert,
@@ -7,17 +9,8 @@ import {
   Index,
 } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import * as bcrypt from 'bcrypt';
 
 export const SALT_ROUNDS = 10;
-
-export interface Address {
-  street?: string;
-  city?: string;
-  state?: string;
-  postalCode?: string;
-  country?: string;
-}
 
 export interface PasswordReset {
   resetOTP: number;
@@ -26,8 +19,13 @@ export interface PasswordReset {
 
 @Entity('users')
 @Index(['email'], { unique: true })
-@Index(['username'], { unique: true })
-export class UserEntity extends BaseEntity {
+export class User extends BaseEntity {
+  @Column()
+  title: string;
+
+  @Column()
+  preferredPronouns: string;
+
   @Column()
   firstName: string;
 
@@ -44,15 +42,12 @@ export class UserEntity extends BaseEntity {
   dateOfBirth?: Date;
 
   @Column({ unique: true })
-  username: string;
-
-  @Column({ unique: true })
   email: string;
 
   @Column({ nullable: true })
   phone?: string;
 
-  @Column({ type: 'jsonb', nullable: true })
+  @Column({ type: 'jsonb' })
   address?: Address;
 
   @Column({ select: false })

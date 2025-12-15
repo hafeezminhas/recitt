@@ -1,4 +1,4 @@
-import { Address } from '@database/entities/user.entity';
+import { Address } from '@recitt/types';
 
 export type JwtPayload = {
   sub: string; // userId
@@ -6,7 +6,6 @@ export type JwtPayload = {
   firstName: string;
   middleName?: string;
   lastName: string;
-  username: string;
   email: string;
   address: Address;
   role: string;

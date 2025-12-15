@@ -1,18 +1,18 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { UserEntity } from '@database/entities/user.entity';
+import { JwtStrategy } from '@common/strategies/jwt.strategy';
+import { LocalStrategy } from '@common/strategies/local.strategy';
+import { User } from '@database/entities/user.entity';
 import { UserRepository } from '@database/repositories/user.repository';
-import { JwtService } from './jwt.service';
+import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { LocalStrategy } from '@common/strategies/local.strategy';
-import { JwtStrategy } from '@common/strategies/jwt.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtService } from '@shared/services/jwt.service';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([User]),
     JwtModule.register({}),
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],

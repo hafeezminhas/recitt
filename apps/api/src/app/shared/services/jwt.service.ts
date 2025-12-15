@@ -1,10 +1,18 @@
-import { UserEntity } from '@database/entities/user.entity';
+import { User } from '@database/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { JwtSignOptions, JwtService as NestJwtService } from '@nestjs/jwt';
 import { JwtPayload } from '@shared/jwt-payload';
 import { jwtTimeToSeconds } from '@shared/utils';
 
-const { JWT_KEY, JWT_SECRET, JWT_EXPIRATION } = process.env;
+const {
+  JWT_KEY,
+  JWT_SECRET,
+  JWT_EXPIRATION,
+  ACCOUNT_ACTIVATION_TOKEN_SECRET,
+  ACCOUNT_ACTIVATION_TOKEN_EXPIRY,
+  ACCOUNT_ONBOARDING_SECRET,
+  ACCOUNT_ONBOARDING_EXPIRY,
+} = process.env;
 
 @Injectable()
 export class JwtService {
@@ -30,22 +38,20 @@ export class JwtService {
     firstName,
     middleName,
     lastName,
-    username,
     email,
     address,
     role,
-  }: UserEntity) {
+  }: User) {
     const payload = {
       firstName,
       middleName,
       lastName,
-      username,
       email,
       address,
       role,
     };
 
-    const payloadToSign = {
+    const payloadToSign: JwtPayload = {
       sub: id,
       typ: 'jwt',
       ...payload,
@@ -62,9 +68,6 @@ export class JwtService {
   }
 
   async createUserAccountActivation(email: string): Promise<string> {
-    const { ACCOUNT_ACTIVATION_TOKEN_SECRET, ACCOUNT_ACTIVATION_TOKEN_EXPIRY } =
-      process.env;
-
     const token = await this.jwtService.signAsync(
       { sub: email, typ: 'activation' },
       {
@@ -75,6 +78,18 @@ export class JwtService {
       }
     );
 
-    return `localhost:4200/activate-account/${token}`;
+    return `localhost:3000/activate-account/${token}`;
+  }
+
+  async createAccountOnboadrding(onboadringId: string): Promise<string> {
+    return await this.jwtService.signAsync(
+      { sub: onboadringId, typ: 'onboarding' },
+      {
+        privateKey: ACCOUNT_ONBOARDING_SECRET,
+        expiresIn: jwtTimeToSeconds(ACCOUNT_ONBOARDING_EXPIRY),
+        issuer: 'Recitt API',
+        audience: 'www.recitt.com',
+      }
+    );
   }
 }

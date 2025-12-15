@@ -1,18 +1,16 @@
-import { Address } from '../types/common';
-import {
-  IsString,
-  IsEmail,
-  IsOptional,
-  IsDateString,
-  ValidateNested,
-  isNotEmpty,
-  IsNotEmpty,
-  isString,
-} from 'class-validator';
-import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { AddressDto } from './address.dto';
+import { Type } from 'class-transformer';
+import {
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { Address } from '../types/common';
 import { Match } from '../utils';
+import { AddressDto } from './address.dto';
 
 export interface PasswordReset {
   token?: string;
@@ -171,6 +169,9 @@ export class UserProfileDto {
 }
 
 export class ForgetPasswordDto {
+  @ApiProperty({ example: 'admin@example.com' })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
 }
 
@@ -186,9 +187,23 @@ export class VerifyAccountDto {
  * ResetPasswordDto - Used for password reset
  */
 export class ResetPasswordDto {
+  @ApiProperty({ example: 'admin@example.com' })
+  @IsEmail()
+  @IsNotEmpty()
   email: string;
+
+  @ApiProperty({ example: 123456 })
+  @IsNotEmpty()
   verificationCode: number;
-  newPassword: string;
+
+  @ApiProperty({ example: 'password123' })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @ApiProperty({ example: 'password123' })
+  @IsString()
+  @Match('password', { message: 'Passwords do not match' })
   confirmPassword: string;
 }
 

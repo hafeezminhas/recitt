@@ -1,15 +1,13 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs",
     "outDir": "../../dist/out-tsc",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": true,
     "strictPropertyInitialization": false,
+    "composite": true,
     "declaration": true,
+    "emitDeclarationOnly": true,
     "types": ["node"]
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.d.ts"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }
