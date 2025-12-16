@@ -24,6 +24,9 @@ export default [
           style: 'kebab-case',
         },
       ],
+      '@angular-eslint/prefer-inject': 'off',
+      '@typescript-eslint/no-empty-function': 'off',
+
     },
   },
   {

@@ -16,12 +16,17 @@
         "tsConfig": "apps/client/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
+          "apps/client/src/favicon.ico",
           {
             "glob": "**/*",
-            "input": "apps/client/public"
+            "input": "apps/client/src/assets",
+            "output": "assets"
           }
         ],
-        "styles": ["apps/client/src/styles.scss"]
+        "styles": [
+          "apps/client/src/styles.scss",
+          "apps/client/src/assets/scss/style.scss"
+        ]
       },
       "configurations": {
         "production": {
