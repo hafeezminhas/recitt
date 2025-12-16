@@ -1,7 +1,7 @@
-import { OneToMany } from 'typeorm';
+import { JoinColumn, OneToMany } from 'typeorm';
 // account.entity.ts
 import { AccountStatus, Address, BusinessAccountType } from '@recitt/types';
-import { Column, Entity, Index, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, Index, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Billing } from './billing.entity';
 import { Note } from './note.entity';
@@ -44,22 +44,18 @@ export class Account extends BaseEntity {
   @Column({ nullable: true })
   alternatePhone?: string;
 
-  @Column({ nullable: true })
-  @OneToOne(() => Billing, (billing) => billing.id, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  billingInformation: string;
+  @OneToOne(() => Billing, (billingInfo) => billingInfo.account)
+  billingInformation: Billing;
 
   @Column({ default: 5 })
   maxUsers: number;
 
-  @Column({ nullable: true })
-  @OneToOne(() => User, (user) => user.id, {
-    onDelete: 'CASCADE',
+  @OneToOne(() => User, (user) => user.administeredAccount, {
+    onDelete: 'SET NULL',
+    nullable: true,
   })
-  @JoinColumn()
-  accountAdmin: string;
+  @JoinColumn({ name: 'accountAdminId' })
+  accountAdmin: User;
 
   @OneToMany(() => User, (user) => user.id)
   users: string[];

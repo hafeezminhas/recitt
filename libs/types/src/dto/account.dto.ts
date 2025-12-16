@@ -269,12 +269,12 @@ export class AddAccountAdminUserDto {
   @ApiProperty({ example: PersonTitle.MR })
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title: PersonTitle;
 
   @ApiProperty({ example: PersonPronoun.HE })
   @IsString()
   @IsNotEmpty()
-  preferredPronouns: string;
+  preferredPronouns: PersonPronoun;
 
   @ApiProperty({ example: 'John' })
   @IsString()

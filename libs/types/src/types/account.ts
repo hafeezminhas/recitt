@@ -52,3 +52,12 @@ export interface BillingAddress {
   phone: string;
   contactPerson?: string;
 }
+
+/**
+ * Payload for Onboarding Status Request
+ */
+export interface OnboardingStatusPayload {
+  token: string;
+  accountId: string;
+  expires: string;
+}

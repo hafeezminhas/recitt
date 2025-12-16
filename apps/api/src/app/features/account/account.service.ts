@@ -7,12 +7,14 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   AddAccountAdminUserDto,
   AddBillingInfoDto,
   Address,
   CreateAccountDto,
+  OnboardingStatusPayload,
   UserRole,
 } from '@recitt/types';
 import { createHmac } from 'node:crypto';
@@ -69,16 +71,18 @@ export class AccountService {
 
   async addBillingInfo(accountId: string, payload: AddBillingInfoDto) {
     try {
-      const billingInfo = await this.billingRepo.create(payload);
+      const { accountId, ...billingPayload } = payload;
+      const billingInfo = await this.billingRepo.create({
+        ...billingPayload,
+        account: { id: accountId },
+      });
+      // TODO: run payment via prefered payment method
+      // TODO: update payment status in billing info
       if (!billingInfo) {
         throw new InternalServerErrorException('Billing info not created');
       }
       this.logger.log(`Billing info created with id=${billingInfo.id}`);
 
-      // update billingInformation in account
-      await this.accountRepo.update(accountId, {
-        billingInformation: billingInfo.id,
-      });
       return await this.accountRepo.findById(accountId, ['billingInformation']);
     } catch (err) {
       this.logger.error('Error in adding billing info', err.message);
@@ -98,10 +102,15 @@ export class AccountService {
         ...payload,
         address: address,
         role: UserRole.ACCOUNT_ADMIN,
+        administeredAccount: { id: accountId },
       });
+      this.logger.log(`Admin user created with id=${adminUser.id}`);
+      if (!adminUser) {
+        throw new InternalServerErrorException('Admin user not created');
+      }
       // update admin user in account
       await this.accountRepo.update(accountId, {
-        accountAdmin: adminUser.id,
+        accountAdmin: adminUser,
       });
       return await this.accountRepo.findById(accountId, [
         'billingInformation',
@@ -115,9 +124,42 @@ export class AccountService {
     }
   }
 
-  async getOnboardingStatus(token: string) {
-    // const isMatch = await bcrypt.compare(account.id, hash); // returns true or false
-    // return this.accountRepo.getOnboardingStatus(token);
+  async getOnboardingStatus({
+    accountId,
+    expires,
+    token,
+  }: OnboardingStatusPayload) {
+    const isTokenVerified = this.verifyOnboardingLink(
+      accountId,
+      expires,
+      token
+    );
+    if (!isTokenVerified) {
+      throw new UnauthorizedException('Onboarding link is invalid or expired');
+    }
+
+    return this.accountRepo.findById(accountId, [
+      'accountAdmin',
+      'billingInformation',
+    ]);
+  }
+
+  private verifyOnboardingLink(
+    accountId: string,
+    expires: string,
+    incomingToken: string
+  ): boolean {
+    // 1. Check if expired
+    if (Date.now() > parseInt(expires)) return false;
+
+    // 2. Re-calculate the signature
+    const expectedData = `${accountId}:${expires}`;
+    const expectedSignature = createHmac('sha256', ACCOUNT_ONBOARDING_SECRET)
+      .update(expectedData)
+      .digest('hex');
+
+    // 3. Compare (Use timingSafeEqual for maximum security)
+    return incomingToken === expectedSignature;
   }
 
   private generateOnboardingLink(accountId: string) {
@@ -131,29 +173,6 @@ export class AccountService {
 
     // return `https://recitt.co.uk/complete?id=${accountId}&expires=${expires}&token=${signedUrlSignature}`;
     return `http://localhost:4200/complete?id=${accountId}&expires=${expires}&token=${signedUrlSignature}`;
-  }
-
-  private verifyOnboardingLink(
-    accountId: string,
-    expires: string,
-    incomingToken: string
-  ): boolean {
-    // 1. Check if expired
-
-    if (Date.now() > parseInt(expires)) return false;
-
-    // 2. Re-calculate the signature
-
-    const expectedData = `${accountId}:${expires}`;
-
-    const expectedSignature = createHmac('sha256', ACCOUNT_ONBOARDING_SECRET)
-      .update(expectedData)
-
-      .digest('hex');
-
-    // 3. Compare (Use timingSafeEqual for maximum security)
-
-    return incomingToken === expectedSignature;
   }
 
   private async sendWelcomeEmail(onboardingLink: string, account: Account) {
