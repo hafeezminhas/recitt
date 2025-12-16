@@ -16,6 +16,7 @@ import {
   AddAccountAdminUserDto,
   AddBillingInfoDto,
   CreateAccountDto,
+  OnboardingStatusPayload,
 } from '@recitt/types';
 import { AccountService } from './account.service';
 import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
@@ -24,9 +25,9 @@ import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Get('onboarding-status/:token')
-  getOnboardingStatus(@Param('token') token: string) {
-    return this.accountService.getOnboardingStatus(token);
+  @Post('onboarding-status')
+  getOnboardingStatus(@Body() payload: OnboardingStatusPayload) {
+    return this.accountService.getOnboardingStatus(payload);
   }
 
   @UseGuards(UniqueAccountGuard)
@@ -59,5 +60,10 @@ export class AccountController {
     const { id, address } = request.account;
     const { accountId, ...rest } = payload;
     return this.accountService.addAccountAdminUser(id, address, rest);
+  }
+
+  @Get(':id')
+  async findById(@Param('id') id: string) {
+    return this.accountService.findById(id);
   }
 }

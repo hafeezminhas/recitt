@@ -1,10 +1,5 @@
 import { Logger, NotFoundException } from '@nestjs/common';
-import {
-  DeepPartial,
-  FindOneOptions,
-  FindOptionsWhere,
-  Repository,
-} from 'typeorm';
+import { DeepPartial, FindOneOptions, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { BaseEntity } from '../entities/base.entity';
 
@@ -22,15 +17,20 @@ export abstract class AbstractRepository<T extends BaseEntity> {
     return this.repository.find();
   }
 
-  async findById(id: string, relations?: string[]): Promise<T | null> {
+  async findById(
+    id: string,
+    relations: string[] = undefined
+  ): Promise<T | null> {
     try {
-      const entity = await this.repository.findOneByOrFail({
-        where: { id },
-        relations: relations ?? null,
-      } as unknown as FindOptionsWhere<T>);
+      const entity = await this.repository.findOne({
+        where: { id } as unknown as FindOneOptions<T>['where'],
+        relations,
+      });
+
       if (!entity) {
         return null;
       }
+      return entity;
     } catch (err) {
       this.logger.error(
         `[Repository:${this.logger}] FindById failed: ${err.message}`

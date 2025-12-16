@@ -1,4 +1,4 @@
-import { Address } from '@recitt/types';
+import { Address, PersonPronoun, PersonTitle, UserRole } from '@recitt/types';
 import * as bcrypt from 'bcrypt';
 import {
   AfterLoad,
@@ -7,7 +7,9 @@ import {
   Column,
   Entity,
   Index,
+  OneToOne,
 } from 'typeorm';
+import { Account } from './account.entity';
 import { BaseEntity } from './base.entity';
 
 export const SALT_ROUNDS = 10;
@@ -20,11 +22,29 @@ export interface PasswordReset {
 @Entity('users')
 @Index(['email'], { unique: true })
 export class User extends BaseEntity {
-  @Column()
-  title: string;
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    default: UserRole.ACCOUNT_USER,
+  })
+  role: UserRole;
 
-  @Column()
-  preferredPronouns: string;
+  @OneToOne(() => Account, (account) => account.accountAdmin)
+  administeredAccount: Account;
+
+  @Column({
+    type: 'enum',
+    enum: PersonTitle,
+    default: PersonTitle.MR,
+  })
+  title: PersonTitle;
+
+  @Column({
+    type: 'enum',
+    enum: PersonPronoun,
+    default: PersonPronoun.HE,
+  })
+  preferredPronouns: PersonPronoun;
 
   @Column()
   firstName: string;
@@ -52,9 +72,6 @@ export class User extends BaseEntity {
 
   @Column({ select: false })
   password: string;
-
-  @Column({ default: 'user' })
-  role: string;
 
   @Column({ type: 'bytea', nullable: true })
   avatar?: Buffer;

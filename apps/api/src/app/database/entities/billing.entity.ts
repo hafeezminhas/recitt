@@ -4,7 +4,8 @@ import {
   PaymentMethod,
   UKBankAccount,
 } from '@recitt/types';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Account } from './account.entity';
 import { BaseEntity } from './base.entity';
 
 /**
@@ -13,6 +14,12 @@ import { BaseEntity } from './base.entity';
  */
 @Entity('billing')
 export class Billing extends BaseEntity {
+  @OneToOne(() => Account, (account) => account.billingInformation, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  @JoinColumn({ name: 'accountId' })
+  account: Account;
   // ==================== Company Information ====================
 
   @Column({ default: true })
