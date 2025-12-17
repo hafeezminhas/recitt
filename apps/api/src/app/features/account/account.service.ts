@@ -19,7 +19,7 @@ import {
 } from '@recitt/types';
 import { createHmac } from 'node:crypto';
 
-const { ACCOUNT_ONBOARDING_SECRET, ACCOUNT_ONBOARDING_EXPIRY } = process.env;
+const { ACCOUNT_ONBOARDING_SECRET } = process.env;
 
 @Injectable()
 export class AccountService {
