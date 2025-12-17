@@ -12,7 +12,7 @@
       "options": {
         "outputPath": "dist/apps/client",
         "browser": "apps/client/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "@angular/localize/init"],
         "tsConfig": "apps/client/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -23,10 +23,7 @@
             "output": "assets"
           }
         ],
-        "styles": [
-          "apps/client/src/styles.scss",
-          "apps/client/src/assets/scss/style.scss"
-        ]
+        "styles": ["apps/client/src/scss/styles.scss"]
       },
       "configurations": {
         "production": {

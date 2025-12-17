@@ -25,11 +25,6 @@ import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
 export class AccountController {
   constructor(private readonly accountService: AccountService) {}
 
-  @Post('onboarding-status')
-  getOnboardingStatus(@Body() payload: OnboardingStatusPayload) {
-    return this.accountService.getOnboardingStatus(payload);
-  }
-
   @UseGuards(UniqueAccountGuard)
   @Post()
   @ApiBody({ type: CreateAccountDto })
@@ -58,6 +53,7 @@ export class AccountController {
     @Body() payload: AddAccountAdminUserDto
   ) {
     const { id, address } = request.account;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { accountId, ...rest } = payload;
     return this.accountService.addAccountAdminUser(id, address, rest);
   }
@@ -65,5 +61,10 @@ export class AccountController {
   @Get(':id')
   async findById(@Param('id') id: string) {
     return this.accountService.findById(id);
+  }
+
+  @Post('onboarding-status')
+  getOnboardingStatus(@Body() payload: OnboardingStatusPayload) {
+    return this.accountService.getOnboardingStatus(payload);
   }
 }
