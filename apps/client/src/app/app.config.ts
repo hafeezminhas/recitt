@@ -1,52 +1,32 @@
-import {
-  provideHttpClient,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
-import {
-  ApplicationConfig,
-  importProvidersFrom,
-  provideZoneChangeDetection,
-} from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
+import { ApplicationConfig } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
-  withComponentInputBinding,
+  withEnabledBlockingInitialNavigation,
+  withHashLocation,
   withInMemoryScrolling,
+  withRouterConfig,
+  withViewTransitions,
 } from '@angular/router';
+import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
-
-// icons
-import { TablerIconsModule } from 'angular-tabler-icons';
-import * as TablerIcons from 'angular-tabler-icons/icons';
-
-// perfect scrollbar
-import { NgScrollbarModule } from 'ngx-scrollbar';
-
-//Import all material modules
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from './core/material.module';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(
       routes,
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+      }),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'enabled',
+        scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled',
       }),
-      withComponentInputBinding()
+      withEnabledBlockingInitialNavigation(),
+      withViewTransitions(),
+      withHashLocation()
     ),
-    provideHttpClient(withInterceptorsFromDi()),
-    provideClientHydration(),
+    IconSetService,
     provideAnimationsAsync(),
-    importProvidersFrom(
-      FormsModule,
-      ReactiveFormsModule,
-      MaterialModule,
-      TablerIconsModule.pick(TablerIcons),
-      NgScrollbarModule
-    ),
   ],
 };
