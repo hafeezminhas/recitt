@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IconDirective } from '@coreui/icons-angular';
 import {
   ButtonDirective,
   CardBodyComponent,
@@ -12,6 +11,7 @@ import {
   InputGroupTextDirective,
   RowComponent,
 } from '@coreui/angular';
+import { IconDirective } from '@coreui/icons-angular';
 
 @Component({
   selector: 'app-register',

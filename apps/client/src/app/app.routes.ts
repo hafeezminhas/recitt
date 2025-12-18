@@ -105,5 +105,13 @@ export const routes: Routes = [
       title: 'Register Page',
     },
   },
+  {
+    path: 'onboarding',
+    loadComponent: () =>
+      import('./features/onboarding/onboarding').then((m) => m.Onboarding),
+    data: {
+      title: 'Customer Onboarding',
+    },
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];
