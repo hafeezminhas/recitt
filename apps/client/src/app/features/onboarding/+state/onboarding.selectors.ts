@@ -1,0 +1,23 @@
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { ONBOARDING_FEATURE_KEY, OnboardingState } from './onboarding.state';
+
+export const onboardingState = createFeatureSelector<OnboardingState>(
+  ONBOARDING_FEATURE_KEY
+);
+
+export const getAccount = createSelector(
+  onboardingState,
+  ({ account }) => account
+);
+
+export const getCurrentStep = createSelector(
+  onboardingState,
+  (state) => state.currentStep
+);
+
+export const isLoading = createSelector(
+  onboardingState,
+  (state) => state.loading
+);
+
+export const getError = createSelector(onboardingState, (state) => state.error);

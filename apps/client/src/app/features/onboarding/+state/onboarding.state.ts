@@ -1,17 +1,17 @@
+import { AccountResponseDto } from '@recitt/types';
+
+export const ONBOARDING_FEATURE_KEY = 'onboarding';
+
 export interface OnboardingState {
+  account: AccountResponseDto | null;
   currentStep: 1 | 2 | 3;
-  customerId: string | null;
-  billingCompleted: boolean;
-  adminCreated: boolean;
   loading: boolean;
   error: string | null;
 }
 
 export const initialState: OnboardingState = {
+  account: null,
   currentStep: 1,
-  customerId: null,
-  billingCompleted: false,
-  adminCreated: false,
   loading: false,
   error: null,
 };

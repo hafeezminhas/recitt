@@ -107,8 +107,10 @@ export const routes: Routes = [
   },
   {
     path: 'onboarding',
-    loadComponent: () =>
-      import('./features/onboarding/onboarding').then((m) => m.Onboarding),
+    loadChildren: () =>
+      import('./features/onboarding/onboarding.routes').then(
+        (m) => m.ONBOARDING_FEATURE_ROUTES
+      ),
     data: {
       title: 'Customer Onboarding',
     },

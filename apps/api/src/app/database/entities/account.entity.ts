@@ -29,8 +29,8 @@ export class Account extends BaseEntity {
   })
   registrationType: BusinessAccountType;
 
-  @Column({ nullable: true })
-  registrationDate?: Date;
+  @Column()
+  registrationDate: Date;
 
   @Column({ type: 'jsonb' })
   address: Address;

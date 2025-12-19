@@ -48,7 +48,10 @@ export class AccountService {
   }
 
   async findById(id: string) {
-    return this.accountRepo.findById(id);
+    return this.accountRepo.findById(id, [
+      'billingInformation',
+      'accountAdmin',
+    ]);
   }
 
   async create(payload: CreateAccountDto) {

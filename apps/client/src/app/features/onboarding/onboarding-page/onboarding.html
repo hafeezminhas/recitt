@@ -1,0 +1,31 @@
+<div
+  class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center"
+>
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="10" md="12" xl="9">
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <nav class="stepper-header">
+              @for (step of steps; track step.step ) {
+                <div
+                    [class.active]="currentStep$$() === step.step"
+                    [class.completed]="currentStep$$() > step.step"
+                    [class.disabled]="(canAccess(step.step) | async) === false">
+
+                  {{ step.title }}
+                  {{ step.desc }}
+                </div>
+              }
+            </nav>
+
+            <main class="step-container">
+              <router-outlet></router-outlet>
+            </main>
+
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

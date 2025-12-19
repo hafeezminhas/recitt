@@ -26,7 +26,12 @@ import {
   PaymentMethod,
 } from '../enums/account.enum';
 import { PersonPronoun, PersonTitle } from '../enums/common.enum';
+import { Address } from '../types/common';
 import { Match } from '../utils';
+import {
+  sampleAccountAdminUserDetails,
+  sampleBillingInfoResponse,
+} from './account-mock';
 import { AddressDto } from './address.dto';
 
 /**
@@ -254,6 +259,59 @@ export class AddBillingInfoDto {
 
   @ApiProperty({ example: false })
   @IsBoolean()
+  autoPaymentEnabled: boolean;
+}
+
+/**
+ * BillingInfoResponseDto - Response DTO for billing information
+ */
+export class BillingInfoResponseDto {
+  @ApiProperty({ example: '0e9ce4ad-cf36-4996-b324-a2537078ef6f' })
+  id: string;
+
+  @ApiProperty({ example: '2025-12-16T11:22:32.711Z' })
+  createdAt: Date;
+
+  @ApiProperty({ example: '2025-12-16T11:22:32.711Z' })
+  updatedAt: Date;
+
+  @ApiProperty({ example: true })
+  sameAsBusinessAddress: boolean;
+
+  @ApiPropertyOptional({ type: AddressDto, nullable: true })
+  address?: AddressDto | null;
+
+  @ApiPropertyOptional({ example: 'Jane Doe' })
+  contactPerson?: string;
+
+  @ApiProperty({ example: 'abc@a.com' })
+  email: string;
+
+  @ApiProperty({ example: '+441234567890' })
+  phone: string;
+
+  @ApiPropertyOptional({ example: '+441234567891' })
+  alternatePhone?: string;
+
+  @ApiProperty({ type: UKBankAccountDto })
+  bankDetails: UKBankAccountDto;
+
+  @ApiProperty({ example: 'bank_transfer' })
+  preferredPaymentMethod: string;
+
+  @ApiProperty({ example: 'monthly' })
+  invoicingFrequency: string;
+
+  @ApiProperty({ example: 30, description: 'Payment terms in days' })
+  paymentTermsDays: number;
+
+  @ApiProperty({ example: true })
+  emailInvoices: boolean;
+
+  @ApiPropertyOptional({ example: 'abc@a.com' })
+  invoicingEmail?: string;
+
+  @ApiProperty({ example: false })
   autoPaymentEnabled: boolean;
 }
 
@@ -543,39 +601,85 @@ export class ComplianceAcceptanceDto {
   termsAndConditionsAccepted?: boolean;
 }
 
+export class AccountAdminUserResponseDto {
+  @ApiProperty()
+  title: string;
+
+  @ApiProperty()
+  prefferedPronoun: string;
+
+  @ApiProperty()
+  firstName: string;
+
+  @ApiProperty()
+  lastName: string;
+
+  @ApiProperty()
+  middleName?: string;
+
+  @ApiProperty()
+  displayName?: string;
+
+  @ApiProperty()
+  dateOfBirth?: Date;
+
+  @ApiProperty()
+  email: string;
+
+  @ApiProperty()
+  phone?: string;
+
+  @ApiProperty()
+  address?: Address;
+
+  @ApiProperty()
+  password: string;
+
+  @ApiProperty()
+  avatar?: Buffer;
+}
 /**
  * AccountResponseDto - Standard API response DTO containing account fields
  */
 export class AccountResponseDto {
   @ApiProperty({ example: 'account-uuid' })
-  id!: string;
+  id: string;
 
   @ApiProperty({ example: 'Acme Corporation Ltd' })
-  name!: string;
+  name: string;
 
   @ApiProperty({ example: '12345678' })
-  registrationNumber!: string;
+  registrationNumber: string;
+
+  @ApiPropertyOptional({ enum: BusinessAccountType })
+  registrationType?: BusinessAccountType;
+
+  @ApiPropertyOptional({ example: '2020-01-15' })
+  registrationDate?: string;
 
   @ApiProperty({ type: AddressDto })
-  address!: AddressDto;
+  address: AddressDto;
 
   @ApiProperty({ example: 'billing@acme.com' })
-  billingEmail!: string;
+  email: string;
 
   @ApiProperty({ example: '+441234567890' })
-  billingPhone!: string;
+  phone: string;
 
   @ApiPropertyOptional({ example: '+441234567891' })
   alternatePhone?: string;
 
-  @ApiPropertyOptional({ example: 'billing_123' })
-  billingInformation?: string;
+  @ApiPropertyOptional({
+    type: BillingInfoResponseDto,
+    example: sampleBillingInfoResponse,
+  })
+  billingInformation?: BillingInfoResponseDto;
 
-  @ApiPropertyOptional({ example: 'user_123' })
-  accountAdminId?: string;
-
-  @ApiPropertyOptional({ example: ['user_1', 'user_2'] })
-  users?: string[];
+  @ApiPropertyOptional({
+    type: AccountAdminUserResponseDto,
+    example: sampleAccountAdminUserDetails,
+  })
+  accountAdmin?: AccountAdminUserResponseDto;
 
   @ApiPropertyOptional({ example: false })
   isVatRegistered?: boolean;
@@ -586,17 +690,11 @@ export class AccountResponseDto {
   @ApiPropertyOptional({ example: '2020-01-15' })
   vatRegistrationDate?: string;
 
-  @ApiPropertyOptional({ example: 5 })
-  maxUsers?: number;
-
-  @ApiPropertyOptional({ example: ['note 1'] })
-  notes?: string[];
-
   @ApiProperty({
     enum: AccountStatus,
     example: AccountStatus.PENDING_VERIFICATION,
   })
-  status!: AccountStatus;
+  status: AccountStatus;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
   statusUpdatedAt?: string;
@@ -605,7 +703,7 @@ export class AccountResponseDto {
   suspensionReason?: string;
 
   @ApiProperty({ example: true })
-  isActive!: boolean;
+  isActive: boolean;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
   deactivatedAt?: string;
@@ -614,22 +712,16 @@ export class AccountResponseDto {
   deactivationReason?: string;
 
   @ApiProperty({ example: '2020-01-01T00:00:00Z' })
-  createdAt!: Date;
+  createdAt: Date;
 
   @ApiProperty({ example: '2020-01-02T00:00:00Z' })
-  updatedAt!: Date;
+  updatedAt: Date;
 }
 
 /**
  * AccountDetailedDto - Extended account response with relations
  */
 export class AccountDetailedDto extends AccountResponseDto {
-  @ApiPropertyOptional({ example: '2020-01-15' })
-  registrationDate?: string;
-
-  @ApiPropertyOptional({ enum: BusinessAccountType })
-  registrationType?: BusinessAccountType;
-
   @ApiPropertyOptional({ example: true })
   dataProtectionAgreementSigned?: boolean;
 
@@ -641,4 +733,7 @@ export class AccountDetailedDto extends AccountResponseDto {
 
   @ApiPropertyOptional({ example: '2020-01-15' })
   termsAndConditionsDate?: string;
+
+  @ApiPropertyOptional({ example: ['note 1'] })
+  notes?: string[];
 }
