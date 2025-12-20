@@ -12,7 +12,7 @@ export const getAccount = createSelector(
 
 export const getCurrentStep = createSelector(
   onboardingState,
-  (state) => state.currentStep
+  state => state.currentStep
 );
 
 export const isLoading = createSelector(

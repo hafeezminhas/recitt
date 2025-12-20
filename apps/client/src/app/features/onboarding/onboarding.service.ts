@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CreateAccountDto } from '@recitt/types';
+import { IAccountResponse, ICreateAccountRequest } from '@recitt/types';
 import { DataService } from '@shared/services/data.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,9 +9,13 @@ import { DataService } from '@shared/services/data.service';
 export class OnboardingService {
   private readonly apiPrefix = 'accounts';
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService) { }
 
-  addAccount(payload: CreateAccountDto) {
-    return this.dataService.postData(this.apiPrefix, payload);
+  getAccount(accountId: string): Observable<IAccountResponse> {
+    return this.dataService.getData<IAccountResponse>(`${this.apiPrefix}/${accountId}`);
+  }
+
+  addAccount(payload: ICreateAccountRequest): Observable<IAccountResponse> {
+    return this.dataService.postData<ICreateAccountRequest, IAccountResponse>(this.apiPrefix, payload);
   }
 }

@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig } from '@angular/core';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
@@ -24,7 +24,10 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStoreDevtools({
       maxAge: 25,
-      logOnly: false,
+      logOnly: !isDevMode(),
+      autoPause: true,
+      trace: false,
+      traceLimit: 75
     }),
 
     // Router setup

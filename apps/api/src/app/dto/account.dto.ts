@@ -5,6 +5,20 @@
  */
 
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import {
+  AccountStatus,
+  BillingFrequency,
+  BusinessAccountType,
+  IAccountAdminUserResponse,
+  IAccountResponse,
+  IAddBillingInfoRequest,
+  ICreateAccountRequest,
+  OnboardingStatusPayload,
+  PaymentMethod,
+  PersonPronoun,
+  PersonTitle
+} from '@recitt/types';
+import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -19,15 +33,6 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import {
-  AccountStatus,
-  BillingFrequency,
-  BusinessAccountType,
-  PaymentMethod,
-} from '../enums/account.enum';
-import { PersonPronoun, PersonTitle } from '../enums/common.enum';
-import { Address } from '../types/common';
-import { Match } from '../utils';
 import {
   sampleAccountAdminUserDetails,
   sampleBillingInfoResponse,
@@ -71,7 +76,7 @@ export class UKBankAccountDto {
  * CreateAccountDto - Used for creating a new account
  * Includes company registration, business address, and initial billing setup
  */
-export class CreateAccountDto {
+export class CreateAccountDto implements ICreateAccountRequest {
   // ==================== Company Information ====================
 
   @ApiProperty({
@@ -161,40 +166,12 @@ export class CreateAccountDto {
   @IsOptional()
   @IsString()
   vatNumber?: string;
-
-  @ApiPropertyOptional({
-    example: 5,
-    description: 'Maximum number of users allowed on account',
-    minimum: 1,
-  })
-  @IsOptional()
-  @IsNumber()
-  @Min(1)
-  maxUsers?: number;
-
-  // ==================== Compliance ====================
-
-  @ApiPropertyOptional({
-    default: false,
-    description: 'Data Protection Agreement acceptance',
-  })
-  @IsOptional()
-  @IsBoolean()
-  dataProtectionAgreementAccepted?: boolean;
-
-  @ApiPropertyOptional({
-    default: false,
-    description: 'Terms and Conditions acceptance',
-  })
-  @IsOptional()
-  @IsBoolean()
-  termsAndConditionsAccepted?: boolean;
 }
 
 /**
  * Add billing info  DTO
  */
-export class AddBillingInfoDto {
+export class AddBillingInfoDto implements IAddBillingInfoRequest {
   @ApiProperty({ example: 'account-uuid' })
   @IsString()
   @IsNotEmpty()
@@ -486,6 +463,24 @@ export class UpdateAccountDto {
   @IsBoolean()
   termsAndConditionsAccepted?: boolean;
 }
+
+export class OnboardingStatusPayloadDto implements OnboardingStatusPayload {
+  @ApiProperty({ example: 'token123' })
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @ApiProperty({ example: 'account-uuid' })
+  @IsString()
+  @IsNotEmpty()
+  accountId: string;
+
+  @ApiProperty({ example: '2025-12-16T11:22:32.711Z' })
+  @IsString()
+  @IsNotEmpty()
+  expires: string;
+}
+
 /**
  * UpdateAccountStatusDto - Used to update account status
  */
@@ -601,12 +596,12 @@ export class ComplianceAcceptanceDto {
   termsAndConditionsAccepted?: boolean;
 }
 
-export class AccountAdminUserResponseDto {
+export class AccountAdminUserResponseDto implements IAccountAdminUserResponse {
   @ApiProperty()
   title: string;
 
   @ApiProperty()
-  prefferedPronoun: string;
+  preferredPronoun: string;
 
   @ApiProperty()
   firstName: string;
@@ -630,7 +625,7 @@ export class AccountAdminUserResponseDto {
   phone?: string;
 
   @ApiProperty()
-  address?: Address;
+  address?: AddressDto;
 
   @ApiProperty()
   password: string;
@@ -641,7 +636,7 @@ export class AccountAdminUserResponseDto {
 /**
  * AccountResponseDto - Standard API response DTO containing account fields
  */
-export class AccountResponseDto {
+export class AccountResponseDto implements IAccountResponse {
   @ApiProperty({ example: 'account-uuid' })
   id: string;
 

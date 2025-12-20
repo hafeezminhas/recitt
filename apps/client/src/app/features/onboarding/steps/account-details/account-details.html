@@ -1,1 +1,78 @@
-<p>account-details works!</p>
+<div class="account-details">
+  <form [formGroup]="accountForm" cForm>
+    <c-row class="gx-5">
+      <c-col xs="12" md="6" class="px">
+        <div class="mb-3">
+          <label cLabel for="name">Name</label>
+          <input cFormControl id="name" placeholder="Business name" formControlName="name" />
+        </div>
+        <div class="mb-3">
+          <label cLabel for="registrationNumber">Registration Number</label>
+          <input cFormControl id="registrationNumber" placeholder="Registration number"
+            formControlName="registrationNumber" />
+        </div>
+        <div class="mb-3">
+          <label cLabel for="registrationType">Registration Type</label>
+          <select id="registrationType" formControlName="registrationType" cSelect
+            aria-label="Business registration type">
+            @for (option of businessAccountTypes; track option) {
+            <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="registrationDate">Registration Date</label>
+          <input cFormControl id="registrationDate" type="date" formControlName="registrationDate" />
+        </div>
+        <div class="mb-3">
+          <label cLabel for="email">Email Address</label>
+          <input cFormControl id="email" placeholder="Email address" formControlName="email" />
+        </div>
+        <div class="mb-3">
+          <label cLabel for="phoneNumber">Phone Number</label>
+          <input cFormControl id="phoneNumber" placeholder="+44(0)2082894332" formControlName="phone" />
+        </div>
+        <div class="mb-3">
+          <label cLabel for="alternativePhoneNumber">Alternative Phone</label>
+          <input cFormControl id="alternativePhoneNumber" placeholder="+44(0)2082894333"
+            formControlName="alternatePhone" />
+        </div>
+      </c-col>
+      <c-col xs="12" md="5" class="px">
+        <fieldset formGroupName="address">
+          <div class="mb-3">
+            <label cLabel for="addressLine1">Building</label>
+            <input cFormControl id="addressLine1" placeholder="Street address, P.O. box" formControlName="building" />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="addressLine2">Street</label>
+            <input cFormControl id="addressLine2" placeholder="Apartment, suite, unit, building, floor"
+              formControlName="street" />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="town">Town</label>
+            <input cFormControl id="town" placeholder="Town or city" formControlName="town" />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="county">County</label>
+            <input cFormControl id="county" placeholder="County or state" formControlName="county" />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="postcode">Postcode</label>
+            <input cFormControl id="postcode" placeholder="Postcode or ZIP code" formControlName="postcode" />
+          </div>
+        </fieldset>
+        <div class="mb-3">
+          <input cFormCheckInput type="checkbox" id="isVatRegistered" formControlName="isVatRegistered" />
+          <label cFormCheckLabel for="isVatRegistered" type="checkbox">Is VAT Registered?</label>
+        </div>
+        @if(accountForm.get('isVatRegistered')?.value) {
+        <div class="mb-3">
+          <label cLabel for="vatNumber">VAT Number</label>
+          <input cFormControl id="vatNumber" placeholder="VAT number" formControlName="vatNumber" />
+        </div>
+        }
+      </c-col>
+    </c-row>
+  </form>
+</div>

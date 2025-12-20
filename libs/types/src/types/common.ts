@@ -1,7 +1,7 @@
-export interface Address {
+export interface IAddress {
   building: string;
   street: string;
   town: string;
   county?: string;
-  postCode: string;
+  postcode: string;
 }

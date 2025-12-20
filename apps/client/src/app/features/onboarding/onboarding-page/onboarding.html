@@ -1,28 +1,40 @@
-<div
-  class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center"
->
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row align-items-center">
   <c-container>
     <c-row class="justify-content-center">
       <c-col lg="10" md="12" xl="9">
         <c-card class="mx-4">
           <c-card-body class="p-4">
             <nav class="stepper-header">
-              @for (step of steps; track step.step ) {
-                <div
-                    [class.active]="currentStep$$() === step.step"
-                    [class.completed]="currentStep$$() > step.step"
-                    [class.disabled]="(canAccess(step.step) | async) === false">
+              @for (step of steps; track step.number) {
+              <a class="step-item" [routerLink]="step.path? ['/onboarding', step.path] : ['/onboarding']"
+                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                [class.disabled]="(canAccess(step.number) | async) === false"
+                [class.completed]="currentStep$$() > step.number">
 
-                  {{ step.title }}
-                  {{ step.desc }}
+                <div class="step-badge">
+                  <span>{{ step.number }}</span>
                 </div>
+
+                <span class="step-label">{{ step.label }}</span>
+              </a>
               }
             </nav>
-
             <main class="step-container">
-              <router-outlet></router-outlet>
+              <router-outlet />
+              <div class="step-controls">
+                @if(currentStep$$() > 1) {
+                <button class=" btn btn-secondary" [disabled]="currentStep$$() === 1" (click)="goBack()">
+                  Back
+                </button>
+                }
+                @if((canAccess(currentStep$$()) | async) === false && !isLoading$$()) {
+                <button class="btn btn-primary" [disabled]="(canAccess(currentStep$$() + 1) | async) === false"
+                  (click)="nextStep()">
+                  Next
+                </button>
+                }
+              </div>
             </main>
-
           </c-card-body>
         </c-card>
       </c-col>

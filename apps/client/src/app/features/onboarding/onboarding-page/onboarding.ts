@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   CardBodyComponent,
   CardComponent,
@@ -10,12 +10,13 @@ import {
 } from '@coreui/angular';
 import { Observable } from 'rxjs';
 import { OnboardingFacade } from '../+state/onboarding.facade';
+import { OnboardingRoutes } from '../onboarding.routes';
 
 @Component({
   selector: 'app-onboarding',
   imports: [
     CommonModule,
-    RouterOutlet,
+    RouterModule,
     ContainerComponent,
     RowComponent,
     ColComponent,
@@ -28,27 +29,41 @@ import { OnboardingFacade } from '../+state/onboarding.facade';
 })
 export class Onboarding {
   currentStep$$ = this.onboardingFacade.currentStep$$;
+  isLoading$$ = this.onboardingFacade.isLoading$$;
   steps = [
     {
-      step: 1,
-      title: 'Business Detail',
-      desc: 'Enter business details and other information',
+      number: 1,
+      label: 'Business Detail',
+      path: OnboardingRoutes.AccountDetails,
     },
     {
-      step: 2,
-      title: 'Billing Detail',
+      number: 2,
+      label: 'Billing Detail',
       desc: 'Enter billing details and other information',
+      path: OnboardingRoutes.BillingInformation,
     },
     {
-      step: 3,
-      title: 'Account Admin Setup',
-      desc: 'Enter account admin details and other information',
+      number: 3,
+      label: 'Account Admin Setup',
+      path: OnboardingRoutes.AdminUser,
     },
   ];
 
-  constructor(private onboardingFacade: OnboardingFacade) {}
+  constructor(private onboardingFacade: OnboardingFacade) { }
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);
+  }
+
+  goBack(): void {
+    if (this.currentStep$$() > 1) {
+      this.onboardingFacade.setCurrentStep(this.currentStep$$() - 1);
+    }
+  }
+
+  nextStep(): void {
+    if (this.currentStep$$() < 3) {
+      this.onboardingFacade.setCurrentStep(this.currentStep$$() + 1);
+    }
   }
 }

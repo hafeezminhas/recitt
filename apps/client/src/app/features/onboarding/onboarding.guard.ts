@@ -1,11 +1,13 @@
+import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { Injectable } from '@nestjs/common';
 import { Observable, take, tap } from 'rxjs';
 import { OnboardingFacade } from './+state/onboarding.facade';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class OnboardingGuard implements CanActivate {
-  constructor(private facade: OnboardingFacade, private router: Router) {}
+  constructor(private facade: OnboardingFacade, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const targetStep = route.data['stepNumber'];

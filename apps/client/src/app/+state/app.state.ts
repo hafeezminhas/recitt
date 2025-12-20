@@ -12,7 +12,16 @@ export const initialState: AppState = {
 
 export const appReducer = createReducer(
   initialState,
-  on(AppActions.startLoading, (state) => ({ ...state, loading: true })),
-  on(AppActions.stopLoading, (state) => ({ ...state, loading: false })),
-  on(AppActions.setError, (state, { error }) => ({ ...state, error }))
+  on(AppActions.startLoading, (state, _) => ({
+    ...state,
+    loading: true,
+  })),
+  on(AppActions.stopLoading, (state, _) => ({
+    ...state,
+    loading: false,
+  })),
+  on(AppActions.setError, (state, { error }) => ({
+    ...state,
+    error
+  })),
 );

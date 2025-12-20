@@ -8,7 +8,7 @@ import {
  */
 export const sampleAccountAdminUserDetails: AccountAdminUserResponseDto = {
   title: 'Mr',
-  prefferedPronoun: 'He',
+  preferredPronoun: 'He',
   firstName: 'John',
   lastName: 'Doe',
   middleName: 'Michael',
@@ -21,7 +21,7 @@ export const sampleAccountAdminUserDetails: AccountAdminUserResponseDto = {
     street: 'Main Street',
     town: 'London',
     county: 'Greater London',
-    postCode: 'SW1A 1AA',
+    postcode: 'SW1A 1AA',
   },
   password: 'securePassword123',
   avatar: Buffer.from('sample avatar data'),

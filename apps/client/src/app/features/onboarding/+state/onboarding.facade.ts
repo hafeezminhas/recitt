@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { Store } from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Action, Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
+import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
-import { OnboardingState } from './onboarding.state';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class OnboardingFacade {
-  constructor(private store: Store<OnboardingState>) {}
+  constructor(private store: Store) { }
 
   // Selectors
   account$ = this.store.select(fromOnboardingSelectors.getAccount);
@@ -15,27 +17,36 @@ export class OnboardingFacade {
   currentStep$$ = this.store.selectSignal(
     fromOnboardingSelectors.getCurrentStep
   );
+  isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
 
   // Business Logic for Navigation
   canAccessStep(step: number): Observable<boolean> {
     return this.account$.pipe(
       map((account) => {
-        // if (this.currentStep$$() === 1) return account === null;
-        // if (this.currentStep$$() === 2) return account !== null;
-        // if (this.currentStep$$() === 3)
-        //   return account !== null && account.billingInformation !== null;
-        // // if (this.currentStep$$() === 4)
-        // //   return account !== null && account.accountAdmin !== null; // Success page
-        // console.log('getting here');
+        if (this.currentStep$$() === 1) return account === null;
+        if (this.currentStep$$() === 2) return account !== null;
+        if (this.currentStep$$() === 3)
+          return account !== null && account.billingInformation !== null;
+        // if (this.currentStep$$() === 4)
+        //   return account !== null && account.accountAdmin !== null; // Success page
+        console.log('getting here');
 
-        // return false;
-
-        return true;
+        return false;
       })
     );
   }
 
   isReadOnly(step: number): Observable<boolean> {
     return this.currentStep$.pipe(map((current) => current > step));
+  }
+
+  setCurrentStep(step: number): void {
+    this.dispatch(
+      OnboardingActions.setCurrentStep({ step: step as 1 | 2 | 3 })
+    );
+  }
+
+  private dispatch(action: Action): void {
+    this.store.dispatch(action);
   }
 }

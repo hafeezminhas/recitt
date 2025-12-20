@@ -47,12 +47,7 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
         component: Completion,
         // canActivate: [OnboardingGuard],
         data: { stepNumber: 4 },
-      },
-      {
-        path: '',
-        redirectTo: OnboardingRoutes.AccountDetails,
-        pathMatch: 'full',
-      },
+      }
     ],
   },
 ];

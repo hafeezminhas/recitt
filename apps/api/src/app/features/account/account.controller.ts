@@ -16,14 +16,14 @@ import {
   AddAccountAdminUserDto,
   AddBillingInfoDto,
   CreateAccountDto,
-  OnboardingStatusPayload,
-} from '@recitt/types';
+  OnboardingStatusPayloadDto,
+} from '@dto/account.dto';
 import { AccountService } from './account.service';
 import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
 
 @Controller('accounts')
 export class AccountController {
-  constructor(private readonly accountService: AccountService) {}
+  constructor(private readonly accountService: AccountService) { }
 
   @UseGuards(UniqueAccountGuard)
   @Post()
@@ -64,7 +64,7 @@ export class AccountController {
   }
 
   @Post('onboarding-status')
-  getOnboardingStatus(@Body() payload: OnboardingStatusPayload) {
+  getOnboardingStatus(@Body() payload: OnboardingStatusPayloadDto) {
     return this.accountService.getOnboardingStatus(payload);
   }
 }

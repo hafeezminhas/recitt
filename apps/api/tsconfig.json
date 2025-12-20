@@ -21,6 +21,7 @@
       // --------------- App paths ---------------
       "@common/*": ["src/app/common/*"],
       "@database/*": ["src/app/database/*"],
+      "@dto/*": ["src/app/dto/*"],
       "@shared/*": ["src/app/shared/*"],
       "@types/*": ["src/app/types/*"],
       // --------------- Feature-based paths ---------------
