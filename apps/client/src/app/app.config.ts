@@ -12,7 +12,6 @@ import { IconSetService } from '@coreui/icons-angular';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { appReducer } from './+state/app.state';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -20,14 +19,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
 
     // NGRX Setup
-    provideStore({ app: appReducer }),
+    provideStore(),
     provideEffects(),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
       autoPause: true,
       trace: false,
-      traceLimit: 75
+      traceLimit: 75,
     }),
 
     // Router setup

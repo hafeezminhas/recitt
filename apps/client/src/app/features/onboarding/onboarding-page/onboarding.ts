@@ -39,7 +39,6 @@ export class Onboarding {
     {
       number: 2,
       label: 'Billing Detail',
-      desc: 'Enter billing details and other information',
       path: OnboardingRoutes.BillingInformation,
     },
     {
@@ -49,7 +48,7 @@ export class Onboarding {
     },
   ];
 
-  constructor(private onboardingFacade: OnboardingFacade) { }
+  constructor(private onboardingFacade: OnboardingFacade) {}
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);

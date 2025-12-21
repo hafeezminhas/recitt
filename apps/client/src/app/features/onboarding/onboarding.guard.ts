@@ -7,7 +7,7 @@ import { OnboardingFacade } from './+state/onboarding.facade';
   providedIn: 'root',
 })
 export class OnboardingGuard implements CanActivate {
-  constructor(private facade: OnboardingFacade, private router: Router) { }
+  constructor(private facade: OnboardingFacade, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const targetStep = route.data['stepNumber'];

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Onboarding } from './onboarding-page/onboarding';
+import { OnboardingGuard } from './onboarding.guard';
 import { AccountDetails } from './steps/account-details/account-details';
 import { AdminSetup } from './steps/admin-setup/admin-setup';
 import { BillingInfo } from './steps/billing-info/billing-info';
@@ -27,27 +28,27 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
       {
         path: OnboardingRoutes.AccountDetails,
         component: AccountDetails,
-        // canActivate: [OnboardingGuard],
+        canActivate: [OnboardingGuard],
         data: { stepNumber: 1, nextStep: OnboardingRoutes.BillingInformation },
       },
       {
         path: OnboardingRoutes.BillingInformation,
         component: BillingInfo,
-        // canActivate: [OnboardingGuard],
+        canActivate: [OnboardingGuard],
         data: { stepNumber: 2, nextStep: OnboardingRoutes.AdminUser },
       },
       {
         path: OnboardingRoutes.AdminUser,
         component: AdminSetup,
-        // canActivate: [OnboardingGuard],
+        canActivate: [OnboardingGuard],
         data: { stepNumber: 3, nextStep: OnboardingRoutes.Completion },
       },
       {
         path: OnboardingRoutes.Completion,
         component: Completion,
-        // canActivate: [OnboardingGuard],
+        canActivate: [OnboardingGuard],
         data: { stepNumber: 4 },
-      }
+      },
     ],
   },
 ];

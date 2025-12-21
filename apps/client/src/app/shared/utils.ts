@@ -1,13 +1,7 @@
-import {
-  FormArray,
-  FormControl,
-  FormGroup
-} from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { TypedFormGroup } from './types/to-form-types';
 
-export function createTypedFormGroup<T>(
-  value: T
-): TypedFormGroup<T> {
+export function createTypedFormGroup<T>(value: T): TypedFormGroup<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controls: Record<string, any> = {};
 
@@ -16,17 +10,15 @@ export function createTypedFormGroup<T>(
 
     if (Array.isArray(v)) {
       controls[key] = new FormArray(
-        v.map(item =>
+        v.map((item) =>
           typeof item === 'object'
             ? createTypedFormGroup(item)
             : new FormControl(item)
         )
       );
-    }
-    else if (v !== null && typeof v === 'object') {
+    } else if (v !== null && typeof v === 'object') {
       controls[key] = createTypedFormGroup(v);
-    }
-    else {
+    } else {
       controls[key] = new FormControl(v);
     }
   }

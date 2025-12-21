@@ -5,10 +5,10 @@ import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OnboardingFacade {
-  constructor(private store: Store) { }
+  constructor(private store: Store) {}
 
   // Selectors
   account$ = this.store.select(fromOnboardingSelectors.getAccount);
@@ -23,9 +23,9 @@ export class OnboardingFacade {
   canAccessStep(step: number): Observable<boolean> {
     return this.account$.pipe(
       map((account) => {
-        if (this.currentStep$$() === 1) return account === null;
-        if (this.currentStep$$() === 2) return account !== null;
-        if (this.currentStep$$() === 3)
+        // if (this.currentStep$$() === 1) return account === null;
+        if (step === 2) return account !== null;
+        if (step === 3)
           return account !== null && account.billingInformation !== null;
         // if (this.currentStep$$() === 4)
         //   return account !== null && account.accountAdmin !== null; // Success page
