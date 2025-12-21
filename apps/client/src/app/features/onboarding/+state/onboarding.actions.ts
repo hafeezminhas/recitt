@@ -1,6 +1,12 @@
 // actions for various onboarding steps
 import { createAction, props } from '@ngrx/store';
-import { IAccountAdminUserResponse, IAccountResponse, IAddAccountAdminUserRequest, IAddBillingInfoRequest, ICreateAccountRequest } from '@recitt/types';
+import {
+  IAccountAdminUserResponse,
+  IAccountResponse,
+  IAddAccountAdminUserRequest,
+  IAddBillingInfoRequest,
+  ICreateAccountRequest,
+} from '@recitt/types';
 
 export const setCurrentStep = createAction(
   '[Onboarding] Set Current Step',
@@ -25,7 +31,7 @@ export const loadAccountFailure = createAction(
 // Onboarding account creation actions
 export const addAccount = createAction(
   '[Onboarding] Add Account',
-  props<{ accountData: ICreateAccountRequest }>()
+  props<{ payload: ICreateAccountRequest }>()
 );
 export const addAccountSuccess = createAction(
   '[Onboarding] Add Account Success',
@@ -64,9 +70,7 @@ export const setupAdminUserFailure = createAction(
   props<{ error: string }>()
 );
 
-
 // Onboarding completion action
 export const completeOnboarding = createAction(
   '[Onboarding] Complete Onboarding'
 );
-

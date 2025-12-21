@@ -1,6 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ColComponent, FormControlDirective, FormDirective, FormFeedbackComponent, FormLabelDirective, FormSelectDirective, RowComponent } from "@coreui/angular";
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import {
+  ColComponent,
+  FormControlDirective,
+  FormDirective,
+  FormFeedbackComponent,
+  FormLabelDirective,
+  FormSelectDirective,
+  RowComponent,
+} from '@coreui/angular';
 import { BusinessAccountType, ICreateAccountRequest } from '@recitt/types';
 import { ValidatorModel } from '@shared/types/to-form-types';
 import { createTypedFormGroup } from '@shared/utils';
@@ -17,17 +30,22 @@ import { OnboardingFacade } from '../../+state/onboarding.facade';
     FormControlDirective,
     FormFeedbackComponent,
     FormSelectDirective,
-    RowComponent
+    RowComponent,
   ],
   templateUrl: './account-details.html',
   styleUrl: './account-details.scss',
 })
 export class AccountDetails implements OnInit {
   // convert BusinessAccountType enum to array for select options
-  readonly businessAccountTypes = Object.values(BusinessAccountType).map((type) => ({
-    label: type.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()),
-    value: type,
-  }));
+  readonly businessAccountTypes = Object.values(BusinessAccountType).map(
+    (type) => ({
+      label: type
+        .replace(/_/g, ' ')
+        .toLowerCase()
+        .replace(/\b\w/g, (c) => c.toUpperCase()),
+      value: type,
+    })
+  );
 
   accountFormValidationSchema: ValidatorModel<ICreateAccountRequest> = {
     name: [Validators.required],
@@ -47,27 +65,30 @@ export class AccountDetails implements OnInit {
     isVatRegistered: [],
     vatNumber: [],
   };
-  accountForm = createTypedFormGroup<ICreateAccountRequest>({
-    name: '',
-    registrationNumber: '',
-    registrationType: BusinessAccountType.LIMITED_COMPANY,
-    registrationDate: '',
-    address: {
-      building: '',
-      street: '',
-      town: '',
-      county: '',
-      postcode: '',
+  accountForm = createTypedFormGroup<ICreateAccountRequest>(
+    {
+      name: '',
+      registrationNumber: '',
+      registrationType: BusinessAccountType.LIMITED_COMPANY,
+      registrationDate: '',
+      address: {
+        building: '',
+        street: '',
+        town: '',
+        county: '',
+        postcode: '',
+      },
+      email: '',
+      phone: '',
+      alternatePhone: '',
+      isVatRegistered: false,
+      vatNumber: '',
     },
-    email: '',
-    phone: '',
-    alternatePhone: '',
-    isVatRegistered: false,
-    vatNumber: '',
-  }, this.accountFormValidationSchema);
+    this.accountFormValidationSchema
+  );
   submitted = false;
 
-  constructor(private onboardingFacade: OnboardingFacade) { }
+  constructor(private onboardingFacade: OnboardingFacade) {}
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.accountForm.controls;
@@ -88,8 +109,8 @@ export class AccountDetails implements OnInit {
   private submitForm(): void {
     this.submitted = true;
     if (this.accountForm.valid) {
-      const accountDetails: ICreateAccountRequest = this.accountForm.value as ICreateAccountRequest;
-      console.log('Account Details Submitted:', accountDetails);
+      const accountDetails = this.accountForm.value as ICreateAccountRequest;
+      this.onboardingFacade.addAccount(accountDetails);
       this.onboardingFacade.setCurrentStep(2); // Move to the next step
     } else {
       console.log('Form is invalid');

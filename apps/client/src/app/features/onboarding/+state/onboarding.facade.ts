@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
+import { ICreateAccountRequest } from '@recitt/types';
 import { map, Observable, Subject } from 'rxjs';
 import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
@@ -20,7 +21,7 @@ export class OnboardingFacade {
   );
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
 
-  constructor(private store: Store) { }
+  constructor(private store: Store) {}
 
   // Business Logic for Navigation
   canAccessStep(step: number): Observable<boolean> {
@@ -51,6 +52,10 @@ export class OnboardingFacade {
 
   nextStep(): void {
     this.nextStepTrigger$.next();
+  }
+
+  addAccount(payload: ICreateAccountRequest): void {
+    this.dispatch(OnboardingActions.addAccount({ payload }));
   }
 
   private dispatch(action: Action): void {
