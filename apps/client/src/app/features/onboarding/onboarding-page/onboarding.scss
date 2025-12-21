@@ -95,3 +95,15 @@ $border-radius: 8px;
     }
   }
 }
+
+.step-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+}

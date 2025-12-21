@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
 
@@ -8,7 +8,8 @@ import * as fromOnboardingSelectors from './onboarding.selectors';
   providedIn: 'root',
 })
 export class OnboardingFacade {
-  constructor(private store: Store) {}
+  private nextStepTrigger$ = new Subject<void>();
+  nextStepCommand$ = this.nextStepTrigger$.asObservable();
 
   // Selectors
   account$ = this.store.select(fromOnboardingSelectors.getAccount);
@@ -19,18 +20,20 @@ export class OnboardingFacade {
   );
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
 
+  constructor(private store: Store) { }
+
   // Business Logic for Navigation
   canAccessStep(step: number): Observable<boolean> {
     return this.account$.pipe(
       map((account) => {
-        // if (this.currentStep$$() === 1) return account === null;
-        if (step === 2) return account !== null;
-        if (step === 3)
-          return account !== null && account.billingInformation !== null;
-        // if (this.currentStep$$() === 4)
-        //   return account !== null && account.accountAdmin !== null; // Success page
-        console.log('getting here');
-
+        switch (step) {
+          case 2:
+            return account !== null;
+          case 3:
+            return account !== null && account.billingInformation !== null;
+          default:
+            return false;
+        }
         return false;
       })
     );
@@ -44,6 +47,10 @@ export class OnboardingFacade {
     this.dispatch(
       OnboardingActions.setCurrentStep({ step: step as 1 | 2 | 3 })
     );
+  }
+
+  nextStep(): void {
+    this.nextStepTrigger$.next();
   }
 
   private dispatch(action: Action): void {

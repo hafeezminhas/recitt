@@ -8,6 +8,8 @@ import {
   ContainerComponent,
   RowComponent,
 } from '@coreui/angular';
+import { freeSet } from '@coreui/icons';
+import { IconDirective } from '@coreui/icons-angular';
 import { Observable } from 'rxjs';
 import { OnboardingFacade } from '../+state/onboarding.facade';
 import { OnboardingRoutes } from '../onboarding.routes';
@@ -22,12 +24,14 @@ import { OnboardingRoutes } from '../onboarding.routes';
     ColComponent,
     CardComponent,
     CardBodyComponent,
+    IconDirective
   ],
   templateUrl: './onboarding.html',
   styleUrl: './onboarding.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Onboarding {
+  readonly icons = freeSet;
   currentStep$$ = this.onboardingFacade.currentStep$$;
   isLoading$$ = this.onboardingFacade.isLoading$$;
   steps = [
@@ -48,7 +52,7 @@ export class Onboarding {
     },
   ];
 
-  constructor(private onboardingFacade: OnboardingFacade) {}
+  constructor(private onboardingFacade: OnboardingFacade) { }
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);
@@ -62,7 +66,7 @@ export class Onboarding {
 
   nextStep(): void {
     if (this.currentStep$$() < 3) {
-      this.onboardingFacade.setCurrentStep(this.currentStep$$() + 1);
+      this.onboardingFacade.nextStep();
     }
   }
 }

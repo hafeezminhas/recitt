@@ -21,20 +21,18 @@
             </nav>
             <main class="step-container">
               <router-outlet />
-              <div class="step-controls">
-                @if(currentStep$$() > 1) {
-                <button class=" btn btn-secondary" [disabled]="currentStep$$() === 1" (click)="goBack()">
-                  Back
-                </button>
-                }
-                @if((canAccess(currentStep$$()) | async) === false && !isLoading$$()) {
-                <button class="btn btn-primary" [disabled]="(canAccess(currentStep$$() + 1) | async) === false"
-                  (click)="nextStep()">
-                  Next
-                </button>
-                }
-              </div>
             </main>
+            <hr class="mx-4" />
+            <div class="step-controls mx-4 mt-4 text-end d-flex justify-content-between">
+              <button class=" btn btn-secondary" size="lg" [disabled]="currentStep$$() === 1" (click)="goBack()">
+                <svg [cIcon]="icons.cilChevronCircleLeftAlt" size="lg" title="Shield Icon"></svg> Back
+              </button>
+              @if((canAccess(currentStep$$()) | async) === false) {
+              <button class="btn btn-primary" size="lg" (click)="nextStep()">
+                <svg [cIcon]="icons.cilChevronCircleRightAlt" size="lg" title="Shield Icon"></svg> Next
+              </button>
+              }
+            </div>
           </c-card-body>
         </c-card>
       </c-col>

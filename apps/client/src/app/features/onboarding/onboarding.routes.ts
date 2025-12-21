@@ -28,7 +28,6 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
       {
         path: OnboardingRoutes.AccountDetails,
         component: AccountDetails,
-        canActivate: [OnboardingGuard],
         data: { stepNumber: 1, nextStep: OnboardingRoutes.BillingInformation },
       },
       {
