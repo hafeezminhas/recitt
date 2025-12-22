@@ -6,7 +6,9 @@ import {
   CardComponent,
   ColComponent,
   ContainerComponent,
-  RowComponent,
+  ProgressBarComponent,
+  ProgressModule,
+  RowComponent
 } from '@coreui/angular';
 import { freeSet } from '@coreui/icons';
 import { IconDirective } from '@coreui/icons-angular';
@@ -24,7 +26,9 @@ import { OnboardingRoutes } from '../onboarding.routes';
     ColComponent,
     CardComponent,
     CardBodyComponent,
-    IconDirective
+    IconDirective,
+    ProgressModule,
+    ProgressBarComponent
   ],
   templateUrl: './onboarding.html',
   styleUrl: './onboarding.scss',

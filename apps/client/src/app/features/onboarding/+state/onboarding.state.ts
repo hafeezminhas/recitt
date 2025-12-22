@@ -54,6 +54,8 @@ export const onboardingReducer = createReducer(
   })),
   on(OnboardingActions.addAccountSuccess, (state, { account }) => ({
     ...state,
+    currentStep: 2,
+    loading: false,
     account,
   })),
   on(OnboardingActions.addAccountFailure, (state, { error }) => ({

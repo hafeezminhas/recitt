@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { IAccountResponse } from '@recitt/types';
-import { catchError, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { OnboardingRoutes } from '../onboarding.routes';
 import { OnboardingService } from '../onboarding.service';
 import * as OnboardingActions from './onboarding.actions';
 
 @Injectable()
 export class OnboardingEffects {
   constructor(
+    private router: Router,
     private actions$: Actions,
-    private onboardingService: OnboardingService
-  ) {}
+    private onboardingService: OnboardingService,
+  ) { }
 
   loadAccount$ = createEffect(() =>
     this.actions$.pipe(
@@ -42,9 +45,10 @@ export class OnboardingEffects {
     )
   );
 
-  //   addAccountSuccess$ = createEffect(() =>
-  //     this.actions$.pipe(ofType(OnboardingActions.addAccountSuccess),
-  //   switchMap(() => of(OnboardingActions))
-  // )
-  //   );
+  addAccountSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OnboardingActions.addAccountSuccess),
+      tap(() => this.router.navigate([`/onboarding/${OnboardingRoutes.BillingInformation}`]))
+    )
+  );
 }

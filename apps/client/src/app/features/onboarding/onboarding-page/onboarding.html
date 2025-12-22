@@ -3,6 +3,9 @@
     <c-row class="justify-content-center">
       <c-col lg="10" md="12" xl="9">
         <c-card class="mx-4">
+          <c-progress class="progress-sliding" [thin]="true">
+            <c-progress-bar color="primary" [value]="100"></c-progress-bar>
+          </c-progress>
           <c-card-body class="p-4">
             <nav class="stepper-header">
               @for (step of steps; track step.number) {

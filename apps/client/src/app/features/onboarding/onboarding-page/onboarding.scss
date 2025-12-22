@@ -107,3 +107,41 @@ $border-radius: 8px;
     gap: 0.3rem;
   }
 }
+
+.progress-sliding {
+  position: relative;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.1); // The "track" color
+
+  .progress-bar {
+    // 1. Reset default Bootstrap/CoreUI styles
+    width: 100% !important;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    transition: none;
+
+    // 2. Apply the animation
+    transform-origin: 0% center;
+    animation: indeterminate-slide 1s infinite linear;
+  }
+}
+
+@keyframes indeterminate-slide {
+  0% {
+    transform: translateX(-100%) scaleX(0.2);
+  }
+  20% {
+    transform: translateX(-40%) scaleX(0.5);
+  }
+  50% {
+    transform: translateX(20%) scaleX(0.8);
+  }
+  80% {
+    transform: translateX(100%) scaleX(0.5);
+  }
+  100% {
+    transform: translateX(120%) scaleX(0.2);
+  }
+}
