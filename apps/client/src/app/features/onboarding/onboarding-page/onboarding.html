@@ -3,9 +3,11 @@
     <c-row class="justify-content-center">
       <c-col lg="10" md="12" xl="9">
         <c-card class="mx-4">
+          @if(isLoading$$()){
           <c-progress class="progress-sliding" [thin]="true">
             <c-progress-bar color="primary" [value]="100"></c-progress-bar>
           </c-progress>
+          }
           <c-card-body class="p-4">
             <nav class="stepper-header">
               @for (step of steps; track step.number) {
@@ -30,7 +32,7 @@
               <button class=" btn btn-secondary" size="lg" [disabled]="currentStep$$() === 1" (click)="goBack()">
                 <svg [cIcon]="icons.cilChevronCircleLeftAlt" size="lg" title="Shield Icon"></svg> Back
               </button>
-              @if((canAccess(currentStep$$()) | async) === false) {
+              @if((canAccess(currentStep$$() + 1 ) | async) === false) {
               <button class="btn btn-primary" size="lg" (click)="nextStep()">
                 <svg [cIcon]="icons.cilChevronCircleRightAlt" size="lg" title="Shield Icon"></svg> Next
               </button>

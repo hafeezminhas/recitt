@@ -1,7 +1,6 @@
 import { AccountStatus, BusinessAccountType } from '../enums/account.enum';
 import { IAddress } from './common';
 
-
 export interface IUKBankAccount {
   accountHolderName: string;
   accountNumber: string;
@@ -49,7 +48,7 @@ export interface IAccountResponse {
   name: string;
   registrationNumber: string;
   registrationType?: BusinessAccountType;
-  registrationDate?: string;
+  registrationDate?: Date;
   address: IAddress;
   email: string;
   phone: string;
@@ -58,12 +57,12 @@ export interface IAccountResponse {
   accountAdmin?: IAccountAdminUserResponse;
   isVatRegistered?: boolean;
   vatNumber?: string;
-  vatRegistrationDate?: string;
+  vatRegistrationDate?: Date;
   status: AccountStatus;
-  statusUpdatedAt?: string;
+  statusUpdatedAt?: Date;
   suspensionReason?: string;
   isActive: boolean;
-  deactivatedAt?: string;
+  deactivatedAt?: Date;
   deactivationReason?: string;
   createdAt: Date;
   updatedAt: Date;
@@ -94,7 +93,7 @@ export interface IAddBillingInfoRequest {
   preferredPaymentMethod: string;
   invoicingFrequency: string;
   paymentTermsDays: number;
-  emailInvoices: boolean;
+  emailInvoice: boolean;
   invoicingEmail?: string;
   autoPaymentEnabled: boolean;
 }
@@ -132,7 +131,7 @@ export interface IAccountAdminUserResponse {
 /**
  * UK Business Address
  */
-export interface UKBusinessAddress {
+export interface IUKBusinessAddress {
   addressLine1: string;
   addressLine2?: string;
   city: string;
@@ -144,15 +143,15 @@ export interface UKBusinessAddress {
 /**
  * UK Company Registration Details
  */
-export interface UKCompanyRegistration {
+export interface IUKCompanyRegistration {
   companyName: string;
   companyNumber?: string; // Companies House registration number
   registrationType:
-  | 'sole_trader'
-  | 'partnership'
-  | 'limited_company'
-  | 'llp'
-  | 'charity';
+    | 'sole_trader'
+    | 'partnership'
+    | 'limited_company'
+    | 'llp'
+    | 'charity';
   registrationDate?: Date;
   vatNumber?: string; // UK VAT number (starts with GB)
 }
@@ -160,7 +159,7 @@ export interface UKCompanyRegistration {
 /**
  * Bank Account Details (for payments)
  */
-export interface UKBankAccount {
+export interface IUKBankAccount {
   accountHolderName: string;
   accountNumber: string; // 8 digits
   sortCode: string; // Format: XX-XX-XX
@@ -171,7 +170,7 @@ export interface UKBankAccount {
 /**
  * Billing Address for invoices
  */
-export interface BillingAddress {
+export interface IBillingAddress {
   companyName: string;
   addressLine1: string;
   addressLine2?: string;
@@ -187,7 +186,7 @@ export interface BillingAddress {
 /**
  * Payload for Onboarding Status Request
  */
-export interface OnboardingStatusPayload {
+export interface IOnboardingStatusPayload {
   token: string;
   accountId: string;
   expires: string;

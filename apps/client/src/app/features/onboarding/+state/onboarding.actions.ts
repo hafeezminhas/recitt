@@ -1,6 +1,7 @@
 // actions for various onboarding steps
 import { createAction, props } from '@ngrx/store';
 import {
+  ApiError,
   IAccountAdminUserResponse,
   IAccountResponse,
   IAddAccountAdminUserRequest,
@@ -25,7 +26,7 @@ export const loadAccountSuccess = createAction(
 );
 export const loadAccountFailure = createAction(
   '[Onboarding] Load Account Failure',
-  props<{ error: string }>()
+  props<{ error: ApiError }>()
 );
 
 // Onboarding account creation actions
@@ -39,13 +40,13 @@ export const addAccountSuccess = createAction(
 );
 export const addAccountFailure = createAction(
   '[Onboarding] Add Account Failure',
-  props<{ error: string }>()
+  props<{ error: ApiError }>()
 );
 
 // Onboarding billing info actions
 export const addBillingInfo = createAction(
   '[Onboarding] Add Billing Info',
-  props<{ billingInfo: IAddBillingInfoRequest }>()
+  props<{ payload: IAddBillingInfoRequest }>()
 );
 export const addBillingInfoSuccess = createAction(
   '[Onboarding] Add Billing Info Success',
@@ -53,7 +54,7 @@ export const addBillingInfoSuccess = createAction(
 );
 export const addBillingInfoFailure = createAction(
   '[Onboarding] Add Billing Info Failure',
-  props<{ error: string }>()
+  props<{ error: ApiError }>()
 );
 
 // Onboarding admin setup actions

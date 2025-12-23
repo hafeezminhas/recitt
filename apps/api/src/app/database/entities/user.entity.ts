@@ -1,4 +1,4 @@
-import { Address, PersonPronoun, PersonTitle, UserRole } from '@recitt/types';
+import { IAddress, PersonPronoun, PersonTitle, UserRole } from '@recitt/types';
 import * as bcrypt from 'bcrypt';
 import {
   AfterLoad,
@@ -68,7 +68,7 @@ export class User extends BaseEntity {
   phone?: string;
 
   @Column({ type: 'jsonb' })
-  address?: Address;
+  address?: IAddress;
 
   @Column({ select: false })
   password: string;

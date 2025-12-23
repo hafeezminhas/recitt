@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { ApiError } from '@recitt/types';
 import { TypedFormGroup, ValidatorModel } from './types/to-form-types';
 
 export function createTypedFormGroup<T>(
@@ -32,6 +34,26 @@ export function createTypedFormGroup<T>(
   return new FormGroup(group) as TypedFormGroup<T>;
 }
 
+export function normalizeError(err: HttpErrorResponse): ApiError {
+  if (isApiError(err.error)) {
+    return err.error;
+  }
+
+  return {
+    statusCode: err.status,
+    error: 'Unknown Error',
+    message: 'An unexpected error occurred',
+  };
+}
+
+export function isApiError(error: unknown): error is ApiError {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'statusCode' in error &&
+    'message' in error
+  );
+}
 // export function createNNFormGroup<T>(
 //   fb: NonNullableFormBuilder,
 //   value: T

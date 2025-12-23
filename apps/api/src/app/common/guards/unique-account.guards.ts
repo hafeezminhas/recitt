@@ -1,3 +1,4 @@
+import { CreateAccountDto } from '@dto/account.dto';
 import { AccountService } from '@features/account/account.service';
 import {
   BadRequestException,
@@ -5,7 +6,6 @@ import {
   ExecutionContext,
   Injectable,
 } from '@nestjs/common';
-import { CreateAccountDto } from '@recitt/types';
 
 @Injectable()
 export class UniqueAccountGuard implements CanActivate {

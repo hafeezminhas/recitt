@@ -13,10 +13,10 @@ import {
   IAccountResponse,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
-  OnboardingStatusPayload,
+  IOnboardingStatusPayload,
   PaymentMethod,
   PersonPronoun,
-  PersonTitle
+  PersonTitle,
 } from '@recitt/types';
 import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
@@ -227,7 +227,7 @@ export class AddBillingInfoDto implements IAddBillingInfoRequest {
 
   @ApiProperty({ example: true })
   @IsBoolean()
-  emailInvoices: boolean;
+  emailInvoice: boolean;
 
   @ApiPropertyOptional({ example: 'abc@a.com' })
   @IsOptional()
@@ -464,7 +464,7 @@ export class UpdateAccountDto {
   termsAndConditionsAccepted?: boolean;
 }
 
-export class OnboardingStatusPayloadDto implements OnboardingStatusPayload {
+export class OnboardingStatusPayloadDto implements IOnboardingStatusPayload {
   @ApiProperty({ example: 'token123' })
   @IsString()
   @IsNotEmpty()
@@ -650,7 +650,7 @@ export class AccountResponseDto implements IAccountResponse {
   registrationType?: BusinessAccountType;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
-  registrationDate?: string;
+  registrationDate?: Date;
 
   @ApiProperty({ type: AddressDto })
   address: AddressDto;
@@ -683,7 +683,7 @@ export class AccountResponseDto implements IAccountResponse {
   vatNumber?: string;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
-  vatRegistrationDate?: string;
+  vatRegistrationDate?: Date;
 
   @ApiProperty({
     enum: AccountStatus,
@@ -692,7 +692,7 @@ export class AccountResponseDto implements IAccountResponse {
   status: AccountStatus;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
-  statusUpdatedAt?: string;
+  statusUpdatedAt?: Date;
 
   @ApiPropertyOptional({ example: 'Fraud detected' })
   suspensionReason?: string;
@@ -701,7 +701,7 @@ export class AccountResponseDto implements IAccountResponse {
   isActive: boolean;
 
   @ApiPropertyOptional({ example: '2020-01-15' })
-  deactivatedAt?: string;
+  deactivatedAt?: Date;
 
   @ApiPropertyOptional({ example: 'Closed by admin' })
   deactivationReason?: string;

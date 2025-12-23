@@ -23,7 +23,7 @@ import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
 
 @Controller('accounts')
 export class AccountController {
-  constructor(private readonly accountService: AccountService) { }
+  constructor(private readonly accountService: AccountService) {}
 
   @UseGuards(UniqueAccountGuard)
   @Post()

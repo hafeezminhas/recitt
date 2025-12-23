@@ -1,7 +1,9 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { IAccountResponse } from '@recitt/types';
+import { normalizeError } from '@shared/utils';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { OnboardingRoutes } from '../onboarding.routes';
 import { OnboardingService } from '../onboarding.service';
@@ -12,8 +14,8 @@ export class OnboardingEffects {
   constructor(
     private router: Router,
     private actions$: Actions,
-    private onboardingService: OnboardingService,
-  ) { }
+    private onboardingService: OnboardingService
+  ) {}
 
   loadAccount$ = createEffect(() =>
     this.actions$.pipe(
@@ -37,18 +39,28 @@ export class OnboardingEffects {
       switchMap(({ payload }) =>
         this.onboardingService.addAccount(payload).pipe(
           map((account) => OnboardingActions.addAccountSuccess({ account })),
-          catchError((error) =>
-            of(OnboardingActions.loadAccountFailure({ error }))
+          catchError((error: HttpErrorResponse) =>
+            of(
+              OnboardingActions.addAccountFailure({
+                error: normalizeError(error),
+              })
+            )
           )
         )
       )
     )
   );
 
-  addAccountSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(OnboardingActions.addAccountSuccess),
-      tap(() => this.router.navigate([`/onboarding/${OnboardingRoutes.BillingInformation}`]))
-    )
+  addAccountSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(OnboardingActions.addAccountSuccess),
+        tap(() =>
+          this.router.navigate([
+            `/onboarding/${OnboardingRoutes.BillingInformation}`,
+          ])
+        )
+      ),
+    { dispatch: false }
   );
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { ICreateAccountRequest } from '@recitt/types';
+import { IAddBillingInfoRequest, ICreateAccountRequest } from '@recitt/types';
 import { map, Observable, Subject } from 'rxjs';
 import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
@@ -20,6 +20,7 @@ export class OnboardingFacade {
     fromOnboardingSelectors.getCurrentStep
   );
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
+  error$$ = this.store.selectSignal(fromOnboardingSelectors.selectError);
 
   constructor(private store: Store) {}
 
@@ -28,6 +29,8 @@ export class OnboardingFacade {
     return this.account$.pipe(
       map((account) => {
         switch (step) {
+          case 1:
+            return true;
           case 2:
             return account !== null;
           case 3:
@@ -56,6 +59,10 @@ export class OnboardingFacade {
 
   addAccount(payload: ICreateAccountRequest): void {
     this.dispatch(OnboardingActions.addAccount({ payload }));
+  }
+
+  addBillingInfo(payload: IAddBillingInfoRequest): void {
+    this.dispatch(OnboardingActions.addBillingInfo({ payload }));
   }
 
   private dispatch(action: Action): void {

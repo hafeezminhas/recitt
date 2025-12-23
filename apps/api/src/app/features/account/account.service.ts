@@ -2,6 +2,13 @@ import { Account } from '@database/entities/account.entity';
 import { AccountRepository } from '@database/repositories/account.repository';
 import { BillingRepository } from '@database/repositories/billing.repository';
 import { UserRepository } from '@database/repositories/user.repository';
+import {
+  AccountResponseDto,
+  AddAccountAdminUserDto,
+  AddBillingInfoDto,
+  CreateAccountDto,
+  OnboardingStatusPayloadDto,
+} from '@dto/account.dto';
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Injectable,
@@ -9,15 +16,9 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  AddAccountAdminUserDto,
-  AddBillingInfoDto,
-  Address,
-  CreateAccountDto,
-  OnboardingStatusPayload,
-  UserRole,
-} from '@recitt/types';
+import { IAddress, UserRole } from '@recitt/types';
 import { createHmac } from 'node:crypto';
+import { AccountMapper } from './account.mapper';
 
 const { ACCOUNT_ONBOARDING_SECRET } = process.env;
 
@@ -54,7 +55,7 @@ export class AccountService {
     ]);
   }
 
-  async create(payload: CreateAccountDto) {
+  async create(payload: CreateAccountDto): Promise<AccountResponseDto> {
     try {
       const account = await this.accountRepo.create(payload);
       this.logger.log(`Account created with id = ${account.id}`);
@@ -62,8 +63,8 @@ export class AccountService {
       const onboardingLink = this.generateOnboardingLink(account.id);
       this.logger.log(`Onboarding link generated: ${onboardingLink}`);
 
-      this.sendWelcomeEmail(onboardingLink, account);
-      return account;
+      // this.sendWelcomeEmail(onboardingLink, account);
+      return AccountMapper.toResponseDto(account);
     } catch (err) {
       this.logger.error('Error in creating account', err.message);
       throw new InternalServerErrorException('Failed to create account', {
@@ -97,7 +98,7 @@ export class AccountService {
 
   async addAccountAdminUser(
     accountId: string,
-    address: Address,
+    address: IAddress,
     payload: Omit<AddAccountAdminUserDto, 'accountId'>
   ) {
     try {
@@ -131,7 +132,7 @@ export class AccountService {
     accountId,
     expires,
     token,
-  }: OnboardingStatusPayload) {
+  }: OnboardingStatusPayloadDto) {
     const isTokenVerified = this.verifyOnboardingLink(
       accountId,
       expires,

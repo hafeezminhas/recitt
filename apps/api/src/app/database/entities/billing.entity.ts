@@ -1,8 +1,8 @@
 import {
-  Address,
   BillingFrequency,
+  IAddress,
+  IUKBankAccount,
   PaymentMethod,
-  UKBankAccount,
 } from '@recitt/types';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { Account } from './account.entity';
@@ -26,7 +26,7 @@ export class Billing extends BaseEntity {
   sameAsBusinessAddress: boolean; // Billing address same as business address
 
   @Column({ type: 'jsonb', nullable: true })
-  address?: Address;
+  address?: IAddress;
 
   @Column()
   contactPerson?: string;
@@ -41,7 +41,7 @@ export class Billing extends BaseEntity {
   alternatePhone?: string;
 
   @Column({ type: 'jsonb' })
-  bankDetails: UKBankAccount;
+  bankDetails: IUKBankAccount;
 
   // ==================== Payment & Billing Settings ====================
 

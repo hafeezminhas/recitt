@@ -1,9 +1,11 @@
+import { AccountResponseDto } from '@dto/account.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 export const CreateAccountSwagger = {
   ApiOperation: ApiOperation({ summary: 'Onboard new customer.' }),
   ApiResponseSuccess: ApiResponse({
     status: 201,
+    type: AccountResponseDto,
     description:
       'Customer onboarding completed successfully. Please add billing and other details!',
   }),

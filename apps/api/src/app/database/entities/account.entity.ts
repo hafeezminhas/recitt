@@ -1,6 +1,6 @@
 import { JoinColumn, OneToMany } from 'typeorm';
 // account.entity.ts
-import { AccountStatus, Address, BusinessAccountType } from '@recitt/types';
+import { AccountStatus, BusinessAccountType, IAddress } from '@recitt/types';
 import { Column, Entity, Index, OneToOne } from 'typeorm';
 import { BaseEntity } from './base.entity';
 import { Billing } from './billing.entity';
@@ -29,11 +29,11 @@ export class Account extends BaseEntity {
   })
   registrationType: BusinessAccountType;
 
-  @Column()
+  @Column({ type: 'timestamptz' })
   registrationDate: Date;
 
   @Column({ type: 'jsonb' })
-  address: Address;
+  address: IAddress;
 
   @Column({ unique: true })
   email: string;
@@ -66,7 +66,7 @@ export class Account extends BaseEntity {
   @Column({ nullable: true, unique: true })
   vatNumber?: string; // e.g., GB123456789 (11 characters starting with GB)
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   vatRegistrationDate?: Date;
 
   // ==================== Compliance & Documentation ====================
@@ -74,13 +74,13 @@ export class Account extends BaseEntity {
   @Column({ default: false })
   dataProtectionAgreementSigned!: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   dataProtectionAgreementDate?: Date;
 
   @Column({ default: false })
   termsAndConditionsAccepted!: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   termsAndConditionsDate?: Date;
 
   @OneToMany(() => Note, (note) => note.id)
@@ -91,7 +91,7 @@ export class Account extends BaseEntity {
   @Column({ default: AccountStatus.PENDING_VERIFICATION })
   status: string;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   statusUpdatedAt?: Date;
 
   @Column({ nullable: true })
@@ -100,7 +100,7 @@ export class Account extends BaseEntity {
   @Column({ default: false })
   isActive: boolean;
 
-  @Column({ nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   deactivatedAt?: Date;
 
   @Column({ nullable: true })
