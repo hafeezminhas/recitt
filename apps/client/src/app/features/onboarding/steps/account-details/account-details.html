@@ -1,54 +1,42 @@
 <div class="account-details">
   @if(error$$()){
-  <c-alert color="danger"  >{{error$$()?.message}}</c-alert>
+  <c-alert color="danger" class="mx-4 py-2">{{error$$()?.message}}</c-alert>
   }
   @if(account$$()){
-    <c-row class="gy-2 gx-1 ">
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Name"
-          [value]="account$$()?.name">
-        </app-info-tile>
-      </c-col>
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Registration Number"
-          [value]="account$$()?.registrationNumber">
-        </app-info-tile>
-      </c-col>
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Registration Type"
-          [value]="account$$()?.registrationType">
-        </app-info-tile>
-      </c-col>
-      @if(account$$()?.registrationDate) {
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Registration Date"
-          [value]="account$$()?.registrationDate | date:'shortDate' ">
-        </app-info-tile>
-      </c-col>
-      }
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Email Address"
-          [value]="account$$()?.email">
-        </app-info-tile>
-      </c-col>
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Phone Number"
-          [value]="account$$()?.phone">
-        </app-info-tile>
-      </c-col>
-      <c-col xs="12" md="6" class="px">
-        <app-info-tile label="Address">
-          <div [innerHTML]="account$$()?.address | ukAddress" ></div>
-        </app-info-tile>
-      </c-col>
-    </c-row>
-    } @else{
+  <c-row class="gy-2 gx-1 ">
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Name" [value]="account$$()?.name">
+      </app-info-tile>
+    </c-col>
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Registration Number" [value]="account$$()?.registrationNumber">
+      </app-info-tile>
+    </c-col>
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Registration Type" [value]="account$$()?.registrationType">
+      </app-info-tile>
+    </c-col>
+    @if(account$$()?.registrationDate) {
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Registration Date" [value]="account$$()?.registrationDate | date:'shortDate' ">
+      </app-info-tile>
+    </c-col>
+    }
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Email Address" [value]="account$$()?.email">
+      </app-info-tile>
+    </c-col>
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Phone Number" [value]="account$$()?.phone">
+      </app-info-tile>
+    </c-col>
+    <c-col xs="12" md="6" class="px">
+      <app-info-tile label="Address">
+        <div [innerHTML]="account$$()?.address | ukAddress"></div>
+      </app-info-tile>
+    </c-col>
+  </c-row>
+  } @else{
   <form [formGroup]="accountForm" cForm [validated]="submitted">
     <c-row class="gx-6 px-4">
       <c-col xs="12" md="6" class="px">
@@ -62,8 +50,8 @@
           <label cLabel for="registrationNumber">Registration Number</label>
           <input cFormControl id="registrationNumber" placeholder="Registration number"
             formControlName="registrationNumber" required />
-            <c-form-feedback [valid]="f['registrationNumber']?.valid && f['registrationNumber']?.touched">
-              Please provide the registration number.</c-form-feedback>
+          <c-form-feedback [valid]="f['registrationNumber']?.valid && f['registrationNumber']?.touched">
+            Please provide the registration number.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="registrationType">Registration Type</label>
@@ -82,13 +70,13 @@
           <label cLabel for="email">Email Address</label>
           <input cFormControl id="email" placeholder="Email address" formControlName="email" required />
           <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched">
-              Please provide the email.</c-form-feedback>
+            Please provide the email.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="phoneNumber">Phone Number</label>
           <input cFormControl id="phoneNumber" placeholder="+44(0)2082894332" formControlName="phone" />
           <c-form-feedback [valid]="f['phoneNumber']?.valid && f['phoneNumber']?.touched">
-              Please provide the phone number.</c-form-feedback>
+            Please provide the phone number.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="alternativePhoneNumber">Alternative Phone</label>
