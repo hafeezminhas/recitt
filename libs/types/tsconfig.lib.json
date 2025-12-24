@@ -8,6 +8,6 @@
     "emitDeclarationOnly": true,
     "types": ["node"]
   },
-  "include": ["**/*.ts", "**/*.d.ts", "../../apps/api/src/app/dto/account.dto.ts", "../../apps/api/src/app/dto/address.dto.ts", "../../apps/api/src/app/dto/user.dto.ts", "../../apps/api/src/app/dto/account-mock.ts", "../../apps/api/src/app/dto/utils.ts"],
+  "include": ["**/*.ts", "**/*.d.ts"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts"]
 }

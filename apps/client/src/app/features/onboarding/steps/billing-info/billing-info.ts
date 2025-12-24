@@ -1,28 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AlertComponent,
   ColComponent,
-  FormCheckInputDirective,
-  FormCheckLabelDirective,
   FormControlDirective,
   FormDirective,
   FormFeedbackComponent,
   FormLabelDirective,
-  FormSelectDirective,
   RowComponent,
 } from '@coreui/angular';
-import { IAddBillingInfoRequest, PaymentMethod } from '@recitt/types';
+import { IAddBillingInfoRequest } from '@recitt/types';
 import { InfoTileComponent } from '@shared/components/info-tile/info-tile';
-import { ValidatorModel } from '@shared/types/to-form-types';
 import { createTypedFormGroup } from '@shared/utils';
+import { BillingInfoFormValidationSchema } from '@shared/validators/account';
 import { OnboardingFacade } from '../../+state/onboarding.facade';
 import { OnboardingRoutes } from '../../onboarding.routes';
 
@@ -37,25 +29,13 @@ import { OnboardingRoutes } from '../../onboarding.routes';
     FormLabelDirective,
     FormControlDirective,
     FormFeedbackComponent,
-    FormSelectDirective,
     RowComponent,
     InfoTileComponent,
-    FormCheckInputDirective,
-    FormCheckLabelDirective,
   ],
   templateUrl: './billing-info.html',
   styleUrl: './billing-info.scss',
 })
 export class BillingInfo implements OnInit {
-  // convert paymentMethodTypes enum to array for select options
-  readonly paymentMethodTypes = Object.values(PaymentMethod).map((type) => ({
-    label: type
-      .replace(/_/g, ' ')
-      .toLowerCase()
-      .replace(/\b\w/g, (c) => c.toUpperCase()),
-    value: type,
-  }));
-
   account$$ = computed(() => {
     const account = this.onboardingFacade.account$$();
     if (!account) {
@@ -65,27 +45,6 @@ export class BillingInfo implements OnInit {
     return account;
   });
   error$$ = this.onboardingFacade.error$$;
-
-  billingInfoFormValidationSchema: ValidatorModel<IAddBillingInfoRequest> = {
-    sameAsBusinessAddress: [Validators.required],
-    contactPerson: [Validators.required],
-    email: [Validators.required],
-    phone: [Validators.required],
-    alternatePhone: [],
-    bankDetails: {
-      accountHolderName: [Validators.required],
-      accountNumber: [Validators.required],
-      sortCode: [Validators.required],
-      iban: [],
-      bic: [Validators.required],
-    },
-    preferredPaymentMethod: [Validators.required],
-    invoicingFrequency: [Validators.required],
-    paymentTermsDays: [Validators.required],
-    emailInvoice: [Validators.required],
-    invoicingEmail: [],
-    autoPaymentEnabled: [Validators.required],
-  };
 
   billingForm = createTypedFormGroup<IAddBillingInfoRequest>(
     {
@@ -101,7 +60,6 @@ export class BillingInfo implements OnInit {
       contactPerson: '',
       email: '',
       phone: '',
-      alternatePhone: '',
       bankDetails: {
         accountHolderName: '',
         accountNumber: '',
@@ -109,14 +67,8 @@ export class BillingInfo implements OnInit {
         iban: '',
         bic: '',
       },
-      preferredPaymentMethod: '',
-      invoicingFrequency: '',
-      paymentTermsDays: 0,
-      emailInvoice: false,
-      invoicingEmail: '',
-      autoPaymentEnabled: false,
     },
-    this.billingInfoFormValidationSchema
+    BillingInfoFormValidationSchema
   );
   submitted = false;
 
@@ -130,9 +82,27 @@ export class BillingInfo implements OnInit {
   }
 
   ngOnInit(): void {
+    // TODO: To be removed in production code
     this.billingForm.patchValue({
-      sameAsBusinessAddress: true,
-      address: this.account$$().address,
+      accountId: this.account$$().id,
+      sameAsBusinessAddress: false,
+      address: {
+        building: '123 Business Street',
+        street: 'Suite 456',
+        town: 'London',
+        county: 'Greater London',
+        postcode: 'SW1A 1AA',
+      },
+      contactPerson: 'John Doe',
+      email: 'billing@company.com',
+      phone: '+44 20 1234 5678',
+      bankDetails: {
+        accountHolderName: 'Company Ltd',
+        accountNumber: '12345678',
+        sortCode: '12-34-56',
+        iban: 'GB29 NWBK 6016 1331 9268 19',
+        bic: 'NWBKGB2L',
+      },
     });
     this.onboardingFacade.nextStepCommand$.subscribe(() => {
       if (this.account$$()?.billingInformation) {
@@ -149,6 +119,9 @@ export class BillingInfo implements OnInit {
       const billingDetails = this.billingForm.value as IAddBillingInfoRequest;
       this.onboardingFacade.addBillingInfo({
         ...billingDetails,
+        address: billingDetails.sameAsBusinessAddress
+          ? this.account$$().address
+          : billingDetails.address,
         accountId: this.account$$().id,
       }); // fire addAccount action through facade
     }

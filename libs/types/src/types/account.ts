@@ -16,14 +16,7 @@ export interface IBillingInformationResponse {
   contactPerson?: string;
   email: string;
   phone: string;
-  alternatePhone?: string;
   bankDetails: IUKBankAccount;
-  preferredPaymentMethod: string;
-  invoicingFrequency: string;
-  paymentTermsDays: number;
-  emailInvoices: boolean;
-  invoicingEmail?: string;
-  autoPaymentEnabled: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -68,6 +61,20 @@ export interface IAccountResponse {
   updatedAt: Date;
 }
 
+export type IAccountResponseWithBillingInfo = Omit<
+  IAccountResponse,
+  'billingInformation'
+> & {
+  billingInformation: IBillingInformationResponse;
+};
+
+export type IAccountResponseWithAdminUser = Omit<
+  IAccountResponse,
+  'accountAdmin'
+> & {
+  accountAdmin: IAccountAdminUserResponse;
+};
+
 export interface ICreateAccountRequest {
   name: string;
   registrationNumber: string;
@@ -88,14 +95,7 @@ export interface IAddBillingInfoRequest {
   contactPerson?: string;
   email: string;
   phone: string;
-  alternatePhone?: string;
   bankDetails: IUKBankAccount;
-  preferredPaymentMethod: string;
-  invoicingFrequency: string;
-  paymentTermsDays: number;
-  emailInvoice: boolean;
-  invoicingEmail?: string;
-  autoPaymentEnabled: boolean;
 }
 
 export interface IAddAccountAdminUserRequest {

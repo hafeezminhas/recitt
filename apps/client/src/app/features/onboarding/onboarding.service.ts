@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { IAccountResponse, ICreateAccountRequest } from '@recitt/types';
+import {
+  IAccountResponse,
+  IAccountResponseWithBillingInfo,
+  IAddBillingInfoRequest,
+  ICreateAccountRequest,
+} from '@recitt/types';
 import { DataService } from '@shared/services/data.service';
 import { Observable, take } from 'rxjs';
 
@@ -21,6 +26,17 @@ export class OnboardingService {
     return this.dataService
       .postData<ICreateAccountRequest, IAccountResponse>(
         this.apiPrefix,
+        payload
+      )
+      .pipe(take(1));
+  }
+
+  addBillingInfo(
+    payload: IAddBillingInfoRequest
+  ): Observable<IAccountResponseWithBillingInfo> {
+    return this.dataService
+      .postData<IAddBillingInfoRequest, IAccountResponseWithBillingInfo>(
+        `${this.apiPrefix}/billing`,
         payload
       )
       .pipe(take(1));

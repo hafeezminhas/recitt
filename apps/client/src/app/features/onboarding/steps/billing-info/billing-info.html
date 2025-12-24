@@ -32,40 +32,68 @@
           <c-form-feedback [valid]="f['phone']?.valid && f['phone']?.touched">Please provide the phone number.</c-form-feedback>
         </div>
         <div class="mb-3">
-          <label cLabel for="alternatePhone">Alternative Phone</label>
-          <input cFormControl id="alternatePhone" placeholder="+44(0)2082894333" formControlName="alternatePhone" />
+          <input
+            cFormCheckInput
+            type="checkbox"
+            id="sameAsBusinessAddress"
+            formControlName="sameAsBusinessAddress"
+          />
+          <label cFormCheckLabel for="sameAsBusinessAddress" type="checkbox"
+            >Same as business address?</label
+          >
         </div>
-        <div class="mb-3">
-          <label cLabel for="invoicingFrequency">Invoicing Frequency</label>
-          <select id="invoicingFrequency" formControlName="invoicingFrequency" cSelect aria-label="Invoicing frequency" required>
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="annually">Annually</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label cLabel for="paymentTermsDays">Payment Terms (Days)</label>
-          <input cFormControl id="paymentTermsDays" type="number" placeholder="30" formControlName="paymentTermsDays" required />
-          <c-form-feedback [valid]="f['paymentTermsDays']?.valid && f['paymentTermsDays']?.touched">Please provide payment terms.</c-form-feedback>
-        </div>
-        <div class="mb-3">
-          <input cFormCheckInput type="checkbox" id="emailInvoice" formControlName="emailInvoice" />
-          <label cFormCheckLabel for="emailInvoice">Email Invoice</label>
-        </div>
-        <div class="mb-3">
-          <input cFormCheckInput type="checkbox" id="autoPaymentEnabled" formControlName="autoPaymentEnabled" />
-          <label cFormCheckLabel for="autoPaymentEnabled">Auto Payment Enabled</label>
-        </div>
+        @if(!billingForm.get('sameAsBusinessAddress')?.value) {
+        <fieldset formGroupName="address">
+          <div class="mb-3">
+            <label cLabel for="addressLine1">Building</label>
+            <input
+              cFormControl
+              id="addressLine1"
+              placeholder="Street address, P.O. box"
+              formControlName="building"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="addressLine2">Street</label>
+            <input
+              cFormControl
+              id="addressLine2"
+              placeholder="Apartment, suite, unit, building, floor"
+              formControlName="street"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="town">Town</label>
+            <input
+              cFormControl
+              id="town"
+              placeholder="Town or city"
+              formControlName="town"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="county">County</label>
+            <input
+              cFormControl
+              id="county"
+              placeholder="County or state"
+              formControlName="county"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="postcode">Postcode</label>
+            <input
+              cFormControl
+              id="postcode"
+              placeholder="Postcode or ZIP code"
+              formControlName="postcode"
+            />
+          </div>
+        </fieldset>
+        }
+
       </c-col>
       <c-col xs="12" md="6" class="px">
-        <div class="mb-3">
-          <label cLabel for="preferredPaymentMethod">Preferred Payment Method</label>
-          <select id="preferredPaymentMethod" formControlName="preferredPaymentMethod" cSelect aria-label="Preferred payment method" required>
-          @for (option of paymentMethodTypes; track option) {
-            <option [value]="option.value">{{ option.label }}</option>
-          }
-          </select>
-        </div>
         <fieldset formGroupName="bankDetails">
           <div class="mb-3">
             <label cLabel for="accountHolderName">Account Holder Name</label>

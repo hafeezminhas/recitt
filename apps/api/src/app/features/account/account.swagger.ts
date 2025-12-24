@@ -15,12 +15,13 @@ export const CreateAccountSwagger = {
   }),
 };
 
-export const AddBillibgInfoSwagger = {
+export const AddBillingInfoSwagger = {
   ApiOperation: ApiOperation({
     summary: 'Add billing information to account.',
   }),
   ApiResponseSuccess: ApiResponse({
     status: 201,
+    type: AccountResponseDto,
     description: 'Billing information added successfully.',
   }),
   ApiResponseError: ApiResponse({

@@ -200,43 +200,10 @@ export class AddBillingInfoDto implements IAddBillingInfoRequest {
   @IsNotEmpty()
   phone: string;
 
-  @ApiPropertyOptional({ example: '+441234567891' })
-  @IsOptional()
-  @IsString()
-  alternatePhone?: string;
-
   @ApiProperty({ type: UKBankAccountDto })
   @ValidateNested()
   @Type(() => UKBankAccountDto)
   bankDetails: UKBankAccountDto;
-
-  @ApiProperty({ example: PaymentMethod.BANK_TRANSFER })
-  @IsEnum(PaymentMethod)
-  @IsNotEmpty()
-  preferredPaymentMethod: string;
-
-  @ApiProperty({ example: BillingFrequency.MONTHLY })
-  @IsEnum(BillingFrequency)
-  @IsNotEmpty()
-  invoicingFrequency: string;
-
-  @ApiProperty({ example: 30, description: 'Payment terms in days' })
-  @IsNumber()
-  @Min(0)
-  paymentTermsDays: number; // Net-30, Net-60, etc.
-
-  @ApiProperty({ example: true })
-  @IsBoolean()
-  emailInvoice: boolean;
-
-  @ApiPropertyOptional({ example: 'abc@a.com' })
-  @IsOptional()
-  @IsString()
-  invoicingEmail?: string; // Email for sending invoices
-
-  @ApiProperty({ example: false })
-  @IsBoolean()
-  autoPaymentEnabled: boolean;
 }
 
 /**
@@ -267,29 +234,8 @@ export class BillingInfoResponseDto {
   @ApiProperty({ example: '+441234567890' })
   phone: string;
 
-  @ApiPropertyOptional({ example: '+441234567891' })
-  alternatePhone?: string;
-
   @ApiProperty({ type: UKBankAccountDto })
   bankDetails: UKBankAccountDto;
-
-  @ApiProperty({ example: 'bank_transfer' })
-  preferredPaymentMethod: string;
-
-  @ApiProperty({ example: 'monthly' })
-  invoicingFrequency: string;
-
-  @ApiProperty({ example: 30, description: 'Payment terms in days' })
-  paymentTermsDays: number;
-
-  @ApiProperty({ example: true })
-  emailInvoices: boolean;
-
-  @ApiPropertyOptional({ example: 'abc@a.com' })
-  invoicingEmail?: string;
-
-  @ApiProperty({ example: false })
-  autoPaymentEnabled: boolean;
 }
 
 /**

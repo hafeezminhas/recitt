@@ -73,7 +73,9 @@ export class AccountService {
     }
   }
 
-  async addBillingInfo(accountId: string, payload: AddBillingInfoDto) {
+  async addBillingInfo(
+    payload: AddBillingInfoDto
+  ): Promise<AccountResponseDto> {
     try {
       const { accountId, ...billingPayload } = payload;
       const billingInfo = await this.billingRepo.create({
@@ -83,11 +85,14 @@ export class AccountService {
       // TODO: run payment via prefered payment method
       // TODO: update payment status in billing info
       if (!billingInfo) {
+        this.logger.error('Error in adding billing info');
         throw new InternalServerErrorException('Billing info not created');
       }
       this.logger.log(`Billing info created with id=${billingInfo.id}`);
 
-      return await this.accountRepo.findById(accountId, ['billingInformation']);
+      return AccountMapper.toResponseDto(
+        await this.accountRepo.findById(accountId, ['billingInformation'])
+      );
     } catch (err) {
       this.logger.error('Error in adding billing info', err.message);
       throw new InternalServerErrorException('Failed to add billing info', {

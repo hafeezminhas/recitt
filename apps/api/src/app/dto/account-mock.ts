@@ -39,7 +39,6 @@ export const sampleBillingInfoResponse: BillingInfoResponseDto = {
   contactPerson: 'Jane Doe',
   email: 'abc@a.com',
   phone: '+441234567890',
-  alternatePhone: '+441234567891',
   bankDetails: {
     accountHolderName: 'John Doe Ltd',
     accountNumber: '12345678',
@@ -47,10 +46,4 @@ export const sampleBillingInfoResponse: BillingInfoResponseDto = {
     iban: 'GB82WEST12345698765432',
     bic: 'WESTGB2L',
   },
-  preferredPaymentMethod: 'bank_transfer',
-  invoicingFrequency: 'monthly',
-  paymentTermsDays: 30,
-  emailInvoices: true,
-  invoicingEmail: 'abc@a.com',
-  autoPaymentEnabled: false,
 };

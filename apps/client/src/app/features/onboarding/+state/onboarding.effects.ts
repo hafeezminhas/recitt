@@ -57,8 +57,40 @@ export class OnboardingEffects {
         ofType(OnboardingActions.addAccountSuccess),
         tap(() =>
           this.router.navigate([
-            `/onboarding/${OnboardingRoutes.BillingInformation}`,
+            `/onboarding`,
+            OnboardingRoutes.BillingInformation,
           ])
+        )
+      ),
+    { dispatch: false }
+  );
+
+  addBillingInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OnboardingActions.addBillingInfo),
+      switchMap(({ payload }) =>
+        this.onboardingService.addBillingInfo(payload).pipe(
+          map((account) =>
+            OnboardingActions.addBillingInfoSuccess({ account })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              OnboardingActions.addBillingInfoFailure({
+                error: normalizeError(error),
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  addBillingInfoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(OnboardingActions.addBillingInfoSuccess),
+        tap(() =>
+          this.router.navigate([`/onboarding`, OnboardingRoutes.AdminUser])
         )
       ),
     { dispatch: false }

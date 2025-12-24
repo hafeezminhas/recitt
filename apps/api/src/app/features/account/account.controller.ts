@@ -19,7 +19,7 @@ import {
   OnboardingStatusPayloadDto,
 } from '@dto/account.dto';
 import { AccountService } from './account.service';
-import { AddBillibgInfoSwagger, CreateAccountSwagger } from './account.swagger';
+import { AddBillingInfoSwagger, CreateAccountSwagger } from './account.swagger';
 
 @Controller('accounts')
 export class AccountController {
@@ -38,11 +38,11 @@ export class AccountController {
   @UseGuards(AccountExistsGuard)
   @Post('billing')
   @ApiBody({ type: AddBillingInfoDto })
-  @AddBillibgInfoSwagger.ApiOperation
-  @AddBillibgInfoSwagger.ApiResponseSuccess
-  @AddBillibgInfoSwagger.ApiResponseError
-  addBillingInfo(@Req() request: Request, @Body() payload: AddBillingInfoDto) {
-    return this.accountService.addBillingInfo(request.account.id, payload);
+  @AddBillingInfoSwagger.ApiOperation
+  @AddBillingInfoSwagger.ApiResponseSuccess
+  @AddBillingInfoSwagger.ApiResponseError
+  addBillingInfo(@Body() payload: AddBillingInfoDto) {
+    return this.accountService.addBillingInfo(payload);
   }
 
   @UseGuards(AccountExistsGuard)

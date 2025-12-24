@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AlertComponent,
@@ -20,8 +15,8 @@ import {
 import { BusinessAccountType, ICreateAccountRequest } from '@recitt/types';
 import { InfoTileComponent } from '@shared/components/info-tile/info-tile';
 import { UkAddressPipe } from '@shared/pipes/uk-address/uk-address-pipe';
-import { ValidatorModel } from '@shared/types/to-form-types';
 import { createTypedFormGroup } from '@shared/utils';
+import { AccountFormValidationSchema } from '@shared/validators/account';
 import { OnboardingFacade } from '../../+state/onboarding.facade';
 import { OnboardingRoutes } from '../../onboarding.routes';
 
@@ -59,24 +54,6 @@ export class AccountDetails implements OnInit {
   account$$ = this.onboardingFacade.account$$;
   error$$ = this.onboardingFacade.error$$;
 
-  accountFormValidationSchema: ValidatorModel<ICreateAccountRequest> = {
-    name: [Validators.required],
-    registrationNumber: [Validators.required],
-    registrationType: [Validators.required],
-    registrationDate: [Validators.required],
-    address: {
-      building: [Validators.required],
-      street: [Validators.required],
-      town: [Validators.required],
-      county: [],
-      postcode: [Validators.required],
-    },
-    email: [Validators.required, Validators.email],
-    phone: [Validators.required],
-    alternatePhone: [],
-    isVatRegistered: [],
-    vatNumber: [],
-  };
   accountForm = createTypedFormGroup<ICreateAccountRequest>(
     {
       name: '',
@@ -96,7 +73,7 @@ export class AccountDetails implements OnInit {
       isVatRegistered: false,
       vatNumber: '',
     },
-    this.accountFormValidationSchema
+    AccountFormValidationSchema
   );
   submitted = false;
 
@@ -126,6 +103,7 @@ export class AccountDetails implements OnInit {
     //     }
     //   });
 
+    // TODO: To be removed from production code
     this.accountForm.patchValue({
       name: 'Enigma Systems Ltd',
       registrationNumber: '12345678',

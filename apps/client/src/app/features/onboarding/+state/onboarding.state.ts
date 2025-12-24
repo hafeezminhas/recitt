@@ -56,6 +56,7 @@ export const onboardingReducer = createReducer(
     account,
     currentStep: 2,
     loading: false,
+    error: null,
   })),
   on(OnboardingActions.addAccountFailure, (state, { error }) => ({
     ...state,
@@ -68,9 +69,12 @@ export const onboardingReducer = createReducer(
     ...state,
     loading: true,
   })),
-  on(OnboardingActions.addBillingInfoSuccess, (state) => ({
+  on(OnboardingActions.addBillingInfoSuccess, (state, { account }) => ({
     ...state,
+    account,
+    currentStep: 3,
     loading: false,
+    error: null,
   })),
   on(OnboardingActions.addBillingInfoFailure, (state, { error }) => ({
     ...state,

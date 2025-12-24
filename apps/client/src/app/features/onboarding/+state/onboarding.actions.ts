@@ -4,6 +4,7 @@ import {
   ApiError,
   IAccountAdminUserResponse,
   IAccountResponse,
+  IAccountResponseWithBillingInfo,
   IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
@@ -50,7 +51,7 @@ export const addBillingInfo = createAction(
 );
 export const addBillingInfoSuccess = createAction(
   '[Onboarding] Add Billing Info Success',
-  props<{ billingInfo: IAddBillingInfoRequest }>()
+  props<{ account: IAccountResponseWithBillingInfo }>()
 );
 export const addBillingInfoFailure = createAction(
   '[Onboarding] Add Billing Info Failure',

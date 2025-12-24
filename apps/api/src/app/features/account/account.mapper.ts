@@ -15,7 +15,12 @@ export class AccountMapper {
       email: entity.email,
       phone: entity.phone,
       alternatePhone: entity.alternatePhone,
-      billingInformation: null,
+      billingInformation: entity.billingInformation
+        ? {
+            ...entity.billingInformation,
+            address: entity.billingInformation.address as AddressDto,
+          }
+        : null,
       accountAdmin: null,
       isVatRegistered: entity.isVatRegistered,
       vatNumber: entity.vatNumber,
