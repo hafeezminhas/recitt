@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {
   CardBodyComponent,
@@ -12,7 +12,7 @@ import {
 } from '@coreui/angular';
 import { freeSet } from '@coreui/icons';
 import { IconDirective } from '@coreui/icons-angular';
-import { filter, Observable, take, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { OnboardingFacade } from '../+state/onboarding.facade';
 import { OnboardingRoutes } from '../onboarding.routes';
 
@@ -34,7 +34,7 @@ import { OnboardingRoutes } from '../onboarding.routes';
   styleUrl: './onboarding.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Onboarding implements OnInit {
+export class Onboarding {
   readonly icons = freeSet;
   currentStep$$ = this.onboardingFacade.currentStep$$;
   isLoading$$ = this.onboardingFacade.isLoading$$;
@@ -60,20 +60,6 @@ export class Onboarding implements OnInit {
     private router: Router,
     private onboardingFacade: OnboardingFacade
   ) {}
-
-  ngOnInit(): void {
-    this.onboardingFacade.account$
-      .pipe(
-        take(1),
-        filter((account) => !account),
-        tap(() => {
-          if (this.router.url !== '/onboarding') {
-            this.router.navigate(['/onboarding']);
-          }
-        })
-      )
-      .subscribe();
-  }
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);

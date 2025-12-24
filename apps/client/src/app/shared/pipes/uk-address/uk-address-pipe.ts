@@ -19,7 +19,7 @@ export class UkAddressPipe implements PipeTransform {
       address.county,
       this.formatPostcode(address.postcode),
     ];
-    return lines.filter(Boolean).join('\n');
+    return lines.filter(Boolean).join('<br/>');
   }
 
   private formatPostcode(postcode: string): string {
