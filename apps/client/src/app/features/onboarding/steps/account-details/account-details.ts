@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -15,8 +15,11 @@ import {
 import { BusinessAccountType, ICreateAccountRequest } from '@recitt/types';
 import { InfoTileComponent } from '@shared/components/info-tile/info-tile';
 import { UkAddressPipe } from '@shared/pipes/uk-address/uk-address-pipe';
+import { DialogService } from '@shared/services/dialog.service';
+import { AlertType } from '@shared/types/dialog';
 import { createTypedFormGroup } from '@shared/utils';
 import { AccountFormValidationSchema } from '@shared/validators/account';
+import { Observable, of } from 'rxjs';
 import { OnboardingFacade } from '../../+state/onboarding.facade';
 import { OnboardingRoutes } from '../../onboarding.routes';
 
@@ -77,10 +80,21 @@ export class AccountDetails implements OnInit {
   );
   submitted = false;
 
+  @HostListener('window:beforeunload', ['$event'])
+  handleBeforeUnload(event: BeforeUnloadEvent) {
+    if (!this.accountForm.dirty || !this.accountForm.touched) {
+      return;
+    }
+
+    event.preventDefault();
+    event.returnValue = '';
+  }
+
   constructor(
     private router: Router,
+    private dialogService: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) {}
+  ) { }
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.accountForm.controls;
@@ -135,6 +149,20 @@ export class AccountDetails implements OnInit {
         this.submitForm();
       }
     });
+  }
+
+  canDeactivate(): Observable<boolean> | boolean {
+    if (this.accountForm.dirty || this.accountForm.touched) {
+      return this.dialogService.confirm({
+        title: 'Unsaved Changes',
+        message: 'You have unsaved changes. Are you sure you want to leave this page?',
+        confirmText: 'Leave',
+        cancelText: 'Stay',
+        type: AlertType.Warning
+      });
+    } else {
+      return of(true);
+    }
   }
 
   private submitForm(): void {

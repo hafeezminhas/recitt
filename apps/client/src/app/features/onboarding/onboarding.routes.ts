@@ -29,6 +29,7 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
       {
         path: OnboardingRoutes.AccountDetails,
         component: AccountDetails,
+        canDeactivate: [UnsavedChangesGuard],
         data: { stepNumber: 1, nextStep: OnboardingRoutes.BillingInformation },
       },
       {
