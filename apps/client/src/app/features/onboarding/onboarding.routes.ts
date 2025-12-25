@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { UnsavedChangesGuard } from '@shared/guards/unsaved-changes.guard';
 import { Onboarding } from './onboarding-page/onboarding';
 import { OnboardingGuard } from './onboarding.guard';
 import { AccountDetails } from './steps/account-details/account-details';
@@ -34,12 +35,14 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
         path: OnboardingRoutes.BillingInformation,
         component: BillingInfo,
         canActivate: [OnboardingGuard],
+        canDeactivate: [UnsavedChangesGuard],
         data: { stepNumber: 2, nextStep: OnboardingRoutes.AdminUser },
       },
       {
         path: OnboardingRoutes.AdminUser,
         component: AdminSetup,
         canActivate: [OnboardingGuard],
+        canDeactivate: [UnsavedChangesGuard],
         data: { stepNumber: 3, nextStep: OnboardingRoutes.Completion },
       },
       {

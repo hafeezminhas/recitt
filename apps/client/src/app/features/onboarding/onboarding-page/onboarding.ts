@@ -58,8 +58,8 @@ export class Onboarding {
 
   constructor(
     private router: Router,
-    private onboardingFacade: OnboardingFacade
-  ) {}
+    private onboardingFacade: OnboardingFacade,
+  ) { }
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);
