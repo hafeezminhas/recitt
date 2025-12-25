@@ -128,20 +128,6 @@ export class BillingInfo implements OnInit, CanComponentDeactivate {
     });
   }
 
-  private submitForm(): void {
-    this.submitted = true;
-    if (this.billingForm.valid) {
-      const billingDetails = this.billingForm.value as IAddBillingInfoRequest;
-      this.onboardingFacade.addBillingInfo({
-        ...billingDetails,
-        address: billingDetails.sameAsBusinessAddress
-          ? this.account$$().address
-          : billingDetails.address,
-        accountId: this.account$$().id,
-      }); // fire addAccount action through facade
-    }
-  }
-
   canDeactivate(): Observable<boolean> | boolean {
     if (this.billingForm.dirty || this.billingForm.touched) {
       return this.dialog.confirm({
@@ -154,6 +140,20 @@ export class BillingInfo implements OnInit, CanComponentDeactivate {
       });
     } else {
       return of(true);
+    }
+  }
+
+  private submitForm(): void {
+    this.submitted = true;
+    if (this.billingForm.valid) {
+      const billingDetails = this.billingForm.value as IAddBillingInfoRequest;
+      this.onboardingFacade.addBillingInfo({
+        ...billingDetails,
+        address: billingDetails.sameAsBusinessAddress
+          ? this.account$$().address
+          : billingDetails.address,
+        accountId: this.account$$().id,
+      }); // fire addAccount action through facade
     }
   }
 }

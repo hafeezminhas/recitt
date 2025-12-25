@@ -106,10 +106,11 @@ export interface IAddAccountAdminUserRequest {
   lastName: string;
   middleName?: string;
   displayName?: string;
-  dateOfBirth?: Date;
+  dateOfBirth: string;
   email: string;
   phone?: string;
   password: string;
+  confirmPassword: string;
 }
 
 export interface IAccountAdminUserResponse {

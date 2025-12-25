@@ -11,6 +11,7 @@ import {
   BusinessAccountType,
   IAccountAdminUserResponse,
   IAccountResponse,
+  IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
   IOnboardingStatusPayload,
@@ -22,7 +23,6 @@ import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsDateString,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -241,7 +241,7 @@ export class BillingInfoResponseDto {
 /**
  * Add admin user DTO
  */
-export class AddAccountAdminUserDto {
+export class AddAccountAdminUserDto implements IAddAccountAdminUserRequest {
   @ApiProperty({ example: 'account-uuid' })
   @IsString()
   @IsNotEmpty()
@@ -255,7 +255,7 @@ export class AddAccountAdminUserDto {
   @ApiProperty({ example: PersonPronoun.HE })
   @IsString()
   @IsNotEmpty()
-  preferredPronouns: PersonPronoun;
+  preferredPronoun: PersonPronoun;
 
   @ApiProperty({ example: 'John' })
   @IsString()
@@ -283,8 +283,8 @@ export class AddAccountAdminUserDto {
   @IsString()
   displayName?: string;
 
-  @ApiProperty({ example: '1990-01-01', required: false })
-  @IsDateString()
+  @ApiProperty({ example: '1990-01-01' })
+  @IsString()
   dateOfBirth: string;
 
   @ApiProperty({ example: 'admin@example.com' })

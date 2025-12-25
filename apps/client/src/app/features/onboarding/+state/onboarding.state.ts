@@ -80,9 +80,25 @@ export const onboardingReducer = createReducer(
     ...state,
     loading: false,
     error,
-  }))
+  })),
 
   // Handling admin setup actions can be added here
+  on(OnboardingActions.setupAdminUser, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(OnboardingActions.setupAdminUserSuccess, (state, { account }) => ({
+    ...state,
+    account,
+    currentStep: 3,
+    loading: false,
+    error: null,
+  })),
+  on(OnboardingActions.setupAdminUserFailure, (state, { error }) => ({
+    ...state,
+    loading: false,
+    error,
+  }))
 );
 
 export function provideOnboardingState(): EnvironmentProviders {

@@ -2,8 +2,8 @@
 import { createAction, props } from '@ngrx/store';
 import {
   ApiError,
-  IAccountAdminUserResponse,
   IAccountResponse,
+  IAccountResponseWithAdminUser,
   IAccountResponseWithBillingInfo,
   IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
@@ -61,15 +61,15 @@ export const addBillingInfoFailure = createAction(
 // Onboarding admin setup actions
 export const setupAdminUser = createAction(
   '[Onboarding] Setup Admin User',
-  props<{ user: IAddAccountAdminUserRequest }>() // Replace 'any' with actual admin user data type
+  props<{ payload: IAddAccountAdminUserRequest }>() // Replace 'any' with actual admin user data type
 );
 export const setupAdminUserSuccess = createAction(
   '[Onboarding] Setup Admin User Success',
-  props<{ accountAdmin: IAccountAdminUserResponse }>() // Replace 'any' with actual admin user data type
+  props<{ account: IAccountResponseWithAdminUser }>() // Replace 'any' with actual admin user data type
 );
 export const setupAdminUserFailure = createAction(
   '[Onboarding] Setup Admin User Failure',
-  props<{ error: string }>()
+  props<{ error: ApiError }>()
 );
 
 // Onboarding completion action

@@ -1,11 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { ApiError } from '@recitt/types';
 import { TypedFormGroup, ValidatorModel } from './types/to-form-types';
 
 export function createTypedFormGroup<T>(
   value: T,
-  validators?: ValidatorModel<T>
+  validators?: ValidatorModel<T>,
+  groupValidators?: ValidatorFn[]
 ): TypedFormGroup<T> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const group: Record<string, any> = {};
@@ -31,7 +39,7 @@ export function createTypedFormGroup<T>(
     }
   }
 
-  return new FormGroup(group) as TypedFormGroup<T>;
+  return new FormGroup(group, groupValidators) as TypedFormGroup<T>;
 }
 
 export function normalizeError(err: HttpErrorResponse): ApiError {
@@ -54,6 +62,27 @@ export function isApiError(error: unknown): error is ApiError {
     'message' in error
   );
 }
+
+export function matchPasswords(
+  passwordKey: string,
+  confirmKey: string
+): ValidatorFn {
+  return (formGroup: AbstractControl): ValidationErrors | null => {
+    const password = formGroup.get(passwordKey)?.value;
+    const confirmPassword = formGroup.get(confirmKey)?.value;
+
+    if (password !== confirmPassword) {
+      formGroup.get(confirmKey)?.setErrors({ passwordMismatch: true });
+      return { passwordMismatch: true };
+    }
+    if (formGroup.get(confirmKey)?.hasError('passwordMismatch')) {
+      formGroup.get(confirmKey)?.setErrors({ passwordMismatch: null });
+    }
+
+    return null;
+  };
+}
+
 // export function createNNFormGroup<T>(
 //   fb: NonNullableFormBuilder,
 //   value: T

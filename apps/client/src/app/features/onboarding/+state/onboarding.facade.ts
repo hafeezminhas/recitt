@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { IAddBillingInfoRequest, ICreateAccountRequest } from '@recitt/types';
+import {
+  IAddAccountAdminUserRequest,
+  IAddBillingInfoRequest,
+  ICreateAccountRequest,
+} from '@recitt/types';
 import { map, Observable, Subject } from 'rxjs';
 import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
@@ -63,6 +67,10 @@ export class OnboardingFacade {
 
   addBillingInfo(payload: IAddBillingInfoRequest): void {
     this.dispatch(OnboardingActions.addBillingInfo({ payload }));
+  }
+
+  setupAdminUser(payload: IAddAccountAdminUserRequest): void {
+    this.dispatch(OnboardingActions.setupAdminUser({ payload }));
   }
 
   private dispatch(action: Action): void {

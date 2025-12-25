@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {
   CardBodyComponent,
@@ -37,6 +37,7 @@ import { OnboardingRoutes } from '../onboarding.routes';
 export class Onboarding {
   readonly icons = freeSet;
   currentStep$$ = this.onboardingFacade.currentStep$$;
+  isLastStep$$ = computed(() => this.currentStep$$() === 3);
   isLoading$$ = this.onboardingFacade.isLoading$$;
   steps = [
     {
@@ -58,8 +59,8 @@ export class Onboarding {
 
   constructor(
     private router: Router,
-    private onboardingFacade: OnboardingFacade,
-  ) { }
+    private onboardingFacade: OnboardingFacade
+  ) {}
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);
@@ -72,8 +73,8 @@ export class Onboarding {
   }
 
   nextStep(): void {
-    if (this.currentStep$$() < 3) {
-      this.onboardingFacade.nextStep();
-    }
+    // if (this.currentStep$$() < 3) {
+    this.onboardingFacade.nextStep();
+    // }
   }
 }

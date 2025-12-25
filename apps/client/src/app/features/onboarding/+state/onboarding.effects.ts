@@ -95,4 +95,35 @@ export class OnboardingEffects {
       ),
     { dispatch: false }
   );
+
+  setupAdminUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(OnboardingActions.setupAdminUser),
+      switchMap(({ payload }) =>
+        this.onboardingService.setupAdminUser(payload).pipe(
+          map((account) =>
+            OnboardingActions.setupAdminUserSuccess({ account })
+          ),
+          catchError((error: HttpErrorResponse) =>
+            of(
+              OnboardingActions.setupAdminUserFailure({
+                error: normalizeError(error),
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  setupAdminUserSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(OnboardingActions.setupAdminUserSuccess),
+        tap(() =>
+          this.router.navigate([`/onboarding`, OnboardingRoutes.Completion])
+        )
+      ),
+    { dispatch: false }
+  );
 }

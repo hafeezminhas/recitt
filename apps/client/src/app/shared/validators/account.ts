@@ -1,5 +1,9 @@
 import { Validators } from '@angular/forms';
-import { IAddBillingInfoRequest, ICreateAccountRequest } from '@recitt/types';
+import {
+  IAddAccountAdminUserRequest,
+  IAddBillingInfoRequest,
+  ICreateAccountRequest,
+} from '@recitt/types';
 import { ValidatorModel } from '@shared/types/to-form-types';
 import { AddressValidator } from './address';
 
@@ -30,4 +34,20 @@ export const BillingInfoFormValidationSchema: ValidatorModel<IAddBillingInfoRequ
       iban: [],
       bic: [Validators.required],
     },
+  };
+
+export const AccountAdminFormValidationSchema: ValidatorModel<IAddAccountAdminUserRequest> =
+  {
+    accountId: [Validators.required],
+    title: [Validators.required],
+    preferredPronoun: [Validators.required],
+    firstName: [Validators.required],
+    lastName: [Validators.required],
+    middleName: [],
+    displayName: [],
+    dateOfBirth: [Validators.required],
+    email: [Validators.required, Validators.email],
+    phone: [],
+    password: [Validators.required, Validators.minLength(8)],
+    confirmPassword: [Validators.required],
   };

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import {
   IAccountResponse,
+  IAccountResponseWithAdminUser,
   IAccountResponseWithBillingInfo,
+  IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
 } from '@recitt/types';
@@ -37,6 +39,17 @@ export class OnboardingService {
     return this.dataService
       .postData<IAddBillingInfoRequest, IAccountResponseWithBillingInfo>(
         `${this.apiPrefix}/billing`,
+        payload
+      )
+      .pipe(take(1));
+  }
+
+  setupAdminUser(
+    payload: IAddAccountAdminUserRequest
+  ): Observable<IAccountResponseWithAdminUser> {
+    return this.dataService
+      .postData<IAddAccountAdminUserRequest, IAccountResponseWithAdminUser>(
+        `${this.apiPrefix}/admin`,
         payload
       )
       .pipe(take(1));
