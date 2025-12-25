@@ -109,7 +109,6 @@ export interface IAddAccountAdminUserRequest {
   dateOfBirth?: Date;
   email: string;
   phone?: string;
-  address?: IAddress;
   password: string;
 }
 

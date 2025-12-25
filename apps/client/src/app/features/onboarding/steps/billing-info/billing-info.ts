@@ -90,7 +90,7 @@ export class BillingInfo implements OnInit, CanComponentDeactivate {
     private router: Router,
     private dialog: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) { }
+  ) {}
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.billingForm.controls;
@@ -146,10 +146,11 @@ export class BillingInfo implements OnInit, CanComponentDeactivate {
     if (this.billingForm.dirty || this.billingForm.touched) {
       return this.dialog.confirm({
         title: 'Unsaved Changes',
-        message: 'You have unsaved changes. Are you sure you want to leave this page?',
+        message:
+          'You have unsaved changes. Are you sure you want to leave this page?',
         confirmText: 'Leave',
         cancelText: 'Stay',
-        type: AlertType.Warning
+        type: AlertType.Warning,
       });
     } else {
       return of(true);

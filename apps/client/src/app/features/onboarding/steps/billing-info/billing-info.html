@@ -5,10 +5,21 @@
   @if(account$$().billingInformation){
     <c-row class="gy-2 gx-1 ">
       <c-col xs="12" md="6" class="px">
-        <app-info-tile
-          label="Email"
-          [value]="account$$().billingInformation?.email">
-        </app-info-tile>
+        <c-col class="mb-3">
+          <app-info-tile
+            label="Contact Person"
+            [value]="account$$().billingInformation?.contactPerson">
+          </app-info-tile>
+        </c-col>
+        <c-col xs="12" md="6" class="px">
+          <app-info-tile
+            label="Email"
+            [value]="account$$().billingInformation?.email">
+          </app-info-tile>
+        </c-col>
+        <c-col class="mb-3">
+          <app-info-tile label="Phone Number" [value]="account$$().billingInformation?.phone" />
+        </c-col>
       </c-col>
 
     </c-row>
