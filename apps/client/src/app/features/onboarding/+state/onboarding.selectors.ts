@@ -24,3 +24,12 @@ export const selectError = createSelector(
   onboardingState,
   (state) => state.error
 );
+
+export const isOnboardingCompleted = createSelector(
+  onboardingState,
+  (state) => {
+    return (
+      state.account !== null && state.account.billingInformation !== null && state.account.accountAdmin !== null
+    )
+  }
+);

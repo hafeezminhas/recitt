@@ -101,7 +101,7 @@ export interface IAddBillingInfoRequest {
 export interface IAddAccountAdminUserRequest {
   accountId: string;
   title: string;
-  preferredPronoun: string;
+  preferredPronouns: string;
   firstName: string;
   lastName: string;
   middleName?: string;
@@ -147,11 +147,11 @@ export interface IUKCompanyRegistration {
   companyName: string;
   companyNumber?: string; // Companies House registration number
   registrationType:
-    | 'sole_trader'
-    | 'partnership'
-    | 'limited_company'
-    | 'llp'
-    | 'charity';
+  | 'sole_trader'
+  | 'partnership'
+  | 'limited_company'
+  | 'llp'
+  | 'charity';
   registrationDate?: Date;
   vatNumber?: string; // UK VAT number (starts with GB)
 }

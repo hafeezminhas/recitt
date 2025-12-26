@@ -12,10 +12,22 @@ import { OnboardingFacade } from './+state/onboarding.facade';
   providedIn: 'root',
 })
 export class OnboardingGuard implements CanActivate {
-  constructor(private facade: OnboardingFacade, private router: Router) {}
+  constructor(private facade: OnboardingFacade, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
-    const targetStep = route.data['stepNumber'];
+    const targetStep = route.data['step'];
+
+    if (targetStep === 'completion') {
+      return this.facade.onboardingCompleted$.pipe(
+        take(1),
+        map((completed) => {
+          if (completed) {
+            return true;
+          }
+          return false;
+        })
+      );
+    }
 
     return this.facade.canAccessStep(targetStep).pipe(
       take(1),

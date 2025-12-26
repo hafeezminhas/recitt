@@ -1,17 +1,15 @@
 <div class="billing-info">
   @if(error$$()){
-  <c-alert color="danger"  >{{error$$()?.message}}</c-alert>
+  <c-alert color="danger">{{error$$()?.message}}</c-alert>
   }
   @if(account$$().accountAdmin){
-    <c-row class="gy-2 gx-1 ">
-      <c-col xs="12" md="6" class="px">
-        <c-col class="mb-3">
-          <app-info-tile
-            label="Contact Person"
-            [value]="account$$().billingInformation?.contactPerson">
-          </app-info-tile>
-        </c-col>
-        <!-- <c-col xs="12" md="6" class="px">
+  <c-row class="gy-2 gx-1 ">
+    <c-col xs="12" md="6" class="px">
+      <c-col class="mb-3">
+        <app-info-tile label="Contact Person" [value]="account$$().billingInformation?.contactPerson">
+        </app-info-tile>
+      </c-col>
+      <!-- <c-col xs="12" md="6" class="px">
           <app-info-tile
             label="Email"
             [value]="account$$().billingInformation?.email">
@@ -20,32 +18,24 @@
         <c-col class="mb-3">
           <app-info-tile label="Phone Number" [value]="account$$().billingInformation?.phone" />
         </c-col> -->
-      </c-col>
+    </c-col>
 
-    </c-row>
-    } @else{
-  <form [formGroup]="adminForm" cForm [validated]="submitted">
+  </c-row>
+  } @else{
+  <form [formGroup]="adminForm" cForm [validated]="submitted" novalidate>
     <c-row class="gx-6 px-4">
       <c-col xs="12" md="6" class="px">
         <div class="mb-3">
           <label cLabel for="title">Title</label>
-          <select
-            id="title"
-            formControlName="title"
-            cSelect
-            aria-label="Title" >
+          <select id="title" formControlName="title" cSelect aria-label="Title">
             @for (option of personTitleTypes; track option) {
             <option [value]="option.value">{{ option.label }}</option>
             }
           </select>
         </div>
         <div class="mb-3">
-          <label cLabel for="preferredPronoun">Preferred Pronoun</label>
-          <select
-            id="preferredPronoun"
-            formControlName="preferredPronoun"
-            cSelect
-            aria-label="preferredPronoun" >
+          <label cLabel for="preferredPronouns">Preferred Pronoun</label>
+          <select id="preferredPronouns" formControlName="preferredPronouns" cSelect aria-label="Preferred Pronouns">
             @for (option of preferredPronoun; track option) {
             <option [value]="option.value">{{ option.label }}</option>
             }
@@ -54,58 +44,64 @@
         <div class="mb-3">
           <label cLabel for="firstName">First Name</label>
           <input cFormControl id="firstName" placeholder="First Name" formControlName="firstName" required />
-          <c-form-feedback [valid]="f['firstName']?.valid && f['firstName']?.touched">Please provide the first name.</c-form-feedback>
+          <c-form-feedback [valid]="f['firstName']?.valid && f['firstName']?.touched">Please provide the first
+            name.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="middleName">Middle Name</label>
           <input cFormControl id="middleName" placeholder="Middle Name" formControlName="middleName" />
-          <c-form-feedback [valid]="f['middleName']?.valid && f['middleName']?.touched">Please provide the middle name.</c-form-feedback>
+          <c-form-feedback [valid]="f['middleName']?.valid && f['middleName']?.touched">Please provide the middle
+            name.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="lastName">Last Name</label>
           <input cFormControl id="lastName" placeholder="Last Name" formControlName="lastName" required />
-          <c-form-feedback [valid]="f['lastName']?.valid && f['lastName']?.touched">Please provide the last name.</c-form-feedback>
+          <c-form-feedback [valid]="f['lastName']?.valid && f['lastName']?.touched">Please provide the last
+            name.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="displayName">Display Name</label>
-          <input cFormControl id="displayName" placeholder="Display Name" formControlName="displayName"/>
-          <c-form-feedback [valid]="f['displayName']?.valid && f['displayName']?.touched">Please provide the display name.</c-form-feedback>
+          <input cFormControl id="displayName" placeholder="Display Name" formControlName="displayName" />
         </div>
         <div class="mb-3">
           <label cLabel for="dateOfBirth">Date of Birth</label>
-          <input
-            cFormControl
-            id="dateOfBirth"
-            type="date"
-            formControlName="dateOfBirth"
-            required
-          />
-          <c-form-feedback [valid]="f['dateOfBirth']?.valid && f['dateOfBirth']?.touched">Please provide DOB.</c-form-feedback>
+          <input cFormControl id="dateOfBirth" type="date" formControlName="dateOfBirth" required />
+          <c-form-feedback [valid]="f['dateOfBirth']?.valid && f['dateOfBirth']?.touched">Please provide
+            DOB.</c-form-feedback>
         </div>
       </c-col>
       <c-col xs="12" md="6" class="px">
         <div class="mb-3">
           <label cLabel for="email">Email Address</label>
           <input cFormControl id="email" placeholder="Email address" formControlName="email" required />
-          <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched">Please provide the email.</c-form-feedback>
+          <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched">Please provide the
+            email.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="phone">Phone Number</label>
           <input cFormControl id="phone" placeholder="+44(0)2082894332" formControlName="phone" required />
-          <c-form-feedback [valid]="f['phone']?.valid && f['phone']?.touched">Please provide the phone number.</c-form-feedback>
+          <c-form-feedback [valid]="f['phone']?.valid && f['phone']?.touched">Please provide the phone
+            number.</c-form-feedback>
         </div>
         <div class="mb-3">
           <label cLabel for="password">Password</label>
-          <input type="password" cFormControl id="password" placeholder="Password" formControlName="password" required />
-          <c-form-feedback [valid]="f['password']?.valid && f['password']?.touched" >Please provide the password.</c-form-feedback>
+          <input type="password" cFormControl id="password" placeholder="Password" formControlName="password"
+            required />
+          @if(f['password']?.errors){
+          <c-form-feedback [valid]="false">Please provide the
+            password.</c-form-feedback>
+          }
         </div>
         <div class="mb-3">
           <label cLabel for="confirmPassword">Confirm Password</label>
           <input type="password" cFormControl id="confirmPassword" formControlName="confirmPassword" required />
+          @if(f['confirmPassword']?.errors?.['required']) {
+          <c-form-feedback [valid]="false">Please
+            provide the confirm password.</c-form-feedback>
+          }
           @if(adminForm.errors?.['passwordMismatch']) {
           <c-form-feedback [valid]="false">Passwords do not match.</c-form-feedback>
           }
-          <c-form-feedback [valid]="f['confirmPassword']?.valid && f['confirmPassword']?.touched">Please provide the confirm passwordr.</c-form-feedback>
         </div>
       </c-col>
     </c-row>

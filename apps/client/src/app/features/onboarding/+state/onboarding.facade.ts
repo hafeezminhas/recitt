@@ -23,13 +23,19 @@ export class OnboardingFacade {
   currentStep$$ = this.store.selectSignal(
     fromOnboardingSelectors.getCurrentStep
   );
+  onboardingCompleted$ = this.store.select(
+    fromOnboardingSelectors.isOnboardingCompleted
+  );
+  onboardingCompleted$$ = this.store.selectSignal(
+    fromOnboardingSelectors.isOnboardingCompleted
+  );
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
   error$$ = this.store.selectSignal(fromOnboardingSelectors.selectError);
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   // Business Logic for Navigation
-  canAccessStep(step: number): Observable<boolean> {
+  canAccessStep(step: number | string): Observable<boolean> {
     return this.account$.pipe(
       map((account) => {
         switch (step) {
@@ -51,14 +57,15 @@ export class OnboardingFacade {
     return this.currentStep$.pipe(map((current) => current > step));
   }
 
+  nextStep(): void {
+    this.nextStepTrigger$.next();
+  }
+
+  // Actions dispatchers
   setCurrentStep(step: number): void {
     this.dispatch(
       OnboardingActions.setCurrentStep({ step: step as 1 | 2 | 3 })
     );
-  }
-
-  nextStep(): void {
-    this.nextStepTrigger$.next();
   }
 
   addAccount(payload: ICreateAccountRequest): void {

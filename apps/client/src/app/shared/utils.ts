@@ -68,8 +68,11 @@ export function matchPasswords(
   confirmKey: string
 ): ValidatorFn {
   return (formGroup: AbstractControl): ValidationErrors | null => {
-    const password = formGroup.get(passwordKey)?.value;
-    const confirmPassword = formGroup.get(confirmKey)?.value;
+    const { password, confirmPassword } = formGroup.value;
+
+    if (!password || !confirmPassword) {
+      return null;
+    }
 
     if (password !== confirmPassword) {
       formGroup.get(confirmKey)?.setErrors({ passwordMismatch: true });

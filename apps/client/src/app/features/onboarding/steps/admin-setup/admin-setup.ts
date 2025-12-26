@@ -77,7 +77,7 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
     {
       accountId: '',
       title: '',
-      preferredPronoun: '',
+      preferredPronouns: '',
       firstName: '',
       lastName: '',
       middleName: '',
@@ -107,7 +107,7 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
     private router: Router,
     private dialog: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) {}
+  ) { }
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.adminForm.controls;
@@ -118,7 +118,7 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
     this.adminForm.patchValue({
       accountId: this.account$$().id,
       title: PersonTitle.MR,
-      preferredPronoun: PersonPronoun.HE,
+      preferredPronouns: PersonPronoun.HE,
       firstName: 'John',
       lastName: 'Doe',
       middleName: 'William',
@@ -155,14 +155,12 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
 
   private submitForm(): void {
     this.submitted = true;
-    console.log(this.adminForm.errors);
-
     if (this.adminForm.valid) {
       const adminDetails = this.adminForm.value as IAddAccountAdminUserRequest;
       this.onboardingFacade.setupAdminUser({
         ...adminDetails,
         accountId: this.account$$().id,
-      }); // fire addAccount action through facade
+      });
     }
   }
 }

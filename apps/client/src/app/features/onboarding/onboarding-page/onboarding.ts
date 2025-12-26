@@ -34,11 +34,12 @@ import { OnboardingRoutes } from '../onboarding.routes';
   styleUrl: './onboarding.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Onboarding {
+export class OnboardingComponent {
   readonly icons = freeSet;
   currentStep$$ = this.onboardingFacade.currentStep$$;
   isLastStep$$ = computed(() => this.currentStep$$() === 3);
   isLoading$$ = this.onboardingFacade.isLoading$$;
+  onboardingCompleted$$ = this.onboardingFacade.onboardingCompleted$$;
   steps = [
     {
       number: 1,
@@ -60,7 +61,23 @@ export class Onboarding {
   constructor(
     private router: Router,
     private onboardingFacade: OnboardingFacade
-  ) {}
+  ) { }
+
+  isStepCompleted(step: number): boolean {
+    switch (step) {
+      case 1:
+        return this.onboardingFacade.account$$() !== null;
+      case 2:
+        return (
+          this.onboardingFacade.account$$() !== null &&
+          this.onboardingFacade.account$$()?.billingInformation !== null
+        );
+      case 3:
+        return this.onboardingFacade.onboardingCompleted$$();
+      default:
+        return false;
+    }
+  }
 
   canAccess(step: number): Observable<boolean> {
     return this.onboardingFacade.canAccessStep(step);

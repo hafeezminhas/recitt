@@ -255,7 +255,7 @@ export class AddAccountAdminUserDto implements IAddAccountAdminUserRequest {
   @ApiProperty({ example: PersonPronoun.HE })
   @IsString()
   @IsNotEmpty()
-  preferredPronoun: PersonPronoun;
+  preferredPronouns: PersonPronoun;
 
   @ApiProperty({ example: 'John' })
   @IsString()
