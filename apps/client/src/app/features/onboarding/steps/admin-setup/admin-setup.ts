@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, HostListener, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -92,16 +92,6 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
     [matchPasswords('password', 'confirmPassword')]
   );
   submitted = false;
-
-  @HostListener('window:beforeunload', ['$event'])
-  handleBeforeUnload(event: BeforeUnloadEvent) {
-    if (!this.adminForm.dirty || !this.adminForm.touched) {
-      return;
-    }
-
-    event.preventDefault();
-    event.returnValue = '';
-  }
 
   constructor(
     private router: Router,

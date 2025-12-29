@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, HostListener, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -76,21 +76,11 @@ export class BillingInfo implements OnInit, CanComponentDeactivate {
   );
   submitted = false;
 
-  @HostListener('window:beforeunload', ['$event'])
-  handleBeforeUnload(event: BeforeUnloadEvent) {
-    if (!this.billingForm.dirty || !this.billingForm.touched) {
-      return;
-    }
-
-    event.preventDefault();
-    event.returnValue = '';
-  }
-
   constructor(
     private router: Router,
     private dialog: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) {}
+  ) { }
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.billingForm.controls;

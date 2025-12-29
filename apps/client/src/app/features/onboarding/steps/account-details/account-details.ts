@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -79,16 +79,6 @@ export class AccountDetails implements OnInit {
     AccountFormValidationSchema
   );
   submitted = false;
-
-  @HostListener('window:beforeunload', ['$event'])
-  handleBeforeUnload(event: BeforeUnloadEvent) {
-    if (!this.accountForm.dirty || !this.accountForm.touched) {
-      return;
-    }
-
-    event.preventDefault();
-    event.returnValue = '';
-  }
 
   constructor(
     private router: Router,
