@@ -35,7 +35,7 @@
                 <svg [cIcon]="icons.cilChevronCircleLeftAlt" size="lg" title="Shield Icon"></svg>
                 Back
               </button>
-              @if((canAccess(currentStep$$() + 1 ) | async) === false) {
+              @if(!onboardingCompleted$$()) {
               <button class="btn btn-primary" size="lg" (click)="nextStep()">
                 <svg [cIcon]="icons.cilChevronCircleRightAlt" size="lg" title="Shield Icon"></svg>
                 {{isLastStep$$() ? 'Complete Onboarding' : 'Next' }}

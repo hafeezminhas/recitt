@@ -61,7 +61,7 @@ export class OnboardingComponent {
   constructor(
     private router: Router,
     private onboardingFacade: OnboardingFacade
-  ) { }
+  ) {}
 
   isStepCompleted(step: number): boolean {
     switch (step) {

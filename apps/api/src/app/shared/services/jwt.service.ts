@@ -81,9 +81,9 @@ export class JwtService {
     return `localhost:3000/activate-account/${token}`;
   }
 
-  async createAccountOnboadrding(onboadringId: string): Promise<string> {
+  async createAccountOnboarding(accountId: string): Promise<string> {
     return await this.jwtService.signAsync(
-      { sub: onboadringId, typ: 'onboarding' },
+      { sub: accountId, typ: 'onboarding' },
       {
         privateKey: ACCOUNT_ONBOARDING_SECRET,
         expiresIn: jwtTimeToSeconds(ACCOUNT_ONBOARDING_EXPIRY),

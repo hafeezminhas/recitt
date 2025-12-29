@@ -6,14 +6,20 @@ import { AccountRepository } from '@database/repositories/account.repository';
 import { BillingRepository } from '@database/repositories/billing.repository';
 import { UserRepository } from '@database/repositories/user.repository';
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtService } from '@shared/services/jwt.service';
 import { AccountController } from './account.controller';
 import { AccountService } from './account.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Account, Billing, Note, User])],
+  imports: [
+    JwtModule.register({}),
+    TypeOrmModule.forFeature([Account, Billing, Note, User]),
+  ],
   controllers: [AccountController],
   providers: [
+    JwtService,
     AccountService,
     AccountRepository,
     BillingRepository,

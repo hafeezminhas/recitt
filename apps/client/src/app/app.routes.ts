@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
 import { provideOnboardingState } from './features/onboarding/+state/onboarding.state';
 
+// export const onboardingOnLoadResolver: ResolveFn<any> = () => {
+//   const onboardingService = inject(OnboardingService);
+//   return onboardingService.getOnboardingOnLoad();
+// };
+
 export const routes: Routes = [
   {
     path: '',
@@ -108,9 +113,7 @@ export const routes: Routes = [
   },
   {
     path: 'onboarding',
-    providers: [
-      provideOnboardingState(),
-    ],
+    providers: [provideOnboardingState()],
     loadChildren: () =>
       import('./features/onboarding/onboarding.routes').then(
         (m) => m.ONBOARDING_FEATURE_ROUTES

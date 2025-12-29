@@ -38,6 +38,7 @@ export const envSchema = Joi.object({
     .default('1.0'),
 
   // Sendgrid Config
+  ACCOUNT_ONBOARDING_COOKIE: Joi.string().required(),
   ACCOUNT_ONBOARDING_SECRET: Joi.string().min(8).required(),
   ACCOUNT_ONBOARDING_EXPIRY: Joi.string(),
   SENDGRID_SENDER: Joi.string().email().required(),

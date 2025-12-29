@@ -2,8 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { IAccountResponse } from '@recitt/types';
-import { normalizeError } from '@shared/utils';
+import {
+  IAccountResponse,
+  IAccountResponseWithBillingInfo,
+} from '@recitt/types';
+import { filterNullOrUndefined, normalizeError } from '@shared/utils';
 import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { OnboardingRoutes } from '../onboarding.routes';
 import { OnboardingService } from '../onboarding.service';
@@ -17,13 +20,29 @@ export class OnboardingEffects {
     private onboardingService: OnboardingService
   ) {}
 
+  /**
+   * Reload onboarding effects
+   */
+
   loadAccount$ = createEffect(() =>
     this.actions$.pipe(
       ofType(OnboardingActions.loadAccount),
-      mergeMap(({ accountId }) =>
-        this.onboardingService.getAccount(accountId).pipe(
-          map((account: IAccountResponse) =>
-            OnboardingActions.loadAccountSuccess({ account })
+      mergeMap(() =>
+        this.onboardingService.loadOnboarding().pipe(
+          map(
+            (
+              account: IAccountResponse | IAccountResponseWithBillingInfo | null
+            ) => {
+              let currentStep: 1 | 2 | 3 = 1;
+
+              if (account !== null && account.billingInformation) {
+                currentStep = 3;
+              }
+              return OnboardingActions.loadAccountSuccess({
+                account,
+                currentStep,
+              });
+            }
           ),
           catchError((error) =>
             of(OnboardingActions.loadAccountFailure({ error }))
@@ -32,6 +51,30 @@ export class OnboardingEffects {
       )
     )
   );
+
+  loadAccountSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(OnboardingActions.loadAccountSuccess),
+        filterNullOrUndefined(),
+        map(({ account }) => account),
+        tap((account: IAccountResponse | IAccountResponseWithBillingInfo) => {
+          if (account) {
+            this.router.navigate([
+              `/onboarding`,
+              account.billingInformation
+                ? OnboardingRoutes.AdminUser
+                : OnboardingRoutes.BillingInformation,
+            ]);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
+  /**
+   * Add account effects
+   */
 
   addAccount$ = createEffect(() =>
     this.actions$.pipe(

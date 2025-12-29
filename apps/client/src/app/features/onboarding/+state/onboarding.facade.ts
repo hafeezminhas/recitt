@@ -32,7 +32,7 @@ export class OnboardingFacade {
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
   error$$ = this.store.selectSignal(fromOnboardingSelectors.selectError);
 
-  constructor(private store: Store) { }
+  constructor(private store: Store) {}
 
   // Business Logic for Navigation
   canAccessStep(step: number | string): Observable<boolean> {
@@ -66,6 +66,10 @@ export class OnboardingFacade {
     this.dispatch(
       OnboardingActions.setCurrentStep({ step: step as 1 | 2 | 3 })
     );
+  }
+
+  loadAccount(): void {
+    this.dispatch(OnboardingActions.loadAccount);
   }
 
   addAccount(payload: ICreateAccountRequest): void {

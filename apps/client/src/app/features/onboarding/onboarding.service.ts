@@ -18,10 +18,10 @@ export class OnboardingService {
 
   constructor(private dataService: DataService) {}
 
-  getAccount(accountId: string): Observable<IAccountResponse> {
-    return this.dataService.getData<IAccountResponse>(
-      `${this.apiPrefix}/${accountId}`
-    );
+  loadOnboarding() {
+    return this.dataService
+      .getData<IAccountResponseWithAdminUser>(`${this.apiPrefix}`, {})
+      .pipe(take(1));
   }
 
   addAccount(payload: ICreateAccountRequest): Observable<IAccountResponse> {

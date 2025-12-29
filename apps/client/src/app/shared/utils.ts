@@ -8,7 +8,15 @@ import {
   ValidatorFn,
 } from '@angular/forms';
 import { ApiError } from '@recitt/types';
+import { filter } from 'rxjs/operators';
 import { TypedFormGroup, ValidatorModel } from './types/to-form-types';
+
+export function filterNullOrUndefined<T>() {
+  return filter(
+    (value: T | null | undefined): value is T =>
+      value !== null && value !== undefined
+  );
+}
 
 export function createTypedFormGroup<T>(
   value: T,

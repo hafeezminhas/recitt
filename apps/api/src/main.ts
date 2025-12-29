@@ -5,12 +5,14 @@
 
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 import { setupSwagger } from './app/config/swagger.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
+  app.use(cookieParser());
   app.setGlobalPrefix(globalPrefix);
   // enable DTO validation globally
   app.useGlobalPipes(

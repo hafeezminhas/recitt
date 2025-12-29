@@ -17,13 +17,11 @@ export const setCurrentStep = createAction(
 export const resetOnboarding = createAction('[Onboarding] Reset Onboarding');
 
 // Onboarding account loading actions
-export const loadAccount = createAction(
-  '[Onboarding] Load Account',
-  props<{ accountId: string }>()
-);
+export const loadAccount = createAction('[Onboarding] Load Account');
+
 export const loadAccountSuccess = createAction(
   '[Onboarding] Load Account Success',
-  props<{ account: IAccountResponse }>()
+  props<{ account?: IAccountResponse; currentStep: 1 | 2 | 3 }>()
 );
 export const loadAccountFailure = createAction(
   '[Onboarding] Load Account Failure',

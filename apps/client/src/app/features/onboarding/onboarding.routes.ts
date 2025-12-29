@@ -1,5 +1,8 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { ResolveFn, Routes } from '@angular/router';
 import { UnsavedChangesGuard } from '@shared/guards/unsaved-changes.guard';
+import { of } from 'rxjs';
+import { OnboardingFacade } from './+state/onboarding.facade';
 import { OnboardingComponent } from './onboarding-page/onboarding';
 import { OnboardingGuard } from './onboarding.guard';
 import { AccountDetails } from './steps/account-details/account-details';
@@ -14,21 +17,32 @@ export enum OnboardingRoutes {
   Completion = 'completion',
 }
 
-export const stepSequence = [
+export const onboardingRoutesList: string[] = [
   OnboardingRoutes.AccountDetails,
   OnboardingRoutes.BillingInformation,
   OnboardingRoutes.AdminUser,
-  OnboardingRoutes.Completion,
 ];
+
+export const onboardingOnLoadResolver: ResolveFn<any> = () => {
+  const onboardingFacade = inject(OnboardingFacade);
+  if (!onboardingFacade.onboardingCompleted$$()) {
+    onboardingFacade.loadAccount();
+  }
+  return of(true);
+};
 
 export const ONBOARDING_FEATURE_ROUTES: Routes = [
   {
     path: '',
     component: OnboardingComponent,
+    resolve: {
+      account: onboardingOnLoadResolver,
+    },
     children: [
       {
         path: OnboardingRoutes.AccountDetails,
         component: AccountDetails,
+        canActivate: [OnboardingGuard],
         canDeactivate: [UnsavedChangesGuard],
         data: { step: 1, nextStep: OnboardingRoutes.BillingInformation },
       },
@@ -51,7 +65,7 @@ export const ONBOARDING_FEATURE_ROUTES: Routes = [
         component: CompletionComponent,
         canActivate: [OnboardingGuard],
         data: { step: 'completion' },
-      }
+      },
     ],
   },
 ];
