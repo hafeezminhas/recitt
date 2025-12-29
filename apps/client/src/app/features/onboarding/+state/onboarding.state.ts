@@ -37,10 +37,10 @@ export const onboardingReducer = createReducer(
   })),
   on(
     OnboardingActions.loadAccountSuccess,
-    (state, { account, currentStep }) => ({
+    (state, { account }) => ({
       ...state,
       account: account ?? null,
-      currentStep,
+      currentStep: account ? (account.billingInformation ? 3 : 2) : 1,
       loading: false,
     })
   ),

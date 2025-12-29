@@ -21,7 +21,7 @@ export const loadAccount = createAction('[Onboarding] Load Account');
 
 export const loadAccountSuccess = createAction(
   '[Onboarding] Load Account Success',
-  props<{ account?: IAccountResponse; currentStep: 1 | 2 | 3 }>()
+  props<{ account: IAccountResponse; }>()
 );
 export const loadAccountFailure = createAction(
   '[Onboarding] Load Account Failure',
