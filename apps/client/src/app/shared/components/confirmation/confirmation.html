@@ -1,0 +1,15 @@
+<div class="modal-header">
+  @if (data.icon) {
+  <svg [cIcon]="data.icon" width="25" title="Confirmation Icon"></svg>
+  } @else {
+  <svg [cIcon]="icons.cilShieldAlt" width="25" title="Shield Icon"></svg>
+  }
+  <h4 class="modal-title h5 mx-2" id="modal-basic-title">{{data.title}}</h4>
+</div>
+<div class="modal-body px-4 py-0">
+  <p>{{ data.message }}</p>
+</div>
+<div class="modal-footer border-0 justify-content-end">
+  <button class="btn btn-light" (click)="activeModal.close(false)">{{ data.cancelText }}</button>
+  <button class="btn btn-primary" (click)="activeModal.close(true)">{{ data.confirmText }}</button>
+</div>

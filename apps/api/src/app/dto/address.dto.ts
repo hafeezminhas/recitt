@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IAddress } from '@recitt/types';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class AddressDto {
+export class AddressDto implements IAddress {
   @ApiProperty({ example: '108 Oldham Court' })
   @IsString()
   @IsNotEmpty()

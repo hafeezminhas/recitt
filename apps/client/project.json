@@ -11,6 +11,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/client",
+        "baseHref": "/",
         "browser": "apps/client/src/main.ts",
         "polyfills": ["zone.js", "@angular/localize/init"],
         "tsConfig": "apps/client/tsconfig.app.json",

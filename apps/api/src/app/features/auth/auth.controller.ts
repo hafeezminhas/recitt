@@ -23,7 +23,7 @@ import {
   UpdatePasswordDto,
   UpdateUserRequestDto,
   UserSignupRequestDto,
-} from '@recitt/types';
+} from '@dto/user.dto';
 import { AuthService } from './auth.service';
 import {
   forgotPasswordSwagger,

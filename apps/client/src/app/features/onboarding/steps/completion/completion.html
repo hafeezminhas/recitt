@@ -1,0 +1,43 @@
+<c-row class="justify-content-center my-5">
+  <c-col md="8" lg="6">
+    <c-card class="text-center mb-4">
+      <c-card-header>Welcome</c-card-header>
+      <c-card-body>
+        <h2 class="mb-2">Welcome{{ account$$()?.accountAdmin?.firstName ? (', ' + account$$()?.accountAdmin?.firstName)
+          :
+          '' }}!</h2>
+        <p class="lead">Your account <strong>{{ account$$()?.name }}</strong> has been
+          successfully created.</p>
+
+        <p class="text-muted">We've set up the essentials — You can now check your email and activate your account.</p>
+        <p>Once you have activated your account you can start the admin setup including creating users for your
+          organization.</p>
+
+        <c-row class="g-3 justify-content-center my-4">
+          <c-col xs="12" sm="6">
+            <a cButton color="primary" class="w-100" routerLink="/dashboard">Go to Dashboard</a>
+          </c-col>
+          <c-col xs="12" sm="6">
+            <a cButton color="secondary" class="w-100" routerLink="/login">Login</a>
+          </c-col>
+        </c-row>
+
+        <div class="text-start mt-4">
+          <h5>Next steps</h5>
+          <ul>
+            <li>Verify your email: <strong>{{ account$$()?.billingInformation?.email || '—' }}</strong></li>
+            <li>Complete billing details in <em>Account settings</em>.</li>
+            <li>Invite team members and assign roles.</li>
+          </ul>
+        </div>
+      </c-card-body>
+    </c-card>
+
+    <c-card>
+      <c-card-body class="small text-center text-muted">
+        Need help? Visit our <a href="/help">Help Centre</a> or email <a
+          href="mailto:support@recitt.com">support@recitt.com</a>.
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

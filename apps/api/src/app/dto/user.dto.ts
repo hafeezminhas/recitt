@@ -1,4 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IAddress } from '@recitt/types';
+import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
 import {
   IsDateString,
@@ -8,8 +10,6 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { Address } from '../types/common';
-import { Match } from '../utils';
 import { AddressDto } from './address.dto';
 
 export interface PasswordReset {
@@ -102,7 +102,7 @@ export class UpdateUserRequestDto {
   displayName?: string;
   dateOfBirth?: Date;
   phone?: string;
-  address?: Address;
+  address?: IAddress;
   password?: string;
   isDefaultAvatar?: boolean;
   avatar?: Buffer;
@@ -132,7 +132,7 @@ export class UserResponseDto {
   username: string;
   email: string;
   phone?: string;
-  address?: Address;
+  address?: IAddress;
   role: string;
   avatar?: Buffer;
   avatarMimeType?: string;
@@ -156,7 +156,7 @@ export class UserProfileDto {
   username: string;
   email: string;
   phone?: string;
-  address?: Address;
+  address?: IAddress;
   role: string;
   avatar?: Buffer;
   avatarMimeType?: string;

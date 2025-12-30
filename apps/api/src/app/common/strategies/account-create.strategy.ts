@@ -1,6 +1,6 @@
+import { CreateAccountDto } from '@dto/account.dto';
 import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { CreateAccountDto } from '@recitt/types';
 import { Strategy } from 'passport-local';
 
 @Injectable()

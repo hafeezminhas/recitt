@@ -1,0 +1,138 @@
+<div class="billing-info">
+  @if(error$$()){
+  <c-alert color="danger"  >{{error$$()?.message}}</c-alert>
+  }
+  @if(account$$().billingInformation){
+    <c-row class="gy-2 gx-1 ">
+      <c-col xs="12" md="6" class="px">
+        <c-col class="mb-3">
+          <app-info-tile
+            label="Contact Person"
+            [value]="account$$().billingInformation?.contactPerson">
+          </app-info-tile>
+        </c-col>
+        <c-col xs="12" md="6" class="px">
+          <app-info-tile
+            label="Email"
+            [value]="account$$().billingInformation?.email">
+          </app-info-tile>
+        </c-col>
+        <c-col class="mb-3">
+          <app-info-tile label="Phone Number" [value]="account$$().billingInformation?.phone" />
+        </c-col>
+      </c-col>
+
+    </c-row>
+    } @else{
+  <form [formGroup]="billingForm" cForm [validated]="submitted">
+    <c-row class="gx-6 px-4">
+      <c-col xs="12" md="6" class="px">
+        <div class="mb-3">
+          <label cLabel for="contactPerson">Contact Person</label>
+          <input cFormControl id="contactPerson" placeholder="Contact person" formControlName="contactPerson" required />
+          <c-form-feedback [valid]="f['contactPerson']?.valid && f['contactPerson']?.touched">Please provide the contact person.</c-form-feedback>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="email">Email Address</label>
+          <input cFormControl id="email" placeholder="Email address" formControlName="email" required />
+          <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched">Please provide the email.</c-form-feedback>
+        </div>
+        <div class="mb-3">
+          <label cLabel for="phone">Phone Number</label>
+          <input cFormControl id="phone" placeholder="+44(0)2082894332" formControlName="phone" required />
+          <c-form-feedback [valid]="f['phone']?.valid && f['phone']?.touched">Please provide the phone number.</c-form-feedback>
+        </div>
+        <div class="mb-3">
+          <input
+            cFormCheckInput
+            type="checkbox"
+            id="sameAsBusinessAddress"
+            formControlName="sameAsBusinessAddress"
+          />
+          <label cFormCheckLabel for="sameAsBusinessAddress" type="checkbox"
+            >Same as business address?</label
+          >
+        </div>
+        @if(!billingForm.get('sameAsBusinessAddress')?.value) {
+        <fieldset formGroupName="address">
+          <div class="mb-3">
+            <label cLabel for="addressLine1">Building</label>
+            <input
+              cFormControl
+              id="addressLine1"
+              placeholder="Street address, P.O. box"
+              formControlName="building"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="addressLine2">Street</label>
+            <input
+              cFormControl
+              id="addressLine2"
+              placeholder="Apartment, suite, unit, building, floor"
+              formControlName="street"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="town">Town</label>
+            <input
+              cFormControl
+              id="town"
+              placeholder="Town or city"
+              formControlName="town"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="county">County</label>
+            <input
+              cFormControl
+              id="county"
+              placeholder="County or state"
+              formControlName="county"
+            />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="postcode">Postcode</label>
+            <input
+              cFormControl
+              id="postcode"
+              placeholder="Postcode or ZIP code"
+              formControlName="postcode"
+            />
+          </div>
+        </fieldset>
+        }
+
+      </c-col>
+      <c-col xs="12" md="6" class="px">
+        <fieldset formGroupName="bankDetails">
+          <div class="mb-3">
+            <label cLabel for="accountHolderName">Account Holder Name</label>
+            <input cFormControl id="accountHolderName" placeholder="Account holder name" formControlName="accountHolderName" required />
+            <c-form-feedback [valid]="f['bankDetails']?.get('accountHolderName')?.valid && f['bankDetails']?.get('accountHolderName')?.touched">Please provide the account holder name.</c-form-feedback>
+          </div>
+          <div class="mb-3">
+            <label cLabel for="accountNumber">Account Number</label>
+            <input cFormControl id="accountNumber" placeholder="Account number" formControlName="accountNumber" required />
+            <c-form-feedback [valid]="f['bankDetails']?.get('accountNumber')?.valid && f['bankDetails']?.get('accountNumber')?.touched">Please provide the account number.</c-form-feedback>
+          </div>
+          <div class="mb-3">
+            <label cLabel for="sortCode">Sort Code</label>
+            <input cFormControl id="sortCode" placeholder="Sort code" formControlName="sortCode" required />
+            <c-form-feedback [valid]="f['bankDetails']?.get('sortCode')?.valid && f['bankDetails']?.get('sortCode')?.touched">Please provide the sort code.</c-form-feedback>
+          </div>
+          <div class="mb-3">
+            <label cLabel for="iban">IBAN</label>
+            <input cFormControl id="iban" placeholder="IBAN" formControlName="iban" />
+          </div>
+          <div class="mb-3">
+            <label cLabel for="bic">BIC</label>
+            <input cFormControl id="bic" placeholder="BIC" formControlName="bic" required />
+            <c-form-feedback [valid]="f['bankDetails']?.get('bic')?.valid && f['bankDetails']?.get('bic')?.touched">Please provide the BIC.</c-form-feedback>
+          </div>
+        </fieldset>
+      </c-col>
+    </c-row>
+  </form>
+  }
+</div>

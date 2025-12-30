@@ -1,17 +1,8 @@
-import {
-  Address,
-  BillingFrequency,
-  PaymentMethod,
-  UKBankAccount,
-} from '@recitt/types';
+import { IAddress, IUKBankAccount } from '@recitt/types';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { Account } from './account.entity';
 import { BaseEntity } from './base.entity';
 
-/**
- * BillingEntity - UK Business Billing Information
- * Stores comprehensive billing and payment details for UK-based businesses
- */
 @Entity('billing')
 export class Billing extends BaseEntity {
   @OneToOne(() => Account, (account) => account.billingInformation, {
@@ -20,13 +11,12 @@ export class Billing extends BaseEntity {
   })
   @JoinColumn({ name: 'accountId' })
   account: Account;
-  // ==================== Company Information ====================
 
   @Column({ default: true })
-  sameAsBusinessAddress: boolean; // Billing address same as business address
+  sameAsBusinessAddress: boolean;
 
   @Column({ type: 'jsonb', nullable: true })
-  address?: Address;
+  address?: IAddress;
 
   @Column()
   contactPerson?: string;
@@ -37,29 +27,6 @@ export class Billing extends BaseEntity {
   @Column()
   phone: string;
 
-  @Column({ nullable: true })
-  alternatePhone?: string;
-
   @Column({ type: 'jsonb' })
-  bankDetails: UKBankAccount;
-
-  // ==================== Payment & Billing Settings ====================
-
-  @Column({ default: PaymentMethod.BANK_TRANSFER })
-  preferredPaymentMethod: string;
-
-  @Column({ default: BillingFrequency.MONTHLY })
-  invoicingFrequency: string;
-
-  @Column({ default: 30 })
-  paymentTermsDays: number; // Net-30, Net-60, etc.
-
-  @Column({ default: true })
-  emailInvoices: boolean;
-
-  @Column({ nullable: true })
-  invoicingEmail?: string; // Email for sending invoices
-
-  @Column({ default: false })
-  autoPaymentEnabled: boolean;
+  bankDetails: IUKBankAccount;
 }

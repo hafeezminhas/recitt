@@ -1,0 +1,23 @@
+<div class="modal-header" [ngClass]="'bg-' + (data.type || 'light')">
+  <h4 class="modal-title">
+    {{ data.title }}
+  </h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body" [class.scrollable-content]="data.mode === 'agreement'">
+  <div class="d-flex align-items-start">
+    <i *ngIf="data.icon" [class]="data.icon + ' me-3 fs-3 text-' + data.type"></i>
+    <div [innerHTML]="data.message"></div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button *ngIf="data.mode !== 'alert'" type="button" class="btn btn-outline-secondary"
+    (click)="activeModal.close(false)">
+    {{ data.cancelText || 'Cancel' }}
+  </button>
+  <button type="button" [class]="'btn btn-' + (data.type || 'primary')" (click)="activeModal.close(true)">
+    {{ data.confirmText || 'OK' }}
+  </button>
+</div>

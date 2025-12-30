@@ -1,4 +1,10 @@
 import { Routes } from '@angular/router';
+import { provideOnboardingState } from './features/onboarding/+state/onboarding.state';
+
+// export const onboardingOnLoadResolver: ResolveFn<any> = () => {
+//   const onboardingService = inject(OnboardingService);
+//   return onboardingService.getOnboardingOnLoad();
+// };
 
 export const routes: Routes = [
   {
@@ -103,6 +109,17 @@ export const routes: Routes = [
       ),
     data: {
       title: 'Register Page',
+    },
+  },
+  {
+    path: 'onboarding',
+    providers: [provideOnboardingState()],
+    loadChildren: () =>
+      import('./features/onboarding/onboarding.routes').then(
+        (m) => m.ONBOARDING_FEATURE_ROUTES
+      ),
+    data: {
+      title: 'Customer Onboarding',
     },
   },
   { path: '**', redirectTo: 'dashboard' },

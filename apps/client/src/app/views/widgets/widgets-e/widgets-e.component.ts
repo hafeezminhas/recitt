@@ -5,13 +5,13 @@ import {
   Component,
   inject,
 } from '@angular/core';
-import { getStyle } from '@coreui/utils';
-import { ChartjsComponent } from '@coreui/angular-chartjs';
 import {
   ColComponent,
   RowComponent,
   WidgetStatEComponent,
 } from '@coreui/angular';
+import { ChartjsComponent } from '@coreui/angular-chartjs';
+import { getStyle } from '@coreui/utils';
 
 @Component({
   selector: 'app-widgets-e',
@@ -150,12 +150,12 @@ export class WidgetsEComponent implements AfterContentInit {
   }
 
   getDayName(shift = 0) {
-    // @ts-ignore
+    const nav = navigator as any;
     const locale =
-      navigator.language ??
-      navigator.userLanguage ??
-      navigator.systemLanguage ??
-      navigator.browserLanguage ??
+      nav.language ??
+      nav.userLanguage ??
+      nav.systemLanguage ??
+      nav.browserLanguage ??
       'en-US';
     const baseDate = new Date(Date.UTC(2000, 1, 0)); // Monday
     baseDate.setDate(baseDate.getDate() + shift);

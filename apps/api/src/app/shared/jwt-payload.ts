@@ -1,4 +1,4 @@
-import { Address } from '@recitt/types';
+import { IAddress } from '@recitt/types';
 
 export type JwtPayload = {
   sub: string; // userId
@@ -7,6 +7,6 @@ export type JwtPayload = {
   middleName?: string;
   lastName: string;
   email: string;
-  address: Address;
+  address: IAddress;
   role: string;
 };

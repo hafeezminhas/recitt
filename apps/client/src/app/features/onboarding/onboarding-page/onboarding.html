@@ -1,0 +1,51 @@
+<div class="bg-light dark:bg-transparent min-vh-100 d-flex flex-row mt-12">
+  <c-container>
+    <c-row class="justify-content-center mt-4">
+      <c-col lg="10" md="12" xl="9">
+        <c-card class="mx-4">
+          @if(isLoading$$()){
+          <c-progress class="progress-sliding" [thin]="true">
+            <c-progress-bar color="primary" [value]="100"></c-progress-bar>
+          </c-progress>
+          }
+          <c-card-body class="p-4">
+            @if(onboardingCompleted$$() === false) {
+            <nav class="stepper-header">
+              @for (step of steps; track step.number) {
+              <a class="step-item" [routerLink]="step.path? ['/onboarding', step.path] : ['/onboarding']"
+                routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                [class.disabled]="(canAccess(step.number) | async) === false"
+                [class.completed]="isStepCompleted(step.number)">
+                <div class="step-badge">
+                  <span>{{ step.number }}</span>
+                </div>
+
+                <span class="step-label">{{ step.label }}</span>
+              </a>
+              }
+            </nav>
+            }
+            <main class="step-container">
+              <router-outlet />
+            </main>
+            @if(onboardingCompleted$$() === false) {
+            <hr class="mx-4" />
+            <div class="step-controls mx-4 mt-4 text-end d-flex justify-content-between">
+              <button class="btn btn-secondary" size="lg" [disabled]="currentStep$$() === 1" (click)="goBack()">
+                <svg [cIcon]="icons.cilChevronCircleLeftAlt" size="lg" title="Shield Icon"></svg>
+                Back
+              </button>
+              @if(!onboardingCompleted$$()) {
+              <button class="btn btn-primary" size="lg" (click)="nextStep()">
+                <svg [cIcon]="icons.cilChevronCircleRightAlt" size="lg" title="Shield Icon"></svg>
+                {{isLastStep$$() ? 'Complete Onboarding' : 'Next' }}
+              </button>
+              }
+            </div>
+            }
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

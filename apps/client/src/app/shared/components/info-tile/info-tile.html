@@ -1,0 +1,10 @@
+<div class="info-tile">
+  <div class="info-label">{{ label() }}</div>
+  @if(value()) {
+  <div class="info-value">{{ value() }}</div>
+  } @else {
+    <div class="info-value">
+      <ng-content></ng-content>
+    </div>
+  }
+</div>

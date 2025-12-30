@@ -20,7 +20,7 @@ import {
   UpdatePasswordDto,
   UpdateUserRequestDto,
   UserSignupRequestDto,
-} from '@recitt/types';
+} from '@dto/user.dto';
 import { JwtService } from '@shared/services/jwt.service';
 import { FindOneOptions } from 'typeorm';
 import { generateOTP } from './auth.utils';
