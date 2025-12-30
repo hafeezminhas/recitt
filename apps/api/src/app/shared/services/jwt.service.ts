@@ -12,6 +12,8 @@ const {
   ACCOUNT_ACTIVATION_TOKEN_EXPIRY,
   ACCOUNT_ONBOARDING_SECRET,
   ACCOUNT_ONBOARDING_EXPIRY,
+  ACCOUNT_ACTIVATION_SECRET,
+  ACCOUNT_ACTIVATION_EXPIRY,
 } = process.env;
 
 @Injectable()
@@ -87,6 +89,18 @@ export class JwtService {
       {
         privateKey: ACCOUNT_ONBOARDING_SECRET,
         expiresIn: jwtTimeToSeconds(ACCOUNT_ONBOARDING_EXPIRY),
+        issuer: 'Recitt API',
+        audience: 'www.recitt.com',
+      }
+    );
+  }
+
+  async createAccountActivation(accountId: string): Promise<string> {
+    return await this.jwtService.signAsync(
+      { sub: accountId, typ: 'activation' },
+      {
+        privateKey: ACCOUNT_ACTIVATION_SECRET,
+        expiresIn: jwtTimeToSeconds(ACCOUNT_ACTIVATION_EXPIRY),
         issuer: 'Recitt API',
         audience: 'www.recitt.com',
       }

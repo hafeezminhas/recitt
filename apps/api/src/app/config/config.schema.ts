@@ -37,10 +37,14 @@ export const envSchema = Joi.object({
     .pattern(/^\d+(?:\.\d+)*$/)
     .default('1.0'),
 
-  // Sendgrid Config
+  // Customer Onboarding
   ACCOUNT_ONBOARDING_COOKIE: Joi.string().required(),
   ACCOUNT_ONBOARDING_SECRET: Joi.string().min(8).required(),
   ACCOUNT_ONBOARDING_EXPIRY: Joi.string(),
+  ACCOUNT_ACTIVATION_SECRET: Joi.string().required(),
+  ACCOUNT_ACTIVATION_EXPIRY: Joi.string().required(),
+
+  // Sendgrid Config
   SENDGRID_SENDER: Joi.string().email().required(),
   SENDGRID_API_ID: Joi.string().required(),
   SENDGRID_API_KEY: Joi.string().min(8).required(),
