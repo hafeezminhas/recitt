@@ -16,7 +16,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { IAddress, UserRole } from '@recitt/types';
+import { IAddress, IRequestSuccessRespose, UserRole } from '@recitt/types';
 import { JwtService } from '@shared/services/jwt.service';
 import { createHmac } from 'node:crypto';
 import { AccountMapper } from './account.mapper';
@@ -174,7 +174,7 @@ export class AccountService {
     ]);
   }
 
-  async activateAccount(account: Account) {
+  async activateAccount(account: Account): Promise<IRequestSuccessRespose> {
     try {
       await this.userRepo.update(account.accountAdmin.id, {
         accountActivated: true,
@@ -182,8 +182,8 @@ export class AccountService {
 
       await this.accountRepo.update(account.id, { isActive: true });
       return {
-        success: true,
         message: 'Your account has been activated successfully.',
+        status: true,
       };
     } catch (err) {
       this.logger.error('Error activating account', err.message);

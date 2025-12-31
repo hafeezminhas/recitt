@@ -37,10 +37,10 @@ export class AccountActivateGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyJwtAccessToken(
-        activationKey,
-        ACCOUNT_ACTIVATION_SECRET
-      );
+      const payload = await this.jwtService.verifyJwtAccessToken<{
+        sub: string;
+        typ: 'jwt';
+      }>(activationKey, ACCOUNT_ACTIVATION_SECRET);
 
       console.log(payload);
 

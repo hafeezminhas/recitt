@@ -1,7 +1,7 @@
 import { User } from '@database/entities/user.entity';
 import { Injectable } from '@nestjs/common';
 import { JwtSignOptions, JwtService as NestJwtService } from '@nestjs/jwt';
-import { JwtPayload } from '@shared/jwt-payload';
+import { JwtPayload as T } from '@shared/jwt-payload';
 import { jwtTimeToSeconds } from '@shared/utils';
 
 const {
@@ -20,11 +20,11 @@ const {
 export class JwtService {
   constructor(private readonly jwtService: NestJwtService) {}
 
-  public async verifyJwtAccessToken(
+  public async verifyJwtAccessToken<T extends object>(
     token: string,
     secret: string
-  ): Promise<JwtPayload> {
-    return await this.jwtService.verifyAsync<JwtPayload>(token, { secret });
+  ): Promise<T> {
+    return await this.jwtService.verifyAsync<T>(token, { secret });
   }
 
   public async isTokenExpired(token: string): Promise<boolean> {
@@ -53,7 +53,7 @@ export class JwtService {
       role,
     };
 
-    const payloadToSign: JwtPayload = {
+    const payloadToSign: T = {
       sub: id,
       typ: 'jwt',
       ...payload,
@@ -73,14 +73,14 @@ export class JwtService {
     const token = await this.jwtService.signAsync(
       { sub: email, typ: 'activation' },
       {
-        privateKey: ACCOUNT_ACTIVATION_TOKEN_SECRET,
-        expiresIn: jwtTimeToSeconds(ACCOUNT_ACTIVATION_TOKEN_EXPIRY),
+        privateKey: ACCOUNT_ACTIVATION_SECRET,
+        expiresIn: jwtTimeToSeconds(ACCOUNT_ACTIVATION_EXPIRY),
         issuer: 'Recitt API',
         audience: 'www.recitt.com',
       }
     );
 
-    return `localhost:3000/activate-account/${token}`;
+    return token;
   }
 
   async createAccountOnboarding(accountId: string): Promise<string> {
@@ -96,14 +96,17 @@ export class JwtService {
   }
 
   async createAccountActivation(accountId: string): Promise<string> {
-    return await this.jwtService.signAsync(
-      { sub: accountId, typ: 'activation' },
-      {
-        privateKey: ACCOUNT_ACTIVATION_SECRET,
-        expiresIn: jwtTimeToSeconds(ACCOUNT_ACTIVATION_EXPIRY),
-        issuer: 'Recitt API',
-        audience: 'www.recitt.com',
-      }
-    );
+    const payloadToSign = {
+      sub: accountId,
+      typ: 'jwt',
+    };
+    const jwtSignOptions: JwtSignOptions = {
+      privateKey: ACCOUNT_ACTIVATION_SECRET,
+      expiresIn: jwtTimeToSeconds(ACCOUNT_ACTIVATION_EXPIRY),
+      issuer: 'Recitt API',
+      audience: 'www.recitt.com',
+    };
+
+    return await this.jwtService.signAsync(payloadToSign, jwtSignOptions);
   }
 }

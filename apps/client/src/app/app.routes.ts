@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CustomerActivationResolver } from '@features/customer-activation/customer-activation.resolver';
 import { provideOnboardingState } from './features/onboarding/+state/onboarding.state';
 
 // export const onboardingOnLoadResolver: ResolveFn<any> = () => {
@@ -120,6 +121,19 @@ export const routes: Routes = [
       ),
     data: {
       title: 'Customer Onboarding',
+    },
+  },
+  {
+    path: 'customer-activation/:activationKey',
+    resolve: {
+      data: CustomerActivationResolver,
+    },
+    loadComponent: () =>
+      import('./features/customer-activation/customer-activation').then(
+        (m) => m.CustomerActivationComponent
+      ),
+    data: {
+      title: 'Customer Activation',
     },
   },
   { path: '**', redirectTo: 'dashboard' },

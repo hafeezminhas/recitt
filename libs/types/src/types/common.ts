@@ -5,3 +5,8 @@ export interface IAddress {
   county?: string;
   postcode: string;
 }
+
+export interface IRequestSuccessRespose {
+  message: string;
+  status: boolean;
+}

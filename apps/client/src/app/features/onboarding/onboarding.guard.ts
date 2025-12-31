@@ -23,7 +23,7 @@ export class OnboardingGuard implements CanActivate {
         route.url.length === 0 ||
         onboardingRoutesList.includes(route.url[0].path)
       ) {
-        this.router.navigateByUrl('/login');
+        this.router.navigateByUrl('/customer-activation');
         return of(false);
       }
     }
