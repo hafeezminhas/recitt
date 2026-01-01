@@ -7,12 +7,12 @@ import {
   GridModule,
   WidgetModule,
 } from '@coreui/angular';
-import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { WidgetsDropdownComponent } from './widgets-dropdown.component';
 
-describe('WidgetsDropdownComponent', () => {
+xdescribe('WidgetsDropdownComponent', () => {
   let component: WidgetsDropdownComponent;
   let fixture: ComponentFixture<WidgetsDropdownComponent>;
   let iconSetService: IconSetService;

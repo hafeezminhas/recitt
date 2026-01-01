@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { NgbActiveModalProvider } from '@unit-testing/index';
 import { Agreement } from './agreement';
 
 describe('Agreement', () => {
@@ -8,9 +9,9 @@ describe('Agreement', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Agreement]
-    })
-    .compileComponents();
+      imports: [Agreement],
+      providers: [NgbActiveModalProvider],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Agreement);
     component = fixture.componentInstance;

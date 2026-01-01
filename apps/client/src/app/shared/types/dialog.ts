@@ -1,4 +1,4 @@
-import { freeSet } from "@coreui/icons";
+import { freeSet } from '@coreui/icons';
 
 // dialog.models.ts
 export enum AlertType {
@@ -6,13 +6,13 @@ export enum AlertType {
   Info = 'info',
   Warning = 'warning',
   Danger = 'danger',
-  Success = 'success'
-};
+  Success = 'success',
+}
 
 export enum DialogMode {
   Alert = 'alert',
   Confirm = 'confirm',
-  Agreement = 'agreement'
+  Agreement = 'agreement',
 }
 
 export interface DialogData {
