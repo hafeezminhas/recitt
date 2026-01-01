@@ -1,9 +1,11 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  OnInit,
-  signal,
+  computed,
+  Signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 import {
   CardBodyComponent,
@@ -13,6 +15,10 @@ import {
   ContainerComponent,
   RowComponent,
 } from '@coreui/angular';
+import { freeSet } from '@coreui/icons';
+import { IconDirective } from '@coreui/icons-angular';
+import { IRequestSuccessRespose } from '@recitt/types';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-customer-activation',
@@ -26,30 +32,26 @@ import {
     CardGroupComponent,
     CardComponent,
     CardBodyComponent,
+    IconDirective,
+    RouterModule,
   ],
 })
-export class CustomerActivationComponent implements OnInit {
-  activationKey: string;
-  isActivationExpired$$ = signal(false);
+export class CustomerActivationComponent {
+  readonly icons = freeSet;
 
-  // constructor(
-  //   private authService: AuthService,
-  //   private route: ActivatedRoute
-  // ) {}
+  activationResult$$ = toSignal<IRequestSuccessRespose>(
+    this.route.data.pipe(
+      map(({ data }) => {
+        if (data) {
+          return { message: data['message'], status: data.status };
+        }
+        return { message: 'Action not successful.', status: false };
+      })
+    )
+  );
+  iconClass$$: Signal<string[]> = computed(() => {
+    return [this.activationResult$$()?.status ? 'icon-success' : 'icon-danger'];
+  });
 
-  ngOnInit(): void {
-    // this.activationKey = this.route.snapshot.paramMap.get('activationKey');
-    // const result = this.route.snapshot.data['result'];
-    // console.log('activationKey result: ', result);
-    // if (result) {
-    //   this.isActivationExpired$$.set(result.status && result.status === 410);
-    //   this.showAlert = true;
-    //   this.alert = {
-    //     type: result.error ? 'error' : 'success',
-    //     message: result.message,
-    //   };
-    // }
-
-    console.log('oninit');
-  }
+  constructor(private route: ActivatedRoute) {}
 }

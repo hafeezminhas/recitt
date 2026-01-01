@@ -7,11 +7,26 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <!-- @if() {
+              <h2>
+                <svg
+                  [cIcon]="icons.cilCheck"
+                  size="xxl"
+                  [attr.style]="activationResult$$()?.status? 'color:var(--cui-success)':'color:var(--cui-danger)'"
+                  title="cil-check Icon"
+                ></svg>
+                {{activationResult$$()?.status? 'Activation successful':
+                'Activation failed'}}
+              </h2>
+              <p class="text-body-secondary ml-8">
+                {{activationResult$$()?.message}}
+              </p>
 
-              } -->
-              <h1>Customer account activation</h1>
-              <p class="text-body-secondary">Activate to your account</p>
+              <p>
+                You can now signin to your account.
+                <a cButton color="secondary" class="w-100" routerLink="/login"
+                  >Login</a
+                >
+              </p>
             </c-card-body>
           </c-card>
         </c-card-group>
