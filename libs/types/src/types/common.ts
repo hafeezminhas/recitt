@@ -10,3 +10,8 @@ export interface IRequestSuccessRespose {
   message: string;
   status: boolean;
 }
+
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}

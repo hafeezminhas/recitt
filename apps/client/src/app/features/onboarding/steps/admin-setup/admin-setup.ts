@@ -97,7 +97,7 @@ export class AdminSetup implements OnInit, CanComponentDeactivate {
     private router: Router,
     private dialog: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) { }
+  ) {}
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.adminForm.controls;

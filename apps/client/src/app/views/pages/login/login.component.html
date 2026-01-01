@@ -7,33 +7,48 @@
         <c-card-group>
           <c-card class="p-4">
             <c-card-body>
-              <form cForm>
+              <form [formGroup]="loginForm" cForm (ngSubmit)="onSubmit()">
                 <h1>Login</h1>
                 <p class="text-body-secondary">Sign In to your account</p>
                 <c-input-group class="mb-3">
                   <span cInputGroupText>
                     <svg cIcon name="cilUser"></svg>
                   </span>
+
                   <input
-                    autoComplete="username"
+                    autoComplete="email"
                     cFormControl
-                    placeholder="Username"
+                    id="email"
+                    placeholder="email"
+                    formControlName="email"
+                    required
                   />
+
+                  <!-- @if (submitted && f['email'].valid) { -->
+                    <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched" >Please provide the email.</c-form-feedback>
+                  <!-- } -->
+                  <!-- @if (submitted && f['email'].errors?.['pattern']) {
+                    <c-form-feedback [valid]="f['email']?.valid && f['email']?.touched" >Please provide the email.</c-form-feedback>
+                  } -->
+
+
                 </c-input-group>
                 <c-input-group class="mb-4">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
                   <input
+                    id="password"
                     autoComplete="current-password"
                     cFormControl
                     placeholder="Password"
+                    formControlName="password"
                     type="password"
                   />
                 </c-input-group>
                 <c-row>
                   <c-col xs="6">
-                    <button cButton class="px-4" color="primary">Login</button>
+                    <button cButton class="px-4" color="primary" type="submit" >Login</button>
                   </c-col>
                   <c-col class="text-end" xs="6">
                     <button cButton class="px-0" color="link">

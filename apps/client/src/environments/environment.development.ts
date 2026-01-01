@@ -7,8 +7,8 @@ export const environment: Environment = {
   version: '1.0.0',
   appName: 'Recitt',
   credentials: {
-    email: 'usman@test.com',
-    password: 'Pakistan123',
+    email: 'admin@company.com',
+    password: 'SecurePass123!',
   },
   defaultLanguage: 'en',
   authKey: 'xapi-key',
