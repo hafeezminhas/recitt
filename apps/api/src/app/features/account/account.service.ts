@@ -16,7 +16,8 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { IAddress, UserRole } from '@recitt/types';
+import { IAddress, IRequestSuccessRespose, UserRole } from '@recitt/types';
+import { JwtService } from '@shared/services/jwt.service';
 import { createHmac } from 'node:crypto';
 import { AccountMapper } from './account.mapper';
 
@@ -30,6 +31,7 @@ export class AccountService {
     private readonly mailerService: MailerService,
     private readonly accountRepo: AccountRepository,
     private readonly billingRepo: BillingRepository,
+    private readonly JwtService: JwtService,
     private readonly userRepo: UserRepository
   ) {}
 
@@ -121,10 +123,29 @@ export class AccountService {
       await this.accountRepo.update(accountId, {
         accountAdmin: adminUser,
       });
-      return await this.accountRepo.findById(accountId, [
+
+      const account = await this.accountRepo.findById(accountId, [
         'billingInformation',
         'accountAdmin',
       ]);
+
+      const activationJwt = await this.JwtService.createUserAccountActivation(
+        accountId
+      );
+      const activationLink = `http://localhost:4200/customer-activation/${activationJwt}`;
+      this.logger.log(`Activation link= ${activationLink}`);
+
+      // await this.mailerService.sendMail({
+      //   to: adminUser.email,
+      //   subject: 'Activate Your Account',
+      //   template: './account-activation', // Assuming a template exists
+      //   context: {
+      //     companyName: account.name,
+      //     activationLink,
+      //   },
+      // });
+
+      return account;
     } catch (err) {
       this.logger.error('Error in creating new user', err.message);
       throw new InternalServerErrorException('Failed to create new user', {
@@ -151,6 +172,23 @@ export class AccountService {
       'accountAdmin',
       'billingInformation',
     ]);
+  }
+
+  async activateAccount(account: Account): Promise<IRequestSuccessRespose> {
+    try {
+      await this.userRepo.update(account.accountAdmin.id, {
+        accountActivated: true,
+      });
+
+      await this.accountRepo.update(account.id, { isActive: true });
+      return {
+        message: 'Your account has been activated successfully.',
+        status: true,
+      };
+    } catch (err) {
+      this.logger.error('Error activating account', err.message);
+      throw new InternalServerErrorException('Failed to activate account');
+    }
   }
 
   private verifyOnboardingLink(

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideOnboardingFacade } from '@unit-testing/providers';
 import { AccountDetails } from './account-details';
 
 describe('AccountDetails', () => {
@@ -8,6 +9,7 @@ describe('AccountDetails', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AccountDetails],
+      providers: [provideOnboardingFacade()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountDetails);

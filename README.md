@@ -58,6 +58,78 @@ You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx 
 
 [Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
+
+## Client Application (Angular)
+### Generating Angular Components, Services, Guards and others elements
+
+To generate a feature component, use:
+```sh
+npx nx g @nx/angular:component apps/client/src/app/features/feature-component/feature-component --style=scss --changeDetection=OnPush
+```
+
+To generate a service, use:
+```sh
+npx nx g @nx/angular:service apps/client/src/app/shared/services/service --project=client
+```
+
+To generate a guard, use:
+```sh
+npx nx g @nx/angular:guard apps/client/src/app/shared/guards/guard --project=client
+```
+
+To generate a directive, use:
+```sh
+npx nx g @nx/angular:directive apps/client/src/app/shared/directives/directive --project=client
+```
+
+To generate a pipe, use:
+```sh
+npx nx g @nx/angular:pipe apps/client/src/app/shared/pipes/pipe --project=client
+```
+
+## API Application (NestJS)
+### Generating NestJS Controllers, Services, Modules and other elements
+
+To generate a controller, use:
+```sh
+npx nx g @nx/nest:controller apps/api/src/app/features/feature/feature --project=api
+```
+
+To generate a service, use:
+```sh
+npx nx g @nx/nest:service apps/api/src/app/shared/services/feature --project=api
+```
+
+To generate a module, use:
+```sh
+npx nx g @nx/nest:module apps/api/src/app/features/feature/feature --project=api
+```
+
+To generate a guard, use:
+```sh
+npx nx g @nx/nest:guard apps/api/src/app/shared/guards/feature --project=api
+```
+
+To generate a decorator, use:
+```sh
+npx nx g @nx/nest:decorator apps/api/src/app/shared/decorators/feature --project=api
+```
+
+To generate a filter, use:
+```sh
+npx nx g @nx/nest:filter apps/api/src/app/shared/filters/feature --project=api
+```
+
+To generate an interceptor, use:
+```sh
+npx nx g @nx/nest:interceptor apps/api/src/app/shared/interceptors/feature --project=api
+```
+
+To generate a pipe, use:
+```sh
+npx nx g @nx/nest:pipe apps/api/src/app/shared/pipes/feature --project=api
+```
+
 ## Set up CI!
 
 ### Step 1
@@ -106,3 +178,4 @@ And join the Nx community:
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)
 - [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- 

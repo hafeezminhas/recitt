@@ -20,7 +20,9 @@
       "@docs-components/*": ["src/components/*"],
       "@core/*": ["src/app/core/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@env/*": ["src/environments/*"]
+      "@env/*": ["src/environments/*"],
+      "@features/*": ["src/app/features/*"],
+      "@unit-testing/*": ["src/app/unit-testing/*"]
     },
     "useDefineForClassFields": false
   },

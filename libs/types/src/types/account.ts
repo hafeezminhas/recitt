@@ -147,11 +147,11 @@ export interface IUKCompanyRegistration {
   companyName: string;
   companyNumber?: string; // Companies House registration number
   registrationType:
-  | 'sole_trader'
-  | 'partnership'
-  | 'limited_company'
-  | 'llp'
-  | 'charity';
+    | 'sole_trader'
+    | 'partnership'
+    | 'limited_company'
+    | 'llp'
+    | 'charity';
   registrationDate?: Date;
   vatNumber?: string; // UK VAT number (starts with GB)
 }
@@ -190,4 +190,8 @@ export interface IOnboardingStatusPayload {
   token: string;
   accountId: string;
   expires: string;
+}
+
+export interface IAccountActivationPayload {
+  activationKey: string;
 }

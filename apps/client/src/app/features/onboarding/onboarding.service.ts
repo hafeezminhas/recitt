@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import {
+  IAccountActivationPayload,
   IAccountResponse,
   IAccountResponseWithAdminUser,
   IAccountResponseWithBillingInfo,
   IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
+  IRequestSuccessRespose,
 } from '@recitt/types';
 import { DataService } from '@shared/services/data.service';
 import { Observable, take } from 'rxjs';
@@ -51,6 +53,15 @@ export class OnboardingService {
       .postData<IAddAccountAdminUserRequest, IAccountResponseWithAdminUser>(
         `${this.apiPrefix}/admin`,
         payload
+      )
+      .pipe(take(1));
+  }
+
+  activateCustomer(activationKey: string): Observable<IRequestSuccessRespose> {
+    return this.dataService
+      .postData<IAccountActivationPayload, IRequestSuccessRespose>(
+        `${this.apiPrefix}/activate-account`,
+        { activationKey }
       )
       .pipe(take(1));
   }

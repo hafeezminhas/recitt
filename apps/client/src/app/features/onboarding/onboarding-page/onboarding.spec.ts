@@ -1,4 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {
+  CardBodyComponent,
+  CardComponent,
+  ColComponent,
+  ContainerComponent,
+  ProgressBarComponent,
+  ProgressModule,
+  RowComponent,
+} from '@coreui/angular';
+import { IconDirective } from '@coreui/icons-angular';
+import {
+  ActivatedRouteProvider,
+  provideOnboardingFacade,
+} from '@unit-testing/providers';
 import { OnboardingComponent } from './onboarding';
 
 describe('Onboarding', () => {
@@ -7,7 +21,18 @@ describe('Onboarding', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OnboardingComponent],
+      imports: [
+        OnboardingComponent,
+        ContainerComponent,
+        RowComponent,
+        ColComponent,
+        CardComponent,
+        CardBodyComponent,
+        IconDirective,
+        ProgressModule,
+        ProgressBarComponent,
+      ],
+      providers: [ActivatedRouteProvider, provideOnboardingFacade()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OnboardingComponent);

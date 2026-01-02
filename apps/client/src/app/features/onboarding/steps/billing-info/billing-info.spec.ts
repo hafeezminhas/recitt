@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { accountResponseMock } from '@unit-testing/mocks';
+import { provideOnboardingFacade } from '@unit-testing/providers';
 import { BillingInfo } from './billing-info';
 
 describe('BillingInfo', () => {
@@ -8,6 +10,11 @@ describe('BillingInfo', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BillingInfo],
+      providers: [
+        provideOnboardingFacade({
+          account$$: jest.fn().mockImplementation(() => accountResponseMock),
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BillingInfo);

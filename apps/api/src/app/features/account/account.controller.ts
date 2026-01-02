@@ -11,19 +11,23 @@ import {
 import { ApiBody } from '@nestjs/swagger';
 import { Request } from 'express';
 
-import { AccountExistsGuard } from '@common/guards/account-exist.guard';
-import { OnboardingCookieGuard } from '@common/guards/onboarding-cookie.guard';
-import { UniqueAccountGuard } from '@common/guards/unique-account.guards';
 import {
   AddAccountAdminUserDto,
   AddBillingInfoDto,
   CreateAccountDto,
   OnboardingStatusPayloadDto,
 } from '@dto/account.dto';
+import { AccountActivationDto } from '@dto/user.dto';
 import { JwtService } from '@shared/services/jwt.service';
 import { jwtTimeToSeconds } from '@shared/utils';
 import { AccountService } from './account.service';
 import { AddBillingInfoSwagger, CreateAccountSwagger } from './account.swagger';
+import {
+  AccountActivateGuard,
+  AccountExistsGuard,
+  OnboardingCookieGuard,
+  UniqueAccountGuard,
+} from './guards';
 
 const { ACCOUNT_ONBOARDING_COOKIE, ACCOUNT_ONBOARDING_EXPIRY } = process.env;
 
@@ -60,6 +64,11 @@ export class AccountController {
       httpOnly: true,
       secure: true,
     });
+    delete account.statusUpdatedAt;
+    delete account.suspensionReason;
+    delete account.deactivatedAt;
+    delete account.deactivationReason;
+
     return account;
   }
 
@@ -96,5 +105,12 @@ export class AccountController {
   @Post('onboarding-status')
   getOnboardingStatus(@Body() payload: OnboardingStatusPayloadDto) {
     return this.accountService.getOnboardingStatus(payload);
+  }
+
+  @UseGuards(AccountActivateGuard)
+  @Post('activate-account')
+  @ApiBody({ type: AccountActivationDto })
+  activateAccount(@Req() request: Request) {
+    return this.accountService.activateAccount(request.account);
   }
 }

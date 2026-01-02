@@ -1,6 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular';
+import {
+  CardBodyComponent,
+  CardComponent,
+  CardHeaderComponent,
+  ColComponent,
+  RowComponent,
+} from '@coreui/angular';
 import { OnboardingFacade } from '../../+state/onboarding.facade';
 
 @Component({
@@ -11,7 +17,7 @@ import { OnboardingFacade } from '../../+state/onboarding.facade';
     CardComponent,
     CardBodyComponent,
     CardHeaderComponent,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './completion.html',
   styleUrl: './completion.scss',
@@ -19,7 +25,7 @@ import { OnboardingFacade } from '../../+state/onboarding.facade';
 export class CompletionComponent implements OnDestroy {
   account$$ = this.onboardingFacade.account$$;
 
-  constructor(private onboardingFacade: OnboardingFacade) { }
+  constructor(private onboardingFacade: OnboardingFacade) {}
 
   ngOnDestroy(): void {
     // reset the whole onboarding state on component destroy

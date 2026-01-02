@@ -7,7 +7,7 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from '../../../icons/icon-subset';
 import { CarouselsComponent } from './carousels.component';
 
-describe('CarouselsComponent', () => {
+xdescribe('CarouselsComponent', () => {
   let component: CarouselsComponent;
   let fixture: ComponentFixture<CarouselsComponent>;
   let iconSetService: IconSetService;

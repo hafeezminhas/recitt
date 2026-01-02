@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IAddress } from '@recitt/types';
+import { IAccountActivationPayload, IAddress } from '@recitt/types';
 import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
 import {
@@ -246,7 +246,7 @@ export class UpdatePasswordDto {
   confirmPassword: string;
 }
 
-export class AccountActivationDto {
+export class AccountActivationDto implements IAccountActivationPayload {
   @IsNotEmpty()
   @IsString()
   activationKey: string;

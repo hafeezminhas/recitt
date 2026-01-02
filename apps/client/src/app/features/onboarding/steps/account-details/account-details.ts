@@ -84,7 +84,7 @@ export class AccountDetails implements OnInit {
     private router: Router,
     private dialogService: DialogService,
     private onboardingFacade: OnboardingFacade
-  ) { }
+  ) {}
 
   get f(): Record<string, FormControl | FormGroup> {
     return this.accountForm.controls;
@@ -145,10 +145,11 @@ export class AccountDetails implements OnInit {
     if (this.accountForm.dirty || this.accountForm.touched) {
       return this.dialogService.confirm({
         title: 'Unsaved Changes',
-        message: 'You have unsaved changes. Are you sure you want to leave this page?',
+        message:
+          'You have unsaved changes. Are you sure you want to leave this page?',
         confirmText: 'Leave',
         cancelText: 'Stay',
-        type: AlertType.Warning
+        type: AlertType.Warning,
       });
     } else {
       return of(true);

@@ -21,6 +21,7 @@ import {
   UpdateUserRequestDto,
   UserSignupRequestDto,
 } from '@dto/user.dto';
+import { JwtPayload } from '@shared/jwt-payload';
 import { JwtService } from '@shared/services/jwt.service';
 import { FindOneOptions } from 'typeorm';
 import { generateOTP } from './auth.utils';
@@ -302,7 +303,7 @@ export class AuthService {
     }
     const { ACCOUNT_ACTIVATION_TOKEN_SECRET } = process.env;
     try {
-      const payload = await this.JwtService.verifyJwtAccessToken(
+      const payload = await this.JwtService.verifyJwtAccessToken<JwtPayload>(
         payLoad.activationKey,
         ACCOUNT_ACTIVATION_TOKEN_SECRET
       );
