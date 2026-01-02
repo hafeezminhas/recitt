@@ -64,6 +64,11 @@ export class AccountController {
       httpOnly: true,
       secure: true,
     });
+    delete account.statusUpdatedAt;
+    delete account.suspensionReason;
+    delete account.deactivatedAt;
+    delete account.deactivationReason;
+
     return account;
   }
 

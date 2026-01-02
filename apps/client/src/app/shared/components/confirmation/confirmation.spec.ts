@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgbActiveModalProvider } from '@unit-testing/index';
+import { NgbActiveModalProvider } from '@unit-testing/providers';
 import { ConfirmationComponent } from './confirmation';
 
 describe('Confirmation', () => {

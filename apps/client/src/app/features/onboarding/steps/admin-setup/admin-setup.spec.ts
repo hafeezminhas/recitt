@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OnboardingFacadeProvider } from '@unit-testing/providers';
+import { accountResponseWithBillingInfoMock } from '@unit-testing/mocks';
+import { provideOnboardingFacade } from '@unit-testing/providers';
 import { AdminSetup } from './admin-setup';
 
 describe('AdminSetup', () => {
@@ -9,7 +10,13 @@ describe('AdminSetup', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AdminSetup],
-      providers: [OnboardingFacadeProvider],
+      providers: [
+        provideOnboardingFacade({
+          account$$: jest
+            .fn()
+            .mockImplementation(() => accountResponseWithBillingInfoMock),
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AdminSetup);

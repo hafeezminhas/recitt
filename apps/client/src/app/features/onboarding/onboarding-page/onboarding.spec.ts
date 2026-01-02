@@ -11,7 +11,7 @@ import {
 import { IconDirective } from '@coreui/icons-angular';
 import {
   ActivatedRouteProvider,
-  OnboardingFacadeProvider,
+  provideOnboardingFacade,
 } from '@unit-testing/providers';
 import { OnboardingComponent } from './onboarding';
 
@@ -32,7 +32,7 @@ describe('Onboarding', () => {
         ProgressModule,
         ProgressBarComponent,
       ],
-      providers: [ActivatedRouteProvider, OnboardingFacadeProvider],
+      providers: [ActivatedRouteProvider, provideOnboardingFacade()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OnboardingComponent);

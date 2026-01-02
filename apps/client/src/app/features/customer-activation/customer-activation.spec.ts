@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ActivatedRouteProvider } from '@unit-testing/index';
+import { ActivatedRouteProvider } from '@unit-testing/providers';
 import { CustomerActivationComponent } from './customer-activation';
 
 describe('CustomerActivation', () => {

@@ -1,24 +1,25 @@
 /// <reference types="jest" />
 
+// signals are represented as callable selectors on the real facade;
+// in the mock we use jest.fn() to mirror that callable signature.
 import { signal } from '@angular/core';
 import { OnboardingFacade } from '@features/onboarding/+state/onboarding.facade';
-import { ApiError, IAccountResponse } from '@recitt/types';
 import { of, Subject } from 'rxjs';
 import { MockFacade } from '../types';
 
 export const onboardingFacadeMock: MockFacade<OnboardingFacade> = {
-  nextStepTrigger$: new Subject<void>(),
   nextStepCommand$: new Subject<void>(),
 
   // Mock selectors
   account$: of(null),
-  account$$: signal<IAccountResponse | null>(null),
+  // callable selectors (signals) are mocked as jest functions that return values
+  account$$: jest.fn().mockReturnValue(signal(null)),
   currentStep$: of(1),
-  currentStep$$: signal(1),
+  currentStep$$: jest.fn().mockReturnValue(1),
   onboardingCompleted$: of(false),
-  onboardingCompleted$$: signal(false),
-  isLoading$$: signal(false),
-  error$$: signal<ApiError | null>(null),
+  onboardingCompleted$$: jest.fn().mockReturnValue(false),
+  isLoading$$: jest.fn().mockReturnValue(false),
+  error$$: jest.fn().mockReturnValue(null),
 
   // Mock methods
   canAccessStep: jest.fn(),
@@ -31,3 +32,12 @@ export const onboardingFacadeMock: MockFacade<OnboardingFacade> = {
   addBillingInfo: jest.fn(),
   setupAdminUser: jest.fn(),
 };
+
+export function createOnboardingFacadeMock(
+  overrides?: Partial<MockFacade<OnboardingFacade>>
+): MockFacade<OnboardingFacade> {
+  return {
+    ...onboardingFacadeMock,
+    ...overrides,
+  };
+}

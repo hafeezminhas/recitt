@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ButtonModule, ModalModule } from '@coreui/angular';
 import { AlertType, DialogMode } from '@shared/types/dialog';
-import { NgbActiveModalProvider } from '@unit-testing/index';
+import { NgbActiveModalProvider } from '@unit-testing/providers';
 import { DialogComponent } from './dialog';
 
 describe('Dialog', () => {
