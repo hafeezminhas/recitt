@@ -21,6 +21,7 @@ import {
   UpdateUserRequestDto,
   UserSignupRequestDto,
 } from '@dto/user.dto';
+import { IUserProfile } from '@recitt/types';
 import { JwtPayload } from '@shared/jwt-payload';
 import { JwtService } from '@shared/services/jwt.service';
 import { FindOneOptions } from 'typeorm';
@@ -102,7 +103,7 @@ export class AuthService {
     return await this.JwtService.creatJwtAccessToken(reqUser);
   }
 
-  async getProfile(userEmail: string) {
+  async getProfile(userEmail: string): Promise<IUserProfile> {
     const user = await this.isValidUser(userEmail);
 
     const {
@@ -113,7 +114,6 @@ export class AuthService {
       email,
       phone,
       dateOfBirth,
-      address,
       accountActivated,
       avatar,
       avatarMimeType,
@@ -130,7 +130,6 @@ export class AuthService {
       email,
       phone,
       dateOfBirth,
-      address,
       accountActivated,
       avatar: base64Avatar
         ? `data:${avatarMimeType};base64,${base64Avatar}`

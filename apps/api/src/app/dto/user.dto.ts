@@ -1,5 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IAccountActivationPayload, IAddress } from '@recitt/types';
+import {
+  IAccountActivationPayload,
+  IAddress,
+  ICredentials,
+  IPasswordReset,
+  IRequestPasswordReset,
+  ISigninResponse,
+} from '@recitt/types';
 import { Match } from '@shared/utils';
 import { Type } from 'class-transformer';
 import {
@@ -85,10 +92,52 @@ export class UserSignupRequestDto {
 /**
  * LoginDto - Used for user authentication
  */
-export class SigninDto {
-  email?: string;
-  username?: string;
+export class CredentialsDto implements ICredentials {
+  @ApiProperty({ example: 'user@example.com' })
+  @IsEmail()
+  @IsNotEmpty()
+  username: string;
+
+  @ApiProperty({ example: 'newpassword123' })
+  @IsString()
+  @IsNotEmpty()
   password: string;
+}
+
+export class signinResponseDto implements ISigninResponse {
+  @IsString()
+  @IsNotEmpty()
+  apiKey: string;
+}
+
+/**
+ * PasswordResetRequestDto - Used to request a password reset
+ */
+export class RequestPasswordResetDto implements IRequestPasswordReset {
+  @ApiProperty({ example: 'user@example.com' })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+}
+
+/**
+ * PasswordResetDto - Used for password reset
+ */
+export class PasswordResetDto implements IPasswordReset {
+  @ApiProperty({ example: 'reset-token-123' })
+  @IsString()
+  @IsNotEmpty()
+  token: string;
+
+  @ApiProperty({ example: 'newpassword123' })
+  @IsString()
+  @IsNotEmpty()
+  password: string;
+
+  @ApiProperty({ example: 'newpassword123' })
+  @IsString()
+  @Match('password', { message: 'Passwords do not match' })
+  confirmation: string;
 }
 
 /**
@@ -205,13 +254,6 @@ export class ResetPasswordDto {
   @IsString()
   @Match('password', { message: 'Passwords do not match' })
   confirmPassword: string;
-}
-
-/**
- * RequestPasswordResetDto - Used to request a password reset
- */
-export class RequestPasswordResetDto {
-  email: string;
 }
 
 /**

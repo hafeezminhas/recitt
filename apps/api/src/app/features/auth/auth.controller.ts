@@ -17,9 +17,9 @@ import multer from 'multer';
 
 import {
   AccountActivationDto,
+  CredentialsDto,
   ForgetPasswordDto,
   ResetPasswordDto,
-  SigninDto,
   UpdatePasswordDto,
   UpdateUserRequestDto,
   UserSignupRequestDto,
@@ -58,7 +58,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('signin')
-  @ApiBody({ type: SigninDto })
+  @ApiBody({ type: CredentialsDto })
   @SigninSwagger.ApiOperation
   @SigninSwagger.ApiResponseSuccess
   @SigninSwagger.ApiResponseUnauthorized

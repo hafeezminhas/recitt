@@ -2,11 +2,6 @@ import { Routes } from '@angular/router';
 import { CustomerActivationResolver } from '@features/customer-activation/customer-activation.resolver';
 import { provideOnboardingState } from './features/onboarding/+state/onboarding.state';
 
-// export const onboardingOnLoadResolver: ResolveFn<any> = () => {
-//   const onboardingService = inject(OnboardingService);
-//   return onboardingService.getOnboardingOnLoad();
-// };
-
 export const routes: Routes = [
   {
     path: '',
@@ -92,25 +87,30 @@ export const routes: Routes = [
       title: 'Page 500',
     },
   },
+  // {
+  //   path: 'login',
+  //   loadComponent: () =>
+  //     import('./views/pages/login/login.component').then(
+  //       (m) => m.LoginComponent
+  //     ),
+  //   data: {
+  //     title: 'Login Page',
+  //   },
+  // },
+  // {
+  //   path: 'register',
+  //   loadComponent: () =>
+  //     import('./views/pages/register/register.component').then(
+  //       (m) => m.RegisterComponent
+  //     ),
+  //   data: {
+  //     title: 'Register Page',
+  //   },
+  // },
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./views/pages/login/login.component').then(
-        (m) => m.LoginComponent
-      ),
-    data: {
-      title: 'Login Page',
-    },
-  },
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./views/pages/register/register.component').then(
-        (m) => m.RegisterComponent
-      ),
-    data: {
-      title: 'Register Page',
-    },
+    path: '',
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((a) => a.AUTH_FEATURE_ROUTES),
   },
   {
     path: 'onboarding',

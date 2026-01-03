@@ -7,3 +7,4 @@ export * from './enums/roles.enum';
 export * from './types/account';
 export * from './types/common';
 export * from './types/error';
+export * from './types/user';

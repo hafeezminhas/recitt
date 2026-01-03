@@ -87,6 +87,12 @@ To generate a pipe, use:
 npx nx g @nx/angular:pipe apps/client/src/app/shared/pipes/pipe --project=client
 ```
 
+To generate ngrx features state, use:
+```sh
+npx nx generate @nx/angular:ngrx-feature-store --name=auth --parent=apps/client/src/app/features/auth/auth.routes.ts --no-interactive
+```
+
+
 ## API Application (NestJS)
 ### Generating NestJS Controllers, Services, Modules and other elements
 
