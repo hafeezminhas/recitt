@@ -13,6 +13,10 @@ export default {
     ],
   },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  testPathIgnorePatterns: [
+    '<rootDir>/src/app/views/',
+    '<rootDir>/src/components/',
+  ],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',

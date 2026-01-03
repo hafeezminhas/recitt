@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   CardBodyComponent,
   CardComponent,
@@ -58,10 +58,7 @@ export class OnboardingComponent {
     },
   ];
 
-  constructor(
-    private router: Router,
-    private onboardingFacade: OnboardingFacade
-  ) {}
+  constructor(private onboardingFacade: OnboardingFacade) {}
 
   isStepCompleted(step: number): boolean {
     switch (step) {

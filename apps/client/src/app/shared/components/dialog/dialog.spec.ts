@@ -1,19 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Dialog } from './dialog';
+import { ButtonModule, ModalModule } from '@coreui/angular';
+import { AlertType, DialogMode } from '@shared/types/dialog';
+import { NgbActiveModalProvider } from '@unit-testing/providers';
+import { DialogComponent } from './dialog';
 
 describe('Dialog', () => {
-  let component: Dialog;
-  let fixture: ComponentFixture<Dialog>;
+  let component: DialogComponent;
+  let fixture: ComponentFixture<DialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Dialog]
-    })
-    .compileComponents();
+      imports: [ModalModule, ButtonModule, DialogComponent],
+      providers: [NgbActiveModalProvider],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(Dialog);
+    fixture = TestBed.createComponent(DialogComponent);
     component = fixture.componentInstance;
+    component.data = {
+      title: 'dummy title',
+      message: 'dummy message',
+      mode: DialogMode.Agreement,
+      confirmText: 'Accept',
+      cancelText: 'Decline',
+      type: AlertType.Success,
+    };
     fixture.detectChanges();
   });
 

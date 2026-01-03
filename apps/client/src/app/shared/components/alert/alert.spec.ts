@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { NgbActiveModalProvider } from '@unit-testing/providers';
 import { AlertComponent } from './alert';
 
 describe('Alert', () => {
@@ -8,9 +9,9 @@ describe('Alert', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AlertComponent]
-    })
-      .compileComponents();
+      imports: [AlertComponent],
+      providers: [NgbActiveModalProvider],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(AlertComponent);
     component = fixture.componentInstance;

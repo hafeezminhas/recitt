@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { accountResponseWithAdminUserMock } from '@unit-testing/mocks';
+import { provideOnboardingFacade } from '@unit-testing/providers';
+import { ActivatedRouteProvider } from './../../../../unit-testing/providers';
 import { CompletionComponent } from './completion';
 
 describe('Completion', () => {
@@ -8,6 +11,14 @@ describe('Completion', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CompletionComponent],
+      providers: [
+        ActivatedRouteProvider,
+        provideOnboardingFacade({
+          account$$: jest
+            .fn()
+            .mockImplementation(() => accountResponseWithAdminUserMock),
+        }),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CompletionComponent);

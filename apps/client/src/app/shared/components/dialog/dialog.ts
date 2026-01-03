@@ -12,5 +12,5 @@ import { DialogData } from '@shared/types/dialog';
 })
 export class DialogComponent {
   activeModal = inject(NgbActiveModal);
-  @Input() data!: DialogData;
+  @Input() data: DialogData;
 }

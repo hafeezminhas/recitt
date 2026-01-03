@@ -1,16 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CustomerActivation } from './customer-activation';
+import { ActivatedRouteProvider } from '@unit-testing/providers';
+import { CustomerActivationComponent } from './customer-activation';
 
 describe('CustomerActivation', () => {
-  let component: CustomerActivation;
-  let fixture: ComponentFixture<CustomerActivation>;
+  let component: CustomerActivationComponent;
+  let fixture: ComponentFixture<CustomerActivationComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CustomerActivation],
+      imports: [CustomerActivationComponent],
+      providers: [ActivatedRouteProvider],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CustomerActivation);
+    fixture = TestBed.createComponent(CustomerActivationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
