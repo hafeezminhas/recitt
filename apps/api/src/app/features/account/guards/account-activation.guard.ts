@@ -15,7 +15,7 @@ export class AccountActivateGuard implements CanActivate {
   constructor(
     private readonly accountService: AccountService,
     private readonly jwtService: JwtService
-  ) {}
+  ) { }
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const { ACCOUNT_ACTIVATION_SECRET } = process.env;
@@ -41,8 +41,6 @@ export class AccountActivateGuard implements CanActivate {
         sub: string;
         typ: 'jwt';
       }>(activationKey, ACCOUNT_ACTIVATION_SECRET);
-
-      console.log(payload);
 
       const account = await this.accountService.findById(payload.sub);
 

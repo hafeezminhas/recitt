@@ -2,6 +2,7 @@ import { Injectable, computed } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { ICredentials } from '@recitt/types';
 import { map } from 'rxjs';
+import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
 import * as AuthSelectors from './auth.selectors';
 
@@ -20,9 +21,9 @@ export class AuthFacade {
 
   // Computed selectors
   isAuthenticated$ = this.user$.pipe(map((user) => !!user));
-  isAuthenticated$$ = computed(() => this.user$$() !== null);
+  isAuthenticated$$ = computed(() => this.apiKey$$() && !this.authService.isApiKeyExpired());
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private authService: AuthService) { }
 
   // Actions
   login(credentials: ICredentials): void {

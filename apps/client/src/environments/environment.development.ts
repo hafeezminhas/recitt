@@ -7,7 +7,7 @@ export const environment: Environment = {
   version: '1.0.0',
   appName: 'Recitt',
   credentials: {
-    email: 'admin@company.com',
+    username: 'admin@company.com',
     password: 'SecurePass123!',
   },
   defaultLanguage: 'en',

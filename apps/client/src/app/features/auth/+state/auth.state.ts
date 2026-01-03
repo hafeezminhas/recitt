@@ -23,7 +23,7 @@ export const initialState: AuthState = {
   error: null,
 };
 
-const authReducer = createReducer(
+export const authReducer = createReducer(
   initialState,
   on(AuthActions.login, (state) => ({
     ...state,

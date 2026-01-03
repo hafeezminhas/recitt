@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -9,14 +9,16 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
+import { provideAuthState } from '@features/auth/+state/auth.state';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
 
     // NGRX Setup
     provideStore(),
@@ -28,6 +30,7 @@ export const appConfig: ApplicationConfig = {
       trace: false,
       traceLimit: 75,
     }),
+    provideAuthState(),
 
     // Router setup
     provideRouter(
@@ -44,6 +47,6 @@ export const appConfig: ApplicationConfig = {
       // withHashLocation()
     ),
     IconSetService,
-    provideAnimationsAsync(),
+    provideAnimationsAsync()
   ],
 };

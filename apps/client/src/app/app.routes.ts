@@ -1,6 +1,23 @@
-import { Routes } from '@angular/router';
+import { inject } from '@angular/core';
+import { ResolveFn, Routes } from '@angular/router';
 import { CustomerActivationResolver } from '@features/customer-activation/customer-activation.resolver';
+import { authGuard } from '@shared/guards/route.guard';
+import { AuthFacade } from './features/auth/+state/auth.facade';
 import { provideOnboardingState } from './features/onboarding/+state/onboarding.state';
+
+// On route navigation, if an api key exists (user previously signed in)
+// trigger loading the user profile so the app initializes auth state.
+export const userProfileResolver: ResolveFn<boolean> = () => {
+  const authFacade = inject(AuthFacade);
+  try {
+    if (authFacade.isAuthenticated$$()) {
+      authFacade.loadUserProfile();
+    }
+  } catch {
+    // ignore storage errors in some environments
+  }
+  return true;
+};
 
 export const routes: Routes = [
   {
@@ -10,6 +27,11 @@ export const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
+    resolve: {
+      profile: userProfileResolver
+    },
     loadComponent: () =>
       import('./layout').then((m) => m.DefaultLayoutComponent),
     data: {

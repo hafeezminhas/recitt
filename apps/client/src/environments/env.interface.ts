@@ -5,7 +5,7 @@ export interface Environment {
   version: string;
   appName: string;
   credentials: {
-    email: string;
+    username: string;
     password: string;
   } | null;
   defaultLanguage: string;

@@ -3,8 +3,8 @@
 // signals are represented as callable selectors on the real facade;
 // in the mock we use jest.fn() to mirror that callable signature.
 import { signal } from '@angular/core';
-import { ApiError, IUserProfile } from '@recitt/types';
 import { AuthFacade } from '@features/auth/+state/auth.facade';
+import { ApiError, IUserProfile } from '@recitt/types';
 import { of } from 'rxjs';
 import { MockFacade } from '../types';
 
@@ -13,7 +13,6 @@ export const authFacadeMock: MockFacade<AuthFacade> = {
   user$: of(null),
   // callable selectors (signals) are mocked as jest functions that return values
   user$$: jest.fn().mockReturnValue(signal<IUserProfile | null>(null)),
-  apiKey$: of(null),
   apiKey$$: jest.fn().mockReturnValue(signal<string | null>(null)),
   isLoading$: of(false),
   isLoading$$: jest.fn().mockReturnValue(signal(false)),

@@ -11,8 +11,8 @@ export const isAuthLoading = createSelector(
 
 export const apiKey = createSelector(
   authState,
-  (state: AuthState) =>
-    state.apiKey ?? localStorage.getItem(environment.authKey)
+  () =>
+    localStorage.getItem(environment.authKey)
 );
 
 export const authUser = createSelector(

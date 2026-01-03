@@ -3,9 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { OnboardingFacade } from '@features/onboarding/+state/onboarding.facade';
 import { OnboardingService } from '@features/onboarding/onboarding.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { DataService } from '@shared/services/data.service';
 import {
   activatedRouteMock,
   createOnboardingFacadeMock,
+  dataServiceMock,
   ngbActiveModalMock,
   onboardingFacadeMock,
   onboardingServiceMock,
@@ -43,6 +45,11 @@ export const provideOnboardingFacade = (
 /**
  * Services related providers
  */
+export const DataServiceProvider: Provider = {
+  provide: DataService,
+  useValue: dataServiceMock
+};
+
 export const OnboardingServiceProvider: Provider = {
   provide: OnboardingService,
   useValue: onboardingServiceMock,

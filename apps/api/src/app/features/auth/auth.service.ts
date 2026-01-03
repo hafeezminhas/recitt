@@ -34,7 +34,7 @@ export class AuthService {
   constructor(
     private readonly JwtService: JwtService,
     private readonly userRepo: UserRepository
-  ) {}
+  ) { }
 
   async signUp(
     payload: UserSignupRequestDto
@@ -340,7 +340,7 @@ export class AuthService {
 
   private async isValidUser(username: string): Promise<User> {
     const user = await this.userRepo.findOne({
-      where: [{ username }, { email: username }],
+      where: [{ email: username }],
     } as FindOneOptions<User>);
 
     if (!user) {
