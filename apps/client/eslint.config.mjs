@@ -24,9 +24,12 @@ export default [
           style: 'kebab-case',
         },
       ],
-      '@angular-eslint/prefer-inject': 'off',
       '@typescript-eslint/no-empty-function': 'off',
 
+      // Angular eslint
+      '@angular-eslint/prefer-inject': 'off',
+      '@angular-eslint/template/interactive-supports-focus': 'off',
+      '@angular-eslint/template/click-events-have-key-events': 'off'
     },
   },
   {

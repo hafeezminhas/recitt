@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import * as AuthActions from './auth.actions';
-import { AuthEntity } from './auth.models';
-import { authReducer, AuthState, initialAuthState } from './auth.state';
+import { authReducer, AuthState } from './auth.state';
 
 describe('Auth Reducer', () => {
   const createAuthEntity = (id: string, name = ''): AuthEntity => ({

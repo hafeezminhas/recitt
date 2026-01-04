@@ -25,9 +25,10 @@ export const initialState: AuthState = {
 
 export const authReducer = createReducer(
   initialState,
+  // Login reducers
   on(AuthActions.login, (state) => ({
     ...state,
-    loading: false,
+    loading: true,
     error: null,
   })),
   on(AuthActions.loginSuccess, (state, { token }) => ({
@@ -39,7 +40,26 @@ export const authReducer = createReducer(
     ...state,
     error,
     loading: false,
-  }))
+  })),
+
+  // Profile reducers
+  on(AuthActions.loadUserProfile, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(AuthActions.loadUserProfileSuccess, (state, { user }) => ({
+    ...state,
+    user,
+    loading: false,
+  })),
+  on(AuthActions.loadUserProfileFailure, (state, { error }) => ({
+    ...state,
+    error,
+    loading: false,
+  })),
+
+  // Logout
+  on(AuthActions.logout, () => initialState)
 );
 
 export function provideAuthState(): EnvironmentProviders {

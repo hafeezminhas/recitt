@@ -23,7 +23,7 @@ export const authFacadeMock: MockFacade<AuthFacade> = {
 
   // Mock methods
   login: jest.fn(),
-  logout: jest.fn(),
+  logOut: jest.fn(),
   loadUserProfile: jest.fn(),
   requestPasswordReset: jest.fn(),
   resetPassword: jest.fn(),

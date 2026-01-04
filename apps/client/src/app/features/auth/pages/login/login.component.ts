@@ -12,6 +12,7 @@ import {
   InputGroupComponent,
   InputGroupTextDirective,
   RowComponent,
+  SpinnerComponent,
 } from '@coreui/angular';
 import { IconDirective } from '@coreui/icons-angular';
 import { environment } from '@env/environment.development';
@@ -32,6 +33,7 @@ const { credentials } = environment;
     CardGroupComponent,
     CardComponent,
     CardBodyComponent,
+    SpinnerComponent,
     InputGroupComponent,
     InputGroupTextDirective,
     IconDirective,
@@ -43,6 +45,8 @@ const { credentials } = environment;
   ],
 })
 export class LoginComponent {
+  loading$$ = this.authFacade.isLoading$$;
+
   loginForm = createTypedFormGroup<ICredentials>(
     {
       username: '',

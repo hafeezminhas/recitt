@@ -1,6 +1,7 @@
 import { Injectable, computed } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ICredentials } from '@recitt/types';
+import { FacadeBase } from '@shared/types/facade.base';
 import { map } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
@@ -9,7 +10,7 @@ import * as AuthSelectors from './auth.selectors';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthFacade {
+export class AuthFacade extends FacadeBase {
   // Selectors
   user$ = this.store.select(AuthSelectors.authUser);
   user$$ = this.store.selectSignal(AuthSelectors.authUser);
@@ -23,14 +24,19 @@ export class AuthFacade {
   isAuthenticated$ = this.user$.pipe(map((user) => !!user));
   isAuthenticated$$ = computed(() => this.apiKey$$() && !this.authService.isApiKeyExpired());
 
-  constructor(private store: Store, private authService: AuthService) { }
+  constructor(
+    store: Store,
+    private authService: AuthService
+  ) {
+    super(store);
+  }
 
   // Actions
   login(credentials: ICredentials): void {
     this.dispatch(AuthActions.login({ credentials }));
   }
 
-  logout(): void {
+  logOut(): void {
     this.dispatch(AuthActions.logout());
   }
 
@@ -44,9 +50,5 @@ export class AuthFacade {
 
   resetPassword(token: string, newPassword: string): void {
     this.dispatch(AuthActions.resetPassword({ token, newPassword }));
-  }
-
-  private dispatch(action: Action): void {
-    this.store.dispatch(action);
   }
 }

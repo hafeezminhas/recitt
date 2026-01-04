@@ -60,4 +60,15 @@ export class AuthEffects {
         ))
       )
   );
+
+  logout$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AuthActions.logout),
+      tap(() => {
+        localStorage.removeItem(environment.authKey);
+        this.router.navigate(['signin']);
+      })
+    ),
+    { dispatch: false }
+  )
 }
