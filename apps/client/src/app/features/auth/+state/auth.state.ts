@@ -1,6 +1,7 @@
 import { createReducer, on, provideState } from '@ngrx/store';
 
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { environment } from '@env/environment';
 import { provideEffects } from '@ngrx/effects';
 import { ApiError, IUserProfile } from '@recitt/types';
 import { AuthActions } from './auth.actions';
@@ -18,7 +19,7 @@ export interface AuthState {
 
 export const initialState: AuthState = {
   user: null,
-  apiKey: null,
+  apiKey: localStorage.getItem(environment.authKey) ?? null,
   loading: false,
   error: null,
 };

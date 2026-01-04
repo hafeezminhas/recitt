@@ -6,9 +6,11 @@ import { of } from 'rxjs';
 export const authServiceMock: MockFacade<AuthService> = {
   apiPrefix: 'auth',
 
-  login: jest.fn().mockImplementation((payload) =>
-    of<ISigninResponse>({ apiKey: 'mocked-api-key' })
-  ),
+  login: jest
+    .fn()
+    .mockImplementation((payload) =>
+      of<ISigninResponse>({ apiKey: 'mocked-api-key' })
+    ),
   getProfile: jest.fn().mockReturnValue(
     of<IUserProfile>({
       firstName: 'Mock',
@@ -24,5 +26,4 @@ export const authServiceMock: MockFacade<AuthService> = {
       isDefaultAvatar: true,
     })
   ),
-  isApiKeyExpired: jest.fn().mockReturnValue(false),
 };

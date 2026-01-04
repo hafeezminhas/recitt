@@ -1,22 +1,31 @@
 import { Provider } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthFacade } from '@features/auth/+state/auth.facade';
 import { OnboardingFacade } from '@features/onboarding/+state/onboarding.facade';
 import { OnboardingService } from '@features/onboarding/onboarding.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataService } from '@shared/services/data.service';
 import {
   activatedRouteMock,
+  authFacadeMock,
+  createAuthFacadeMock,
   createOnboardingFacadeMock,
   dataServiceMock,
   ngbActiveModalMock,
   onboardingFacadeMock,
   onboardingServiceMock,
+  routerMock,
 } from './mocks';
 import { MockFacade } from './types';
 
 /**
  * Angular internal Providers
  */
+export const RouterProvider: Provider = {
+  provide: Router,
+  useValue: routerMock,
+};
+
 export const ActivatedRouteProvider: Provider = {
   provide: ActivatedRoute,
   useValue: activatedRouteMock,
@@ -42,12 +51,19 @@ export const provideOnboardingFacade = (
     : onboardingFacadeMock,
 });
 
+export const provideAuthFacade = (
+  overrides?: Partial<MockFacade<AuthFacade>>
+): Provider => ({
+  provide: AuthFacade,
+  useValue: overrides ? createAuthFacadeMock(overrides) : authFacadeMock,
+});
+
 /**
  * Services related providers
  */
 export const DataServiceProvider: Provider = {
   provide: DataService,
-  useValue: dataServiceMock
+  useValue: dataServiceMock,
 };
 
 export const OnboardingServiceProvider: Provider = {

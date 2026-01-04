@@ -1,4 +1,3 @@
-import { environment } from '@env/environment';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AUTH_FEATURE_KEY, AuthState } from './auth.state';
 
@@ -9,11 +8,7 @@ export const isAuthLoading = createSelector(
   (state: AuthState) => state.loading
 );
 
-export const apiKey = createSelector(
-  authState,
-  () =>
-    localStorage.getItem(environment.authKey)
-);
+export const apiKey = createSelector(authState, (state) => state.apiKey);
 
 export const authUser = createSelector(
   authState,

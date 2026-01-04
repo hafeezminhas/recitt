@@ -1,36 +1,61 @@
-import { Action } from '@ngrx/store';
+import { ApiError } from '@recitt/types';
+import { AuthActions } from './auth.actions';
+import { authReducer, AuthState, initialState } from './auth.state';
 
-import * as AuthActions from './auth.actions';
-import { authReducer, AuthState } from './auth.state';
+describe('AuthReducer', () => {
+  let state: AuthState;
 
-describe('Auth Reducer', () => {
-  const createAuthEntity = (id: string, name = ''): AuthEntity => ({
-    id,
-    name: name || `name-${id}`,
+  beforeEach(() => {
+    state = { ...initialState };
   });
 
-  describe('valid Auth actions', () => {
-    it('loadAuthSuccess should return the list of known Auth', () => {
-      const auth = [
-        createAuthEntity('PRODUCT-AAA'),
-        createAuthEntity('PRODUCT-zzz'),
-      ];
-      const action = AuthActions.loadAuthSuccess({ auth });
+  describe('login', () => {
+    it('should set loading true and clear error on login', () => {
+      const action = AuthActions.login;
 
-      const result: AuthState = authReducer(initialAuthState, action);
+      const result = authReducer(state, action);
 
-      expect(result.loading).toBe(true);
-      expect(result.ids.length).toBe(2);
+      expect(result).toEqual({
+        ...state,
+        loading: true,
+        error: null,
+      });
     });
   });
 
-  describe('unknown action', () => {
-    it('should return the previous state', () => {
-      const action = {} as Action;
+  describe('loginSuccess', () => {
+    it('should set apiKey and stop loading', () => {
+      const action = AuthActions.loginSuccess({
+        token: 'test-api-key',
+      });
 
-      const result = authReducer(initialAuthState, action);
+      const result = authReducer({ ...state, loading: true }, action);
 
-      expect(result).toBe(initialAuthState);
+      expect(result).toEqual({
+        ...state,
+        apiKey: 'test-api-key',
+        loading: false,
+      });
+    });
+  });
+
+  describe('loginFailure', () => {
+    it('should set error and stop loading', () => {
+      const error: ApiError = {
+        message: 'Invalid credentials',
+        error: 'Unknown error occurred',
+        statusCode: 401,
+      };
+
+      const action = AuthActions.loginFailure({ error });
+
+      const result = authReducer({ ...state, loading: true }, action);
+
+      expect(result).toEqual({
+        ...state,
+        error,
+        loading: false,
+      });
     });
   });
 });

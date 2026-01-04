@@ -1,62 +1,75 @@
-import { AuthEntity } from './auth.models';
+import { ApiError } from '@recitt/types';
+import { userProfileMock } from '@unit-testing/fixtures/auth.mock';
 import * as AuthSelectors from './auth.selectors';
-import { authAdapter, AuthPartialState, initialAuthState } from './auth.state';
+import { AuthState } from './auth.state';
 
 describe('Auth Selectors', () => {
-  const ERROR_MSG = 'No Error Available';
-  const getAuthId = (it: AuthEntity) => it.id;
-  const createAuthEntity = (id: string, name = '') =>
-    ({
-      id,
-      name: name || `name-${id}`,
-    } as AuthEntity);
+  const initialAuthState: AuthState = {
+    user: null,
+    apiKey: null,
+    loading: false,
+    error: null,
+  };
 
-  let state: AuthPartialState;
-
-  beforeEach(() => {
-    state = {
-      auth: authAdapter.setAll(
-        [
-          createAuthEntity('PRODUCT-AAA'),
-          createAuthEntity('PRODUCT-BBB'),
-          createAuthEntity('PRODUCT-CCC'),
-        ],
-        {
-          ...initialAuthState,
-          selectedId: 'PRODUCT-BBB',
-          error: ERROR_MSG,
-          loaded: true,
-        }
-      ),
-    };
-  });
-
-  describe('Auth Selectors', () => {
-    it('selectAllAuth() should return the list of Auth', () => {
-      const results = AuthSelectors.selectAllAuth(state);
-      const selId = getAuthId(results[1]);
-
-      expect(results.length).toBe(3);
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it('selectEntity() should return the selected Entity', () => {
-      const result = AuthSelectors.selectEntity(state) as AuthEntity;
-      const selId = getAuthId(result);
-
-      expect(selId).toBe('PRODUCT-BBB');
-    });
-
-    it('selectAuthLoaded() should return the current "loaded" status', () => {
-      const result = AuthSelectors.selectAuthLoaded(state);
+  describe('selectIsAuthLoading', () => {
+    it('should return loading flag', () => {
+      const result = AuthSelectors.isAuthLoading.projector({
+        ...initialAuthState,
+        loading: true,
+      });
 
       expect(result).toBe(true);
     });
+  });
 
-    it('selectAuthError() should return the current "error" state', () => {
-      const result = AuthSelectors.selectAuthError(state);
+  describe('selectApiKey', () => {
+    it('should return apiKey from state', () => {
+      const result = AuthSelectors.apiKey.projector({
+        ...initialAuthState,
+        apiKey: 'test-api-key',
+      });
 
-      expect(result).toBe(ERROR_MSG);
+      expect(result).toBe('test-api-key');
+    });
+  });
+
+  describe('selectAuthUser', () => {
+    it('should return user when present', () => {
+      const result = AuthSelectors.authUser.projector({
+        ...initialAuthState,
+        user: userProfileMock,
+      });
+
+      expect(result).toEqual(userProfileMock);
+    });
+
+    it('should return null when no user', () => {
+      const result = AuthSelectors.authUser.projector(initialAuthState);
+
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('selectAuthError', () => {
+    it('should return error when present', () => {
+      const error: ApiError = {
+        message: 'Unauthorized',
+        error: 'Unknown error occurred',
+        statusCode: 401,
+      };
+
+      const result = AuthSelectors.authError.projector({
+        ...initialAuthState,
+        error,
+      });
+
+      expect(result).toEqual(error);
+    });
+
+    it('should return null when no error', () => {
+      const result = AuthSelectors.authError.projector(initialAuthState);
+
+      expect(result).toBeNull();
     });
   });
 });
