@@ -1,9 +1,10 @@
-import { Injectable, computed } from '@angular/core';
+import { computed, Injectable } from '@angular/core';
+import { environment } from '@env/environment';
 import { Store } from '@ngrx/store';
 import { ICredentials } from '@recitt/types';
 import { FacadeBase } from '@shared/types/facade.base';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { map } from 'rxjs';
-import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
 import * as AuthSelectors from './auth.selectors';
 
@@ -22,12 +23,11 @@ export class AuthFacade extends FacadeBase {
 
   // Computed selectors
   isAuthenticated$ = this.user$.pipe(map((user) => !!user));
-  isAuthenticated$$ = computed(() => this.apiKey$$() && !this.authService.isApiKeyExpired());
+  isAuthenticated$$ = computed(
+    () => this.apiKey$$() && !this.isApiKeyExpired()
+  );
 
-  constructor(
-    store: Store,
-    private authService: AuthService
-  ) {
+  constructor(store: Store) {
     super(store);
   }
 
@@ -50,5 +50,24 @@ export class AuthFacade extends FacadeBase {
 
   resetPassword(token: string, newPassword: string): void {
     this.dispatch(AuthActions.resetPassword({ token, newPassword }));
+  }
+
+  private isApiKeyExpired() {
+    const token = localStorage.getItem(environment.authKey);
+    if (!token) {
+      return true;
+    }
+    // use jwtDecode to check the token expiry
+    try {
+      const decoded: JwtPayload = jwtDecode(token);
+      const exp = decoded?.exp;
+      if (!exp || typeof exp !== 'number') {
+        return true;
+      }
+      const now = Math.floor(Date.now() / 1000);
+      return exp <= now;
+    } catch {
+      return true;
+    }
   }
 }
