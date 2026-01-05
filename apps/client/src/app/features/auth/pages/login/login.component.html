@@ -26,13 +26,22 @@
 
 
                 </c-input-group>
-                <c-input-group class="mb-4">
+                <c-input-group class="mb-3">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
                   <input id="password" autoComplete="current-password" cFormControl placeholder="Password"
                     formControlName="password" type="password" />
                 </c-input-group>
+                <c-row>
+                  @if (error$$()) {
+                  <c-col xxs="12" class="mb-4">
+                    <div class="error">
+                        {{ error$$()?.message }}
+                      </div>
+                  </c-col>
+                  }
+                </c-row>
                 <c-row>
                   <c-col xs="6">
                     <button cButton class="px-4" color="primary" type="submit">

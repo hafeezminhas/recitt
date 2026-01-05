@@ -29,7 +29,9 @@ export const isOnboardingCompleted = createSelector(
   onboardingState,
   (state) => {
     return (
-      state.account !== null && state.account.billingInformation !== null && state.account.accountAdmin !== null
-    )
+      state.account !== null &&
+      state.account.billingInformation !== null &&
+      state.account.accountAdmin !== null
+    );
   }
 );

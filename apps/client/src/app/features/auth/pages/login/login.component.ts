@@ -46,6 +46,7 @@ const { credentials } = environment;
 })
 export class LoginComponent {
   loading$$ = this.authFacade.isLoading$$;
+  error$$ = this.authFacade.error$$;
 
   loginForm = createTypedFormGroup<ICredentials>(
     {

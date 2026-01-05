@@ -14,7 +14,7 @@ export class AuthEffects {
     private router: Router,
     private actions$: Actions,
     private authService: AuthService
-  ) { }
+  ) {}
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -25,7 +25,7 @@ export class AuthEffects {
           catchError((error) =>
             of(
               AuthActions.loginFailure({
-                error: (error as ApiError) || { message: 'Login failed' },
+                error: error.error as ApiError,
               })
             )
           )
@@ -50,25 +50,31 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  loadUserProfile$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loadUserProfile),
-        exhaustMap(() => this.authService.getProfile().pipe(
-          map(profile => AuthActions.loadUserProfileSuccess({ user: profile })),
-          catchError((error) => of(AuthActions.loadUserProfileFailure({ error })))
-        ))
+  loadUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loadUserProfile),
+      exhaustMap(() =>
+        this.authService.getProfile().pipe(
+          map((profile) =>
+            AuthActions.loadUserProfileSuccess({ user: profile })
+          ),
+          catchError((error) =>
+            of(AuthActions.loadUserProfileFailure({ error }))
+          )
+        )
       )
+    )
   );
 
   logout$ = createEffect(
-    () => this.actions$.pipe(
-      ofType(AuthActions.logout),
-      tap(() => {
-        localStorage.removeItem(environment.authKey);
-        this.router.navigate(['signin']);
-      })
-    ),
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          localStorage.removeItem(environment.authKey);
+          this.router.navigate(['signin']);
+        })
+      ),
     { dispatch: false }
-  )
+  );
 }
