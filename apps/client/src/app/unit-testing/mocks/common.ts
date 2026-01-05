@@ -1,6 +1,15 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { BehaviorSubject, of } from 'rxjs';
+
+export const routerMock = {
+  navigate: jest.fn().mockResolvedValue(true),
+  navigateByUrl: jest.fn().mockResolvedValue(true),
+  createUrlTree: jest.fn(),
+  serializeUrl: jest.fn(),
+  url: '/',
+  events: of(),
+} as unknown as Router;
 
 export const activatedRouteMock = {
   snapshot: {

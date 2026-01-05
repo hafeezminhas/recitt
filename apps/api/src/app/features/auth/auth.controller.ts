@@ -17,9 +17,9 @@ import multer from 'multer';
 
 import {
   AccountActivationDto,
+  CredentialsDto,
   ForgetPasswordDto,
   ResetPasswordDto,
-  SigninDto,
   UpdatePasswordDto,
   UpdateUserRequestDto,
   UserSignupRequestDto,
@@ -45,7 +45,7 @@ const userAvatarMulterOptions: multer.Options = {
 };
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post('signup')
   @ApiBody({ type: UserSignupRequestDto })
@@ -58,7 +58,7 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('signin')
-  @ApiBody({ type: SigninDto })
+  @ApiBody({ type: CredentialsDto })
   @SigninSwagger.ApiOperation
   @SigninSwagger.ApiResponseSuccess
   @SigninSwagger.ApiResponseUnauthorized
@@ -78,7 +78,6 @@ export class AuthController {
   @Put('profile')
   @ApiBody({ type: UpdateUserRequestDto })
   updateProfile(@NestRequest() req, @Body() payload: UpdateUserRequestDto) {
-    // console.log('Update Profile', req.user, payload);
     const { sub } = req.user;
     return this.authService.updateProfile(sub, payload);
   }

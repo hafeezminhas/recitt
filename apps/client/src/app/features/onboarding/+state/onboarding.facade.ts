@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Action, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import {
   IAddAccountAdminUserRequest,
   IAddBillingInfoRequest,
   ICreateAccountRequest,
 } from '@recitt/types';
+import { FacadeBase } from '@shared/types/facade.base';
 import { map, Observable, Subject } from 'rxjs';
 import * as OnboardingActions from './onboarding.actions';
 import * as fromOnboardingSelectors from './onboarding.selectors';
@@ -12,7 +13,7 @@ import * as fromOnboardingSelectors from './onboarding.selectors';
 @Injectable({
   providedIn: 'root',
 })
-export class OnboardingFacade {
+export class OnboardingFacade extends FacadeBase {
   private nextStepTrigger$ = new Subject<void>();
   nextStepCommand$ = this.nextStepTrigger$.asObservable();
 
@@ -32,7 +33,9 @@ export class OnboardingFacade {
   isLoading$$ = this.store.selectSignal(fromOnboardingSelectors.isLoading);
   error$$ = this.store.selectSignal(fromOnboardingSelectors.selectError);
 
-  constructor(private store: Store) {}
+  constructor(store: Store) {
+    super(store);
+  }
 
   // Business Logic for Navigation
   canAccessStep(step: number | string): Observable<boolean> {
@@ -86,9 +89,5 @@ export class OnboardingFacade {
 
   setupAdminUser(payload: IAddAccountAdminUserRequest): void {
     this.dispatch(OnboardingActions.setupAdminUser({ payload }));
-  }
-
-  private dispatch(action: Action): void {
-    this.store.dispatch(action);
   }
 }

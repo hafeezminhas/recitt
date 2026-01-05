@@ -14,6 +14,7 @@ import {
   SidebarModule,
 } from '@coreui/angular';
 import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { provideAuthFacade } from '@unit-testing/providers';
 import { iconSubset } from '../../../icons/icon-subset';
 import { DefaultHeaderComponent } from './default-header.component';
 
@@ -39,7 +40,7 @@ describe('DefaultHeaderComponent', () => {
         ReactiveFormsModule,
         DefaultHeaderComponent,
       ],
-      providers: [IconSetService, provideRouter([])],
+      providers: [IconSetService, provideRouter([]), provideAuthFacade()],
     }).compileComponents();
   });
 
