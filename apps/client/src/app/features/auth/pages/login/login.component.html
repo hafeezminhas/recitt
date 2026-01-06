@@ -36,9 +36,12 @@
                 <c-row>
                   @if (error$$()) {
                   <c-col xxs="12" class="mb-4">
-                    <div class="error">
-                        {{ error$$()?.message }}
-                      </div>
+                    <c-alert color="danger" variant="solid" class="d-flex align-items-center">
+                      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+                      <div>{{ error$$()?.message }}</div>
+                  </c-alert>
                   </c-col>
                   }
                 </c-row>

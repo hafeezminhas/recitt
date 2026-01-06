@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { ApiError } from '@recitt/types';
 import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
 
@@ -22,10 +22,10 @@ export class AuthEffects {
       exhaustMap(({ credentials }) =>
         this.authService.login(credentials).pipe(
           map((res) => AuthActions.loginSuccess({ token: res.apiKey })),
-          catchError((error) =>
+          catchError(({ error }: HttpErrorResponse) =>
             of(
               AuthActions.loginFailure({
-                error: error.error as ApiError,
+                error,
               })
             )
           )

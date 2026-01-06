@@ -9,7 +9,7 @@ describe('AuthReducer', () => {
     state = { ...initialState };
   });
 
-  describe('login', () => {
+  describe('Login', () => {
     it('should set loading true and clear error on login', () => {
       const action = AuthActions.login;
 

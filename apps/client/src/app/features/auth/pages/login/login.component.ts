@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
+  AlertComponent,
   ButtonDirective,
   CardBodyComponent,
   CardComponent,
@@ -41,7 +42,7 @@ const { credentials } = environment;
     ButtonDirective,
     ReactiveFormsModule,
     FormFeedbackComponent,
-    // AlertComponent,
+    AlertComponent,
   ],
 })
 export class LoginComponent {
