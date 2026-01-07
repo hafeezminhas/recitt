@@ -26,13 +26,25 @@
 
 
                 </c-input-group>
-                <c-input-group class="mb-4">
+                <c-input-group class="mb-3">
                   <span cInputGroupText>
                     <svg cIcon name="cilLockLocked"></svg>
                   </span>
                   <input id="password" autoComplete="current-password" cFormControl placeholder="Password"
                     formControlName="password" type="password" />
                 </c-input-group>
+                <c-row>
+                  @if (error$$()) {
+                  <c-col xxs="12" class="mb-4">
+                    <c-alert color="danger" variant="solid" class="d-flex align-items-center">
+                      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+                      <div>{{ error$$()?.message }}</div>
+                  </c-alert>
+                  </c-col>
+                  }
+                </c-row>
                 <c-row>
                   <c-col xs="6">
                     <button cButton class="px-4" color="primary" type="submit">

@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { environment } from '@env/environment';
@@ -8,14 +9,14 @@ import { userProfileMock } from '@unit-testing/fixtures/auth.mock';
 import { authServiceMock } from '@unit-testing/mocks';
 import { RouterProvider } from '@unit-testing/providers';
 import { Observable, of, throwError } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
 import { AuthEffects } from './auth.effects';
 
-describe('AuthEffects', () => {
+describe('AuthEffects:', () => {
   let actions$: Observable<Action>;
   let effects: AuthEffects;
-  let authService: jest.Mocked<AuthService>;
   let router: jest.Mocked<Router>;
 
   beforeEach(() => {
@@ -32,7 +33,6 @@ describe('AuthEffects', () => {
     });
 
     effects = TestBed.inject(AuthEffects);
-    authService = TestBed.inject(AuthService) as jest.Mocked<AuthService>;
     router = TestBed.inject(Router) as jest.Mocked<Router>;
   });
 
@@ -40,30 +40,32 @@ describe('AuthEffects', () => {
     jest.clearAllMocks();
   });
 
-  describe('login$', () => {
-    //  Success login path
-    it('should dispatch loginSuccess on successful login', (done) => {
+  describe('When login action triggers its effect', () => {
+    describe('And login is successful', () => {
       const credentials: ICredentials = {
         username: 'a@test.com',
         password: '1234',
       };
-      const response = { apiKey: 'token-123' };
+      beforeEach(() => {
+        const response = { apiKey: 'token-123' };
 
-      authService.login.mockReturnValue(of(response));
+        authServiceMock.login.mockReturnValue(of(response));
 
-      actions$ = of(AuthActions.login({ credentials }));
+        actions$ = of(AuthActions.login({ credentials }));
 
-      effects.login$.subscribe((action) => {
-        expect(action).toEqual(
-          AuthActions.loginSuccess({ token: 'token-123' })
-        );
-        expect(authService.login).toHaveBeenCalledWith(credentials);
+        effects.login$.subscribe((action) => {
+          expect(action).toEqual(
+            AuthActions.loginSuccess({ token: 'token-123' })
+          );
+        });
+      });
+      it('should dispatch loginSuccess on successful login', (done) => {
+        expect(authServiceMock.login).toHaveBeenCalledWith(credentials);
         done();
       });
     });
 
-    // Failed login path
-    it('should dispatch loginFailure on error', (done) => {
+    describe('And login fails', () => {
       const credentials = { username: 'a@test.com', password: '1234' };
       const error: ApiError = {
         message: 'Unauthorized',
@@ -71,54 +73,68 @@ describe('AuthEffects', () => {
         statusCode: 401,
       };
 
-      authService.login.mockReturnValue(throwError(() => error));
+      beforeEach(() => {
+        authServiceMock.login.mockReturnValue(
+          throwError(() => ({ error } as HttpErrorResponse))
+        );
 
-      actions$ = of(AuthActions.login({ credentials }));
-
-      effects.login$.subscribe((action) => {
-        expect(action).toEqual(AuthActions.loginFailure({ error }));
-        done();
+        actions$ = of(AuthActions.login({ credentials }));
+      });
+      it('should dispatch loginFailure on error', (done) => {
+        effects.login$.subscribe((action) => {
+          expect(action).toEqual(AuthActions.loginFailure({ error }));
+          done();
+        });
       });
     });
   });
 
-  describe('loadUserProfile$', () => {
-    it('should dispatch loadUserProfileSuccess on success', (done) => {
-      authService.getProfile.mockReturnValue(of(userProfileMock));
+  describe('When loadUserProfile action triggers its effect', () => {
+    describe('And user profile load is succssfull', () => {
+      beforeEach(() => {
+        authServiceMock.getProfile.mockReturnValue(of(userProfileMock));
 
-      actions$ = of(AuthActions.loadUserProfile());
+        actions$ = of(AuthActions.loadUserProfile());
+      });
 
-      effects.loadUserProfile$.subscribe((action) => {
-        expect(action).toEqual(
-          AuthActions.loadUserProfileSuccess({ user: userProfileMock })
-        );
-        done();
+      it('should dispatch loadUserProfileSuccess on success', (done) => {
+        effects.loadUserProfile$.subscribe((action) => {
+          expect(action).toEqual(
+            AuthActions.loadUserProfileSuccess({ user: userProfileMock })
+          );
+          done();
+        });
       });
     });
 
-    it('should dispatch loadUserProfileFailure on error', (done) => {
+    describe('And user profile load fails', () => {
       const error: ApiError = {
         message: 'Profile error',
         error: 'Unknown error occurred',
         statusCode: 500,
       };
 
-      authService.getProfile.mockReturnValue(throwError(() => error));
+      beforeEach(() => {
+        authServiceMock.getProfile.mockReturnValue(throwError(() => error));
 
-      actions$ = of(AuthActions.loadUserProfile());
+        actions$ = of(AuthActions.loadUserProfile());
+      });
 
-      effects.loadUserProfile$.subscribe((action) => {
-        expect(action).toEqual(AuthActions.loadUserProfileFailure({ error }));
-        done();
+      it('should dispatch loadUserProfileFailure on error', (done) => {
+        effects.loadUserProfile$.pipe(take(1)).subscribe((action) => {
+          expect(action).toEqual(AuthActions.loadUserProfileFailure({ error }));
+          done();
+        });
       });
     });
 
     describe('logout$', () => {
-      it('should remove apiKey and navigate to signin', (done) => {
-        const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
-
+      const removeItemSpy = jest.spyOn(Storage.prototype, 'removeItem');
+      beforeEach(() => {
         actions$ = of(AuthActions.logout());
+      });
 
+      it('should remove apiKey and navigate to signin', (done) => {
         effects.logout$.subscribe(() => {
           expect(removeItemSpy).toHaveBeenCalledWith(environment.authKey);
           expect(router.navigate).toHaveBeenCalledWith(['signin']);

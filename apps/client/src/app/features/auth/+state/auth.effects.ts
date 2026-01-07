@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { ApiError } from '@recitt/types';
 import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
 
@@ -14,7 +14,7 @@ export class AuthEffects {
     private router: Router,
     private actions$: Actions,
     private authService: AuthService
-  ) { }
+  ) {}
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -22,10 +22,10 @@ export class AuthEffects {
       exhaustMap(({ credentials }) =>
         this.authService.login(credentials).pipe(
           map((res) => AuthActions.loginSuccess({ token: res.apiKey })),
-          catchError((error) =>
+          catchError(({ error }: HttpErrorResponse) =>
             of(
               AuthActions.loginFailure({
-                error: (error as ApiError) || { message: 'Login failed' },
+                error,
               })
             )
           )
@@ -50,25 +50,31 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  loadUserProfile$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loadUserProfile),
-        exhaustMap(() => this.authService.getProfile().pipe(
-          map(profile => AuthActions.loadUserProfileSuccess({ user: profile })),
-          catchError((error) => of(AuthActions.loadUserProfileFailure({ error })))
-        ))
+  loadUserProfile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loadUserProfile),
+      exhaustMap(() =>
+        this.authService.getProfile().pipe(
+          map((profile) =>
+            AuthActions.loadUserProfileSuccess({ user: profile })
+          ),
+          catchError((error) =>
+            of(AuthActions.loadUserProfileFailure({ error }))
+          )
+        )
       )
+    )
   );
 
   logout$ = createEffect(
-    () => this.actions$.pipe(
-      ofType(AuthActions.logout),
-      tap(() => {
-        localStorage.removeItem(environment.authKey);
-        this.router.navigate(['signin']);
-      })
-    ),
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          localStorage.removeItem(environment.authKey);
+          this.router.navigate(['signin']);
+        })
+      ),
     { dispatch: false }
-  )
+  );
 }
