@@ -7,13 +7,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { AuthService } from '../auth.service';
 import { AuthActions } from './auth.actions';
+import { AuthFacade } from './auth.facade';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private router: Router,
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private authFacade: AuthFacade
   ) {}
 
   login$ = createEffect(() =>
@@ -58,12 +60,28 @@ export class AuthEffects {
           map((profile) =>
             AuthActions.loadUserProfileSuccess({ user: profile })
           ),
+          tap(() => {
+            this.router.navigateByUrl('/dashboard');
+          }),
           catchError((error) =>
             of(AuthActions.loadUserProfileFailure({ error }))
           )
         )
       )
     )
+  );
+
+  loadUserProfileSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loadUserProfileSuccess),
+        tap(() => {
+          if (this.authFacade.isAccountAdmin$$()) {
+            this.router.navigateByUrl('/admin');
+          }
+        })
+      ),
+    { dispatch: false }
   );
 
   logout$ = createEffect(
