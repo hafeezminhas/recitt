@@ -13,6 +13,8 @@ export const authFacadeMock: MockFacade<AuthFacade> = {
   user$: of(null),
   // callable selectors (signals) are mocked as jest functions that return values
   user$$: jest.fn().mockReturnValue(signal<IUserProfile | null>(null)),
+  isAccountAdmin$: of(true),
+  isAccountAdmin$$: jest.fn().mockReturnValue(true),
   apiKey$$: jest.fn().mockReturnValue(signal<string | null>(null)),
   isLoading$: of(false),
   isLoading$$: jest.fn().mockReturnValue(signal(false)),

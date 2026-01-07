@@ -7,7 +7,7 @@ import { Action } from '@ngrx/store';
 import { ApiError, ICredentials } from '@recitt/types';
 import { userProfileMock } from '@unit-testing/fixtures/auth.mock';
 import { authServiceMock } from '@unit-testing/mocks';
-import { RouterProvider } from '@unit-testing/providers';
+import { provideAuthFacade, RouterProvider } from '@unit-testing/providers';
 import { Observable, of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../auth.service';
@@ -28,6 +28,7 @@ describe('AuthEffects:', () => {
           provide: AuthService,
           useValue: authServiceMock,
         },
+        provideAuthFacade(),
         RouterProvider,
       ],
     });

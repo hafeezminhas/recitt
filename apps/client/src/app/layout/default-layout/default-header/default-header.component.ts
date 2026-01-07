@@ -1,8 +1,28 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, computed, inject, input } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 
-import { AvatarComponent, BadgeComponent, BreadcrumbRouterComponent, ColComponent, ColorModeService, ContainerComponent, DropdownComponent, DropdownDividerDirective, DropdownHeaderDirective, DropdownItemDirective, DropdownMenuDirective, DropdownToggleDirective, HeaderComponent, HeaderNavComponent, HeaderTogglerDirective, NavItemComponent, NavLinkDirective, RowComponent, SidebarToggleDirective } from '@coreui/angular';
+import {
+  AvatarComponent,
+  BadgeComponent,
+  BreadcrumbRouterComponent,
+  ColComponent,
+  ColorModeService,
+  ContainerComponent,
+  DropdownComponent,
+  DropdownDividerDirective,
+  DropdownHeaderDirective,
+  DropdownItemDirective,
+  DropdownMenuDirective,
+  DropdownToggleDirective,
+  HeaderComponent,
+  HeaderNavComponent,
+  HeaderTogglerDirective,
+  NavItemComponent,
+  NavLinkDirective,
+  RowComponent,
+  SidebarToggleDirective,
+} from '@coreui/angular';
 
 import { IconDirective } from '@coreui/icons-angular';
 import { AuthFacade } from '@features/auth/+state/auth.facade';
@@ -12,6 +32,7 @@ import { AuthFacade } from '@features/auth/+state/auth.facade';
   templateUrl: './default-header.component.html',
   styleUrl: './default-header.component.scss',
   imports: [
+    RouterModule,
     ContainerComponent,
     HeaderTogglerDirective,
     SidebarToggleDirective,
@@ -32,7 +53,7 @@ import { AuthFacade } from '@features/auth/+state/auth.facade';
     BadgeComponent,
     DropdownDividerDirective,
     RowComponent,
-    ColComponent
+    ColComponent,
   ],
 })
 export class DefaultHeaderComponent extends HeaderComponent {
@@ -40,6 +61,7 @@ export class DefaultHeaderComponent extends HeaderComponent {
   readonly colorMode = this.#colorModeService.colorMode;
 
   user$$ = this.authFacade.user$$;
+  isAccountAdmin$$ = this.authFacade.isAccountAdmin$$;
 
   readonly colorModes = [
     { name: 'light', text: 'Light', icon: 'cilSun' },

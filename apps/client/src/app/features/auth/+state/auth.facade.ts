@@ -15,6 +15,8 @@ export class AuthFacade extends FacadeBase {
   // Selectors
   user$ = this.store.select(AuthSelectors.authUser);
   user$$ = this.store.selectSignal(AuthSelectors.authUser);
+  isAccountAdmin$ = this.store.select(AuthSelectors.isAccountAdmin);
+  isAccountAdmin$$ = this.store.selectSignal(AuthSelectors.isAccountAdmin);
   apiKey$$ = this.store.selectSignal(AuthSelectors.apiKey);
   isLoading$ = this.store.select(AuthSelectors.isAuthLoading);
   isLoading$$ = this.store.selectSignal(AuthSelectors.isAuthLoading);

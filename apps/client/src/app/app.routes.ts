@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn, Routes } from '@angular/router';
+import { AdminGuard } from '@features/admin/admin.guard';
 import { CustomerActivationResolver } from '@features/customer-activation/customer-activation.resolver';
 import { authGuard } from '@shared/guards/route.guard';
 import { AuthFacade } from './features/auth/+state/auth.facade';
@@ -30,7 +31,7 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     resolve: {
-      profile: userProfileResolver
+      profile: userProfileResolver,
     },
     loadComponent: () =>
       import('./layout').then((m) => m.DefaultLayoutComponent),
@@ -86,6 +87,15 @@ export const routes: Routes = [
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/routes').then((m) => m.routes),
+      },
+      // Admin routes
+      {
+        path: 'admin',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./features/admin/admin.routes').then(
+            (m) => m.ADMIN_FEATURE_ROUTES
+          ),
       },
     ],
   },
